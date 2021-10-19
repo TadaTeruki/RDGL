@@ -64,7 +64,7 @@ func getGrad(hash int,x,y,z float64) float64{
 }
 
 // ノイズを生成する関数
-func (obj* PerlinObject) SetNoise(x,y,z float64) float64{
+func (obj* PerlinObject) setNoise(x,y,z float64) float64{
 
 	var xi, yi, zi int
 	var xf, yf, zf float64
@@ -108,15 +108,15 @@ func (obj* PerlinObject) SetNoise(x,y,z float64) float64{
 
 // ノイズを出力する関数
 func (obj* PerlinObject) Noise(x,y,z float64) float64{
-    return obj.SetNoise(x, y, z)*0.5+0.5
+    return obj.setNoise(x, y, z)*0.5+0.5
 }
 
 // オクターブ付きのノイズを生成する関数 (octaves:細分処理の回数, persistence:地形のきめ細やかさ)
-func (obj* PerlinObject) SetOctaveNoise(octaves int, persistence,x,y,z float64) float64 {
+func (obj* PerlinObject) setOctaveNoise(octaves int, persistence,x,y,z float64) float64 {
     value := 0.0
     amp := 1.0
     for i := 0; i < octaves; i++{
-        value += obj.SetNoise(x,y,z) * amp
+        value += obj.setNoise(x,y,z) * amp
         x *= 2.0
         y *= 2.0
         z *= 2.0
@@ -127,5 +127,10 @@ func (obj* PerlinObject) SetOctaveNoise(octaves int, persistence,x,y,z float64) 
 
 // オクターブ付きのノイズを出力する関数
 func (obj* PerlinObject) OctaveNoise(octaves int, persistence,x,y,z float64) float64{
-    return obj.SetOctaveNoise(octaves, persistence, x, y, z)*0.5+0.5
+    return obj.setOctaveNoise(octaves, persistence, x, y, z)*0.5+0.5
+}
+
+// オクターブ付きのノイズを出力する関数
+func (obj* PerlinObject) OctaveNoiseFixed(octaves int, persistence,x,y,z float64) float64{
+    return getFade(obj.setOctaveNoise(octaves, persistence, x, y, z)*0.5+0.5)
 }
