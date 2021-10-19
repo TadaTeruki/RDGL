@@ -6,10 +6,11 @@ import(
 )
 
 type WorldTerrainObject struct{
-	NoiseSrc perlin.PerlinObject
+	NoiseSrc, AdjNoiseSrc perlin.PerlinObject
 	NSKm float64
 	WEKm float64
 	ElevationBaseM float64
 	NEFPointList []NEFPoint
+	Config GlobalConfig
 }
 
