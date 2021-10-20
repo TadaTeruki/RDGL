@@ -12,15 +12,7 @@ func TerrainAdjustmentFade(px, strength float64) float64{
 
 
 func (obj *WorldTerrainObject) GetElevation(x, y float64) float64{
-/*
-	var maxWHkm float64
 
-	if obj.NSKm > obj.WEKm { 
-		maxWHkm = obj.NSKm
-	} else {
-		maxWHkm = obj.WEKm
-	}
-	*/
 	xfix := x/obj.Config.NoizeScaleKm
 	yfix := y/obj.Config.NoizeScaleKm
 
@@ -32,4 +24,8 @@ func (obj *WorldTerrainObject) GetElevation(x, y float64) float64{
 	
 	return obj.GetElevationFromNoiseLevel(TerrainAdjustmentFade(noise, noise_adj))
 	
+}
+
+func (obj *LocalTerrainObject) GetElevation(x, y float64) float64{
+	return obj.WorldTerrain.GetElevation(x+obj.xKm, y+obj.yKm)
 }

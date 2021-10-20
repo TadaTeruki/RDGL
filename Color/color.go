@@ -1,5 +1,4 @@
-package artif_terrain
-
+package color
 
 type Color struct{
 	R, G, B float64
@@ -9,8 +8,6 @@ type ColorElevation struct {
 	color Color
 	elevation float64
 }
-
-
 
 func MakeColor(r, g, b float64) Color{
 	var target Color

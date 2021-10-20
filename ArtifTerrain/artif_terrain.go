@@ -2,7 +2,6 @@ package artif_terrain
 
 import(
 	perlin "../PerlinNoise"
-	//utility "../Utility"
 )
 
 type WorldTerrainObject struct{
@@ -12,5 +11,13 @@ type WorldTerrainObject struct{
 	ElevationBaseM float64
 	NEFPointList []NEFPoint
 	Config GlobalConfig
+}
+
+type LocalTerrainObject struct{
+	WorldTerrain *WorldTerrainObject
+	xKm float64
+	yKm float64
+	NSKm float64
+	WEKm float64
 }
 
