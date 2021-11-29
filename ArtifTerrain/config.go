@@ -19,7 +19,7 @@ type GlobalConfig struct{
 func GetGlobalConfig() GlobalConfig {
 	var conf GlobalConfig
 	conf.Seed = 11
-	conf.NoizeScaleKm = 7500.0
+	conf.NoizeScaleKm = 4500.0
 	conf.NoizeOctave = 20
 	conf.NoizeMinPersistence = 0.4
 	conf.NoizeMaxPersistence = 0.7
