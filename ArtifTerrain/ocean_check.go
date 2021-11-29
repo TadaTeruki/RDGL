@@ -62,7 +62,16 @@ func (obj *LocalTerrainObject) MakeOceanTable(){
 	}
 
 	var open, nwopen []Point
-	open = append(open, MakePoint(0,0))
+	
+	for x := 0; x<len(obj.OceanTable[0]); x++{
+		open = append(open, MakePoint(x,0))
+		open = append(open, MakePoint(x,len(obj.OceanTable)-1))
+	}
+	for y := 1; y<len(obj.OceanTable)-1; y++{
+		open = append(open, MakePoint(0,y))
+		open = append(open, MakePoint(len(obj.OceanTable[0])-1,y))
+	}
+
 
 	for ;len(open) > 0;{
 		nwopen = []Point{}
