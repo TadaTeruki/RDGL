@@ -30,7 +30,7 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 	if relv < 0.0 && obj.OceanCheckIsAvailable == true{
 		if obj.CheckOceanByKmPoint(xKm, yKm) == false {
-			relv = 0.0
+			relv = -relv*obj.WorldTerrain.Config.TerrainReverseScale
 		}
 	}
 	return relv
