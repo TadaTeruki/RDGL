@@ -11,17 +11,20 @@ type GlobalConfig struct{
 	MinLand float64 // 最小陸地率
 	MaxLand float64 // 最大陸地率
 	LocalTerrainSelectionQuality int // LocalTerrainのクオリティ O(N) 最低1
+	OceanCheckIntervalKm float64 // 水たまり認識の基準点の間隔
+	// O(LocalTerrain::NSKm*LocalTerrain::WEKm/(OceanCheckIntervalKm^2) )
 }
 
 func GetGlobalConfig() GlobalConfig {
 	var conf GlobalConfig
-	conf.Seed = 10
+	conf.Seed = 11
 	conf.NoizeScaleKm = 7500.0
-	conf.NoizeOctave = 20
-	conf.NoizeMinPersistence = 0.5
-	conf.NoizeMaxPersistence = 0.75
-	conf.MinLand = 0.6
+	conf.NoizeOctave = 10
+	conf.NoizeMinPersistence = 0.4
+	conf.NoizeMaxPersistence = 0.7
+	conf.MinLand = 0.5
 	conf.MaxLand = 0.95
 	conf.LocalTerrainSelectionQuality = 100
+	conf.OceanCheckIntervalKm = 10.0
 	return conf
 }

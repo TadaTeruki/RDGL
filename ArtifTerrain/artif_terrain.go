@@ -19,5 +19,7 @@ type LocalTerrainObject struct{
 	yKm float64
 	NSKm float64
 	WEKm float64
+	OceanTable [][]OceanPoint
+	OceanCheckIsAvailable bool
 }
 

@@ -33,7 +33,7 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 			distKm := math.Sqrt((cxKm-xKm)*(cxKm-xKm)+(cyKm-yKm)*(cyKm-yKm))
 			rDistKm := 0.5-distKm/(maxWHkm/2)
 			_,_ = distKm, rDistKm
-			elevation := obj.WorldTerrain.GetElevation(xKm, yKm)
+			elevation := obj.WorldTerrain.GetElevationByKmPoint(xKm, yKm)
 			if elevation >= 0 {
 				count_land++
 			}
@@ -52,14 +52,15 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	return score, true
 }
 
+
 func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	rand.Seed(0)
-	//rand.Float64()
 
 	submit_model_num := obj.WorldTerrain.Config.LocalTerrainSelectionQuality
 	cobj := make([]LocalTerrainObject, submit_model_num)
 	var max_score float64
 	var select_ad int
+	obj.OceanCheckIsAvailable = false
 
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
@@ -80,5 +81,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
+	obj.MakeOceanTable()
+
 
 }

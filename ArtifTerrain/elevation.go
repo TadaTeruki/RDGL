@@ -11,10 +11,10 @@ func TerrainAdjustmentFade(px, strength float64) float64{
 }
 
 
-func (obj *WorldTerrainObject) GetElevation(x, y float64) float64{
+func (obj *WorldTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 
-	xfix := x/obj.Config.NoizeScaleKm
-	yfix := y/obj.Config.NoizeScaleKm
+	xfix := xKm/obj.Config.NoizeScaleKm
+	yfix := yKm/obj.Config.NoizeScaleKm
 
 	noise_adj := obj.NoiseSrc.OctaveNoise(1, 0.5, xfix, yfix, 0.0)
 
@@ -26,6 +26,12 @@ func (obj *WorldTerrainObject) GetElevation(x, y float64) float64{
 	
 }
 
-func (obj *LocalTerrainObject) GetElevation(x, y float64) float64{
-	return obj.WorldTerrain.GetElevation(x+obj.xKm, y+obj.yKm)
+func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
+	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
+	if relv < 0.0 && obj.OceanCheckIsAvailable == true{
+		if obj.CheckOceanByKmPoint(xKm, yKm) == false {
+			relv = 0.0
+		}
+	}
+	return relv
 }
