@@ -17,8 +17,8 @@ func MakeNEFPoint(n,e float64) NEFPoint{
 func (obj *WorldTerrainObject) SetNEFPoint(){
 	var NEFPointList = []NEFPoint{
 		MakeNEFPoint(0.0, -obj.ElevationBaseM),
-		MakeNEFPoint(0.4, -4000),
-		MakeNEFPoint(0.65, -1000),
+		MakeNEFPoint(0.5, -4000),
+		MakeNEFPoint(0.63, -1000),
 		MakeNEFPoint(0.7, 0),
 		MakeNEFPoint(1.0, obj.ElevationBaseM),
 	}

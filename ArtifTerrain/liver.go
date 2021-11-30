@@ -54,7 +54,9 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 	})
 
 	path_score := func(xKm, yKm, sxKm, syKm, elevation float64) float64{
-		return elevation
+		euc := math.Sqrt((xKm-sxKm)*(xKm-sxKm)+(yKm-syKm)*(yKm-syKm))
+		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
+		return elevation*lt.Cavity*(0.5+euc/(obj.NSKm+obj.WEKm/2))
 	}
 
 	loop_out_condition := func(xKm, yKm, sxKm, syKm, elevation float64) bool{
