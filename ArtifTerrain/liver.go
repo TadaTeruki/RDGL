@@ -68,7 +68,6 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 	}
 
 
-
 	for i := 0; i<len(lv_order); i++{
 		ltroot := obj.LiverTable[lv_order[i].Y][lv_order[i].X]
 		if ltroot.Direction != DIRECTION_NONE {
@@ -80,22 +79,40 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			xd := path[j].XKm - path[j-1].XKm
 			yd := path[j].YKm - path[j-1].YKm
 
-			//fmt.Println(lt.BaseElevation)
-
 			if xd == 0 && yd > 0 { lt.Direction = DIRECTION_NORTH }
 			if xd > 0 && yd == 0 { lt.Direction = DIRECTION_WEST }
 			if xd == 0 && yd < 0 { lt.Direction = DIRECTION_SOUTH }
 			if xd < 0 && yd == 0 { lt.Direction = DIRECTION_EAST }
 			
 			lt2 := obj.GetLiverPointFromKmPoint(path[j-1].XKm,path[j-1].YKm)
-			lt2.Cavity = math.Min(lt2.Cavity, lt.Cavity)
+
+			if j == 1 && lt2.Cavity < 0.99{
+				/*
+				p := (1.01-lt2.Cavity)/(1.01-lt.Cavity)
+				for l := 1; l < len(path); l++{
+					lt3 := obj.GetLiverPointFromKmPoint(path[l].XKm,path[l].YKm)
+					lt3.Cavity = 1.0-(1.0-lt3.Cavity)*p
+				}*/
+				
+				//p := (ltroot.BaseElevation-lt2.BaseElevation*lt2.Cavity)/(ltroot.BaseElevation-lt.BaseElevation*lt.Cavity)
+				
+				for l := 1; l < len(path); l++{
+					p := float64(l)/float64(len(path))
+					lt3 := obj.GetLiverPointFromKmPoint(path[l].XKm,path[l].YKm)
+					lt3.Cavity = p*lt3.Cavity + (1.0-p)*lt2.Cavity
+					//lt3 := obj.GetLiverPointFromKmPoint(path[l].XKm,path[l].YKm)
+					//lt3.Cavity = ltroot.BaseElevation-(ltroot.BaseElevation-lt3.Cavity*lt3.BaseElevation)*p
+				}
+				
+
+			} else {
+				lt2.Cavity = lt.Cavity
 			
-			if lt.BaseElevation*lt.Cavity < lt2.BaseElevation*lt2.Cavity {
-				lt2.Cavity = math.Max(lt.BaseElevation*lt.Cavity/lt2.BaseElevation,0)
+				if lt.BaseElevation*lt.Cavity < lt2.BaseElevation*lt2.Cavity {
+					lt2.Cavity = math.Max(lt.BaseElevation*lt.Cavity/lt2.BaseElevation,0)
+				}
 			}
 
-			
-			
 
 		}
 		/*
