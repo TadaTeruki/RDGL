@@ -66,7 +66,7 @@ func (obj *LocalTerrainObject) WriteLocalToPNG(image_pixel_w, image_pixel_h int)
 		}
 	}
 	*/
-	/*
+	/*	
 	for y := 0; y<len(obj.LiverTable); y++{
 		for x := 0; x<len(obj.LiverTable[y]); x++{
 
@@ -74,14 +74,12 @@ func (obj *LocalTerrainObject) WriteLocalToPNG(image_pixel_w, image_pixel_h int)
 				continue
 			}
 
-			
-
 			liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
 			dx := obj.LiverTable[y][x].XKm/obj.WEKm*fw
 			dy := obj.LiverTable[y][x].YKm/obj.NSKm*fh
 			din := liver_interval_km/obj.WEKm*fw
 
-			surface.SetSourceRGBA(0.5, 0.5, 0.5, 1.0-obj.LiverTable[y][x].Cavity)
+			surface.SetSourceRGBA(0, 0, 0, 1.0-obj.LiverTable[y][x].Cavity)
 			surface.MoveTo(dx, dy)
 			surface.SetLineWidth(1)
 
@@ -106,11 +104,11 @@ func (obj *LocalTerrainObject) WriteLocalToPNG(image_pixel_w, image_pixel_h int)
 			//surface.Rectangle(dx, dy, 2, 2)
 			//surface.Fill()
 			
-
-
 		}
 	}
 	*/
+	
+	
 	
 	
 

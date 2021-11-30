@@ -80,16 +80,21 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			xd := path[j].XKm - path[j-1].XKm
 			yd := path[j].YKm - path[j-1].YKm
 
+			//fmt.Println(lt.BaseElevation)
+
 			if xd == 0 && yd > 0 { lt.Direction = DIRECTION_NORTH }
 			if xd > 0 && yd == 0 { lt.Direction = DIRECTION_WEST }
 			if xd == 0 && yd < 0 { lt.Direction = DIRECTION_SOUTH }
 			if xd < 0 && yd == 0 { lt.Direction = DIRECTION_EAST }
 			
 			lt2 := obj.GetLiverPointFromKmPoint(path[j-1].XKm,path[j-1].YKm)
-			lt.Cavity = lt2.Cavity
-			if lt.BaseElevation*lt.Cavity > lt2.BaseElevation*lt2.Cavity {
-				lt.Cavity = math.Max(lt2.BaseElevation*lt2.Cavity/lt.BaseElevation,0)
+			lt2.Cavity = math.Min(lt2.Cavity, lt.Cavity)
+			
+			if lt.BaseElevation*lt.Cavity < lt2.BaseElevation*lt2.Cavity {
+				lt2.Cavity = math.Max(lt.BaseElevation*lt.Cavity/lt2.BaseElevation,0)
 			}
+
+			
 			
 
 		}
@@ -97,13 +102,13 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 		for j := 0; j < len(path)-1; j++{
 			lt := obj.GetLiverPointFromKmPoint(path[j+1].XKm,path[j+1].YKm)
 			lt2 := obj.GetLiverPointFromKmPoint(path[j].XKm,path[j].YKm)
-			
 
-			if lt.BaseElevation*lt.Cavity > lt2.BaseElevation*lt2.Cavity {
-				lt.Cavity = math.Max(lt2.BaseElevation*lt2.Cavity/lt.BaseElevation,0)
+			if lt.BaseElevation*lt.Cavity < lt2.BaseElevation*lt2.Cavity {
+				lt.Cavity = lt2.BaseElevation*lt2.Cavity/lt.BaseElevation
 			}
 		}
 		*/
+		
 	}
 
 	obj.LiverCheckIsAvailable = true
