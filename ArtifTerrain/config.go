@@ -13,7 +13,9 @@ type GlobalConfig struct{
 	LocalTerrainSelectionQuality int // LocalTerrainのクオリティ O(N) 最低1
 	OceanCheckIntervalKm float64 // 水たまり認識の基準点の間隔
 	// O(LocalTerrain::NSKm*LocalTerrain::WEKm/(OceanCheckIntervalKm^2) )
-	TerrainReverseScale float64
+	LiverCheckIntervalKm float64 // 川の間隔
+	TerrainReverseScale float64 // 地形うらがえし処理を適用している地形の高さ調整(~倍)
+	VirtualOceanElevation float64 // 水たまり認識の基準高度
 }
 
 func GetGlobalConfig() GlobalConfig {
@@ -27,6 +29,8 @@ func GetGlobalConfig() GlobalConfig {
 	conf.MaxLand = 0.95
 	conf.LocalTerrainSelectionQuality = 100
 	conf.OceanCheckIntervalKm = 10.0
-	conf.TerrainReverseScale = 0.1
+	conf.LiverCheckIntervalKm = 80.0	
+	conf.TerrainReverseScale = 0.01
+	conf.VirtualOceanElevation = 0.0
 	return conf
 }

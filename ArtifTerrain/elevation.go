@@ -10,7 +10,6 @@ func TerrainAdjustmentFade(px, strength float64) float64{
 	return math.Atan((2*x-1.0)*math.Tan(strength*math.Pi*0.5))/(strength*math.Pi*0.5)*0.5+0.5
 }
 
-
 func (obj *WorldTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 
 	xfix := xKm/obj.Config.NoizeScaleKm

@@ -2,6 +2,7 @@ package artif_terrain
 import(
 	"math"
 )
+
 type OceanPoint struct{
 	XKm float64
 	YKm float64
@@ -23,7 +24,8 @@ func MakePoint(x, y int) Point{
 func (obj *LocalTerrainObject) MarkOcean(x, y int) bool {
 
 
-	if obj.GetElevationByKmPoint(obj.OceanTable[y][x].XKm, obj.OceanTable[y][x].YKm) >= 0.0 {
+	if obj.GetElevationByKmPoint(obj.OceanTable[y][x].XKm, obj.OceanTable[y][x].YKm) >= 
+		obj.WorldTerrain.Config.VirtualOceanElevation {
 		return false
 	}
 

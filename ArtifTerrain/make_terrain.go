@@ -61,6 +61,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var max_score float64
 	var select_ad int
 	obj.OceanCheckIsAvailable = false
+	obj.LiverCheckIsAvailable = false
 
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
@@ -81,7 +82,9 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
+
 	obj.MakeOceanTable()
+	obj.MakeLiverTable()
 
 
 }

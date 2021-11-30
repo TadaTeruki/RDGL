@@ -21,5 +21,7 @@ type LocalTerrainObject struct{
 	WEKm float64
 	OceanTable [][]OceanPoint
 	OceanCheckIsAvailable bool
+	LiverTable [][]LiverPoint
+	LiverCheckIsAvailable bool
 }
 
