@@ -71,7 +71,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 		cobj[i].xKm = rand.Float64()*(obj.WorldTerrain.WEKm-obj.WEKm)
 		cobj[i].yKm = rand.Float64()*(obj.WorldTerrain.NSKm-obj.NSKm)
 		score, available := cobj[i].SubmitLocalTerrain(10)
-		if available == false &&  resub < submit_model_num{
+		if available == false && resub < submit_model_num*100{
 			i--
 			resub++
 			continue
