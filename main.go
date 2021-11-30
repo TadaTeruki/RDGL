@@ -19,8 +19,8 @@ func main(){
 	w_obj.SetNEFPoint()
 	w_obj.MakeWorldTerrain()
 
-	l_obj.NSKm = 5000.0
-	l_obj.WEKm = 10000.0
+	l_obj.NSKm = 500.0
+	l_obj.WEKm = 1000.0
 	l_obj.WorldTerrain = &w_obj
 	l_obj.MakeLocalTerrain()
 	l_obj.WriteLocalToPNG(1000, -1)

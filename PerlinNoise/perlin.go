@@ -3,6 +3,7 @@ package perlin
 import(
 	"math"
 	"math/rand"
+    //"fmt"
 )
 
 // ノイズを提供するオブジェクト
@@ -112,17 +113,20 @@ func (obj* PerlinObject) Noise(x,y,z float64) float64{
 }
 
 // オクターブ付きのノイズを生成する関数 (octaves:細分処理の回数, persistence:地形のきめ細やかさ)
-func (obj* PerlinObject) setOctaveNoise(octaves int, persistence,x,y,z float64) float64 {
-    value := 0.0
+func (obj* PerlinObject) setOctaveNoise(octaves int, persistence, x, y, z float64) float64 {
+
+    total := 0.0
+    freq := 1.0
     amp := 1.0
+    maxval := 0.0
     for i := 0; i < octaves; i++{
-        value += obj.setNoise(x,y,z) * amp
-        x *= 2.0
-        y *= 2.0
-        z *= 2.0
+        total += obj.setNoise(x*freq,y*freq,z*freq) * amp
+        maxval += amp
         amp *= persistence
+        freq *= 2
     }
-    return value
+    return total/maxval
+    
 }
 
 // オクターブ付きのノイズを出力する関数

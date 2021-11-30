@@ -3,6 +3,7 @@ package artif_terrain
 import(
 	"math"
 	"math/rand"
+	//"fmt"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){
@@ -43,11 +44,11 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	}
 	
 	land := float64(count_land)/float64(count_all)
-
+	
 	if land < obj.WorldTerrain.Config.MinLand || land > obj.WorldTerrain.Config.MaxLand {
 		return 0, false
 	}
-
+	
 
 	return score, true
 }
@@ -62,15 +63,18 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var select_ad int
 	obj.OceanCheckIsAvailable = false
 	obj.LiverCheckIsAvailable = false
+	
 
+	resub := 0
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
 		cobj[i].xKm = rand.Float64()*(obj.WorldTerrain.WEKm-obj.WEKm)
 		cobj[i].yKm = rand.Float64()*(obj.WorldTerrain.NSKm-obj.NSKm)
-		
+		//fmt.Println(i)
 		score, available := cobj[i].SubmitLocalTerrain(10)
-		if available == false{
+		if available == false &&  resub < submit_model_num{
 			i--
+			resub++
 			continue
 		}
 

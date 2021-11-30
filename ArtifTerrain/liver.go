@@ -19,22 +19,28 @@ type LiverPoint struct{
 	BaseElevation float64
 }
 
+func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *LiverPoint{
+	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
+	x := int(math.Min(xKm/liver_interval_km,float64(len(obj.LiverTable[0])-1)))
+	y := int(math.Min(yKm/liver_interval_km,float64(len(obj.LiverTable)-1)))
+	lt := &obj.LiverTable[y][x]
+	return lt
+}
+
+
 func (obj *LocalTerrainObject) MakeLiverTable(){
 	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
 	obj.LiverTable = make([][]LiverPoint, int(math.Ceil(obj.NSKm/liver_interval_km)))
-	//checked := make([][]bool, len(obj.LiverTable))
 	var lv_order []Point
 
 	for y := 0; y<len(obj.LiverTable); y++{
 		obj.LiverTable[y] = make([]LiverPoint, int(math.Ceil(obj.WEKm/liver_interval_km)))
-		//checked[y] = make([]bool, len(obj.LiverTable[0]))
 		for x := 0; x<len(obj.LiverTable[y]); x++{
 			obj.LiverTable[y][x].XKm = float64(x)*liver_interval_km
 			obj.LiverTable[y][x].YKm = float64(y)*liver_interval_km
 			obj.LiverTable[y][x].Direction = DIRECTION_NONE
 			obj.LiverTable[y][x].Cavity = 1.0
 			obj.LiverTable[y][x].BaseElevation = obj.GetElevationByKmPoint(obj.LiverTable[y][x].XKm, obj.LiverTable[y][x].YKm)
-			//checked[y][x] = false
 			if obj.LiverTable[y][x].BaseElevation >= 0.0 {
 				lv_order = append(lv_order, MakePoint(x, y))
 			}
@@ -46,16 +52,6 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 		return obj.LiverTable[lv_order[i].Y][lv_order[i].X].BaseElevation >
 			    obj.LiverTable[lv_order[j].Y][lv_order[j].X].BaseElevation
 	})
-	/*
-	for i := 0; i<len(lv_order); i++{
-
-	}
-	*/
-
-	get_liver_point_from_km_point := func(xKm, yKm float64) *LiverPoint{
-		lt := &obj.LiverTable[int(math.Min(yKm/liver_interval_km,float64(len(obj.LiverTable)-1)))][int(math.Min(xKm/liver_interval_km,float64(len(obj.LiverTable[0])-1)))]
-		return lt
-	}
 
 	path_score := func(xKm, yKm, sxKm, syKm, elevation float64) float64{
 		return elevation
@@ -63,7 +59,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 
 	loop_out_condition := func(xKm, yKm, sxKm, syKm, elevation float64) bool{
 
-		lt := get_liver_point_from_km_point(xKm, yKm)
+		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
 		if lt.Direction != DIRECTION_NONE {
 			return true
 		}		
@@ -80,7 +76,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 		}
 		path := obj.MakePath(ltroot.XKm, ltroot.YKm, liver_interval_km, path_score, loop_out_condition)
 		for j := len(path)-1; j >= 1; j--{
-			lt := get_liver_point_from_km_point(path[j].XKm,path[j].YKm)
+			lt := obj.GetLiverPointFromKmPoint(path[j].XKm,path[j].YKm)
 			xd := path[j].XKm - path[j-1].XKm
 			yd := path[j].YKm - path[j-1].YKm
 
@@ -88,15 +84,55 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			if xd > 0 && yd == 0 { lt.Direction = DIRECTION_WEST }
 			if xd == 0 && yd < 0 { lt.Direction = DIRECTION_SOUTH }
 			if xd < 0 && yd == 0 { lt.Direction = DIRECTION_EAST }
-
-			lt2 := get_liver_point_from_km_point(path[j-1].XKm,path[j-1].YKm)
-
+			
+			lt2 := obj.GetLiverPointFromKmPoint(path[j-1].XKm,path[j-1].YKm)
+			lt.Cavity = lt2.Cavity
 			if lt.BaseElevation*lt.Cavity > lt2.BaseElevation*lt2.Cavity {
-				lt.Cavity = lt2.BaseElevation*lt2.Cavity/lt.BaseElevation
+				lt.Cavity = math.Max(lt2.BaseElevation*lt2.Cavity/lt.BaseElevation,0)
 			}
+			
 
 		}
+		/*
+		for j := 0; j < len(path)-1; j++{
+			lt := obj.GetLiverPointFromKmPoint(path[j+1].XKm,path[j+1].YKm)
+			lt2 := obj.GetLiverPointFromKmPoint(path[j].XKm,path[j].YKm)
+			
+
+			if lt.BaseElevation*lt.Cavity > lt2.BaseElevation*lt2.Cavity {
+				lt.Cavity = math.Max(lt2.BaseElevation*lt2.Cavity/lt.BaseElevation,0)
+			}
+		}
+		*/
 	}
 
 	obj.LiverCheckIsAvailable = true
+}
+
+func (obj *LocalTerrainObject) CheckLiverCavityByKmPoint(xKm, yKm float64) float64{
+
+
+	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
+
+	var nw, ne, sw, se KmPoint
+	nw.XKm = math.Floor(xKm/liver_interval_km)*liver_interval_km
+	ne.XKm = nw.XKm+liver_interval_km
+	nw.YKm = math.Floor(yKm/liver_interval_km)*liver_interval_km
+	sw.YKm = nw.YKm+liver_interval_km
+	sw.XKm = nw.XKm
+	se.XKm = ne.XKm
+	ne.YKm = nw.YKm
+	se.YKm = sw.YKm
+
+	nwsc := (xKm-nw.XKm)*(yKm-nw.YKm)/(liver_interval_km*liver_interval_km)
+	nesc := (ne.XKm-xKm)*(yKm-ne.YKm)/(liver_interval_km*liver_interval_km)
+	swsc := (xKm-sw.XKm)*(sw.YKm-yKm)/(liver_interval_km*liver_interval_km)
+	sesc := (se.XKm-xKm)*(se.YKm-yKm)/(liver_interval_km*liver_interval_km)
+
+	nwcav := obj.GetLiverPointFromKmPoint(nw.XKm, nw.YKm).Cavity
+	necav := obj.GetLiverPointFromKmPoint(ne.XKm, ne.YKm).Cavity
+	swcav := obj.GetLiverPointFromKmPoint(sw.XKm, sw.YKm).Cavity
+	secav := obj.GetLiverPointFromKmPoint(se.XKm, se.YKm).Cavity
+	
+	return nwcav*sesc + necav*swsc + swcav*nesc + secav*nwsc
 }

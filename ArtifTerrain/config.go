@@ -21,16 +21,16 @@ type GlobalConfig struct{
 func GetGlobalConfig() GlobalConfig {
 	var conf GlobalConfig
 	conf.Seed = 11
-	conf.NoizeScaleKm = 2500.0
+	conf.NoizeScaleKm = 500.0
 	conf.NoizeOctave = 20
 	conf.NoizeMinPersistence = 0.4
 	conf.NoizeMaxPersistence = 0.7
-	conf.MinLand = 0.5
+	conf.MinLand = 0.6
 	conf.MaxLand = 0.95
 	conf.LocalTerrainSelectionQuality = 100
-	conf.OceanCheckIntervalKm = 10.0
-	conf.LiverCheckIntervalKm = 80.0	
+	conf.OceanCheckIntervalKm = 1.0
+	conf.LiverCheckIntervalKm = 1.0	
 	conf.TerrainReverseScale = 0.01
-	conf.VirtualOceanElevation = 0.0
+	conf.VirtualOceanElevation = 150.0
 	return conf
 }

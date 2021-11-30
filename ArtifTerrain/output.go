@@ -66,13 +66,15 @@ func (obj *LocalTerrainObject) WriteLocalToPNG(image_pixel_w, image_pixel_h int)
 		}
 	}
 	*/
-
+	/*
 	for y := 0; y<len(obj.LiverTable); y++{
 		for x := 0; x<len(obj.LiverTable[y]); x++{
 
 			if obj.LiverTable[y][x].Direction == DIRECTION_NONE {
 				continue
 			}
+
+			
 
 			liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
 			dx := obj.LiverTable[y][x].XKm/obj.WEKm*fw
@@ -99,15 +101,17 @@ func (obj *LocalTerrainObject) WriteLocalToPNG(image_pixel_w, image_pixel_h int)
 			}
 
 			surface.Stroke()
-			/*
-			surface.SetSourceRGB(1.0, 0.2, 0.2)
-			surface.Rectangle(dx, dy, 2, 2)
-			surface.Fill()
-			*/
+			
+			//surface.SetSourceRGB(1.0, 0.2, 0.2)
+			//surface.Rectangle(dx, dy, 2, 2)
+			//surface.Fill()
+			
 
 
 		}
 	}
+	*/
+	
 	
 
 	surface.WriteToPNG("data.png")

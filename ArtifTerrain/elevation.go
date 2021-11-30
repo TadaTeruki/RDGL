@@ -20,17 +20,23 @@ func (obj *WorldTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	noise := obj.NoiseSrc.OctaveNoiseFixed(obj.Config.NoizeOctave,
 		obj.Config.NoizeMinPersistence+noise_adj*(obj.Config.NoizeMaxPersistence-obj.Config.NoizeMinPersistence),
 		xfix, yfix, 0.0)
-	
+
 	return obj.GetElevationFromNoiseLevel(TerrainAdjustmentFade(noise, noise_adj))
 	
 }
 
 func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
+	
+	
 	if relv < 0.0 && obj.OceanCheckIsAvailable == true{
 		if obj.CheckOceanByKmPoint(xKm, yKm) == false {
 			relv = -relv*obj.WorldTerrain.Config.TerrainReverseScale
 		}
+	}
+
+	if relv > 0.0 && obj.LiverCheckIsAvailable == true {
+		relv = relv * obj.CheckLiverCavityByKmPoint(xKm, yKm)
 	}
 	return relv
 }
