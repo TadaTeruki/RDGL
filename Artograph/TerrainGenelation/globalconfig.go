@@ -6,7 +6,7 @@ func GetGlobalConfig() GlobalConfig {
 	var conf GlobalConfig
 
 	// The seed value for terrain-generation
-	conf.Seed = 12
+	conf.Seed = 0
 	
 	// Scale of a plate of a continent (Square)
 	conf.NoizeScaleKm = 1000.0
@@ -21,7 +21,7 @@ func GetGlobalConfig() GlobalConfig {
 	conf.NoizeMaxPersistence = 0.7
 
 	// Minimum-proportion of land (Example : 0.7 -> 70% (of generated terrain) will covered with land)
-	conf.MinLand = 0.6					
+	conf.MinLand = 0.6				
 	
 	// Maximum-proportion of land 
 	conf.MaxLand = 0.95

@@ -3,16 +3,16 @@ package terrain_generation
 import(
 	"math"
 	"math/rand"
-	//"fmt"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){
 	obj.NoiseSrc.SetSeed(obj.Config.Seed)
-	obj.AdjNoiseSrc.SetSeed(obj.Config.Seed)	
+	obj.AdjNoiseSrc.SetSeed(obj.Config.Seed)
 }
 
 // N(count^2)
 func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
+	
 	var score float64
 	fcount := float64(count)
 
@@ -39,11 +39,13 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 				count_land++
 			}
 			count_all++
-			score += elevation*elevation
+			score += elevation//*elevation
 		}
 	}
 	
 	land := float64(count_land)/float64(count_all)
+
+	
 	
 	if land < obj.WorldTerrain.Config.MinLand || land > obj.WorldTerrain.Config.MaxLand {
 		return 0, false
@@ -55,6 +57,7 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 
 
 func (obj *LocalTerrainObject) MakeLocalTerrain(){
+	
 	rand.Seed(0)
 
 	submit_model_num := obj.WorldTerrain.Config.LocalTerrainSelectionQuality
@@ -65,15 +68,13 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	obj.LiverCheckIsAvailable = false
 	
 
-	resub := 0
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
-		cobj[i].xKm = rand.Float64()*(obj.WorldTerrain.WEKm-obj.WEKm)
-		cobj[i].yKm = rand.Float64()*(obj.WorldTerrain.NSKm-obj.NSKm)
-		score, available := cobj[i].SubmitLocalTerrain(10)
-		if available == false && resub < submit_model_num*100{
+		cobj[i].xKm = (obj.WorldTerrain.WEKm-obj.WEKm)*rand.Float64()
+		cobj[i].yKm = (obj.WorldTerrain.NSKm-obj.NSKm)*rand.Float64()
+		score, available := cobj[i].SubmitLocalTerrain(5)
+		if available == false{
 			i--
-			resub++
 			continue
 		}
 
@@ -82,6 +83,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 			select_ad = i
 		}
 	}
+
 
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm

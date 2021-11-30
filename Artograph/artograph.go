@@ -21,7 +21,7 @@ func (ats *ArtoTerrainSurface) default_ats(){
 	ats.UnitKm = 1
 	ats.VerticalKm = 500
 	ats.HorizontalKm = 1000
-	ats.side_width = 10
+	ats.side_width = 3
 }
 
 const ARTO_ERROR_1 = "<Artograph> Error : The coodinate assigned to 'GetElevationByKmPoint' is outside of the TerrainSurface"
