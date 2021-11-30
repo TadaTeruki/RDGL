@@ -64,6 +64,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	cobj := make([]LocalTerrainObject, submit_model_num)
 	var max_score float64
 	var select_ad int
+	var select_z float64
 	obj.OceanCheckIsAvailable = false
 	obj.LiverCheckIsAvailable = false
 	
@@ -75,14 +76,19 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 		score, available := cobj[i].SubmitLocalTerrain(5)
 		if available == false{
 			i--
+			obj.WorldTerrain.Z += 1
 			continue
 		}
 
 		if score > max_score {
 			max_score = score
 			select_ad = i
+			select_z = obj.WorldTerrain.Z
 		}
 	}
+	
+	obj.WorldTerrain.Z = select_z
+
 
 
 	obj.xKm = cobj[select_ad].xKm
