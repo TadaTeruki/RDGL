@@ -1,3 +1,21 @@
+/*
+Artograph/PerlinNoise/perlin.go
+Copyright (C) 2021 Tada Teruki
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 3 of the License, or 
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 package perlin
 
 import(
@@ -5,12 +23,11 @@ import(
 	"math/rand"
 )
 
-// ノイズを提供するオブジェクト
 type PerlinObject struct{
 	Seed []int
 }
 
-// ノイズのシード値を設定
+// sets the seed value
 func (obj* PerlinObject) SetSeed(seed_num int64){
 	var p []int
 	for i:=0; i<256; i++{
@@ -26,16 +43,13 @@ func (obj* PerlinObject) SetSeed(seed_num int64){
 	}
 }
 
-// 値を丸める関数
 func getFade(t float64) float64{
 	return t*t*t*(t*(t*6-15)+10)
 }
 
-// 1次関数
 func getLerp(a,b,x float64) float64{
 	return a+x*(b-a)
 }
-
 
 func makeGrad(hash int,x,y,z float64) float64{
     switch(hash & 0xF){
@@ -63,7 +77,7 @@ func getGrad(hash int,x,y,z float64) float64{
 	return makeGrad(hash&15,x,y,z)
 }
 
-// ノイズを生成する関数
+// generates noise value
 func (obj* PerlinObject) setNoise(x,y,z float64) float64{
 
 	var xi, yi, zi int
@@ -106,12 +120,12 @@ func (obj* PerlinObject) setNoise(x,y,z float64) float64{
 
 }
 
-// ノイズを出力する関数
+// returns noise value
 func (obj* PerlinObject) Noise(x,y,z float64) float64{
     return obj.setNoise(x, y, z)*0.5+0.5
 }
 
-// オクターブ付きのノイズを生成する関数 (octaves:細分処理の回数, persistence:地形のきめ細やかさ)
+// generates noise value with octaves [octaves, persistence]
 func (obj* PerlinObject) setOctaveNoise(octaves int, persistence, x, y, z float64) float64 {
 
     total := 0.0
@@ -128,12 +142,12 @@ func (obj* PerlinObject) setOctaveNoise(octaves int, persistence, x, y, z float6
     
 }
 
-// オクターブ付きのノイズを出力する関数
+// returns noise value with octaves
 func (obj* PerlinObject) OctaveNoise(octaves int, persistence,x,y,z float64) float64{
     return obj.setOctaveNoise(octaves, persistence, x, y, z)*0.5+0.5
 }
 
-// オクターブ付きのノイズを出力する関数
+// returns noise value with octaves (without deviation of value)
 func (obj* PerlinObject) OctaveNoiseFixed(octaves int, persistence,x,y,z float64) float64{
     return getFade(obj.setOctaveNoise(octaves, persistence, x, y, z)*0.5+0.5)
 }
