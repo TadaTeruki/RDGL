@@ -48,7 +48,7 @@ func GetGlobalConfig() GlobalConfig {
 	conf.LocalTerrainSelectionQuality = 100
 
 	// Effects configuration
-	conf.OceanCheckIntervalKm = 1.0 
+	conf.LevelingCheckIntervalKm = 1.0 
 	conf.LiverCheckIntervalKm = 1.0	
 
 	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )

@@ -20,7 +20,7 @@ package output
 
 import(
 	artograph "../"
-	terrain "../TerrainGenelation"
+	terrain "../TerrainGeneration"
 	cairo "github.com/ungerik/go-cairo"
 )
 

@@ -84,7 +84,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var select_ad int
 	var select_z float64
 
-	obj.OceanCheckIsAvailable = false
+	obj.LevelingCheckIsAvailable = false
 	obj.LiverCheckIsAvailable = false
 	
 
@@ -113,9 +113,9 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
 
-	fmt.Println("Process : MakeOceanLayer")
-	obj.MakeOceanLayer()
-	fmt.Println("Process : MakeLiverTable")
+	fmt.Println("Process : LevelingLayer")
+	obj.MakeLevelingLayer()
+	fmt.Println("Process : Liver")
 	obj.MakeLiverTable()
 	fmt.Println("Terrain generation successfully finished")
 

@@ -42,8 +42,8 @@ type LocalTerrainObject struct{
 	yKm float64
 	NSKm float64
 	WEKm float64
-	OceanLayerObj OceanLayer
-	OceanCheckIsAvailable bool
+	LevelingLayerObj LevelingLayer
+	LevelingCheckIsAvailable bool
 	LiverTable [][]LiverPoint
 	LiverCheckIsAvailable bool
 }
@@ -57,7 +57,7 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	MinLand float64
 	MaxLand float64
 	LocalTerrainSelectionQuality int
-	OceanCheckIntervalKm float64
+	LevelingCheckIntervalKm float64
 	LiverCheckIntervalKm float64
 	TerrainReverseScale float64
 	TerrainLevelingHeightM float64
@@ -91,15 +91,15 @@ type NEFPoint struct {
 	Elevation float64
 }
 
-type OceanPoint struct{
+type LevelingPoint struct{
 	XKm float64
 	YKm float64
-	IsOcean bool
+	IsLeveling bool
 	ElevationLevel float64
 }
 
-type OceanLayer struct{
-	OceanTable [][]OceanPoint
+type LevelingLayer struct{
+	LevelingTable [][]LevelingPoint
 }
 
 type PathPoint struct{

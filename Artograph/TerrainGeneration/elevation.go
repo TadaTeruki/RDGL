@@ -46,10 +46,10 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 
 
-	if obj.OceanCheckIsAvailable == true {
-		oc := obj.OceanLayerObj.GetOceanPointByKmPoint(obj, xKm, yKm)
+	if obj.LevelingCheckIsAvailable == true {
+		oc := obj.LevelingLayerObj.GetLevelingPointByKmPoint(obj, xKm, yKm)
 
-		if oc.IsOcean == true{
+		if oc.IsLeveling == true{
 			diff := (oc.ElevationLevel-relv)
 			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.PondDepthProportion
 			if oc.ElevationLevel >= 0.0 && relv < 0.0 {

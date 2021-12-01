@@ -69,7 +69,7 @@ func (ats *ArtoTerrainSurface) Generate(){
 	ats.w_obj.Config = terrain.GetGlobalConfig()
 	ats.w_obj.Config.Seed = ats.Seed
 	ats.w_obj.Config.LiverCheckIntervalKm = ats.UnitKm
-	ats.w_obj.Config.OceanCheckIntervalKm = ats.UnitKm
+	ats.w_obj.Config.LevelingCheckIntervalKm = ats.UnitKm
 	ats.w_obj.Config.TerrainLevelingHeightM = ats.ElevationIntervalM
 	ats.w_obj.Config.TerrainLevelingIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
 
