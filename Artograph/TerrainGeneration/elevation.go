@@ -43,8 +43,13 @@ func (obj *WorldTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 }
 
 func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
-	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 
+	if xKm < 0 { xKm = 0 }
+	if yKm < 0 { yKm = 0 }
+	if xKm > obj.WEKm { xKm = obj.WEKm }
+	if yKm > obj.NSKm { yKm = obj.NSKm }
+
+	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 
 	if obj.LevelingCheckIsAvailable == true {
 		oc := obj.LevelingLayerObj.GetLevelingPointByKmPoint(obj, xKm, yKm)
