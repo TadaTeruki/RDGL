@@ -37,11 +37,11 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 		}
 	}
 
-	/*
+	
 	if relv > 0.0 && obj.LiverCheckIsAvailable == true {
 		relv = relv * obj.CheckLiverCavityByKmPoint(xKm, yKm)
 	}
-	*/
+	
 	
 	return relv
 }
