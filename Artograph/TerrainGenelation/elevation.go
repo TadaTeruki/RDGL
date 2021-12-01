@@ -33,7 +33,11 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 		oc := obj.OceanLayerObj.GetOceanPointByKmPoint(obj, xKm, yKm)
 
 		if oc.IsOcean == true{
-			relv = oc.ElevationLevel
+			diff := (oc.ElevationLevel-relv)
+			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.PondDepthProportion
+			if oc.ElevationLevel >= 0.0 && relv < 0.0 {
+				relv = 0.0
+			}
 		}
 	}
 

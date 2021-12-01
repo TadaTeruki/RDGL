@@ -38,5 +38,7 @@ func GetGlobalConfig() GlobalConfig {
 
 	conf.TerrainLevelingHeightM = 100.0
 	conf.TerrainLevelingIntervalKm = 100.0
+
+	conf.PondDepthProportion = 0.3
 	return conf
 }

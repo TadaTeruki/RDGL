@@ -23,7 +23,6 @@ type LocalTerrainObject struct{
 	yKm float64
 	NSKm float64
 	WEKm float64
-	//OceanTable [][]OceanPoint
 	OceanLayerObj OceanLayer
 	OceanCheckIsAvailable bool
 	LiverTable [][]LiverPoint
@@ -44,6 +43,7 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	TerrainReverseScale float64
 	TerrainLevelingHeightM float64
 	TerrainLevelingIntervalKm float64
+	PondDepthProportion float64
 
 }
 
