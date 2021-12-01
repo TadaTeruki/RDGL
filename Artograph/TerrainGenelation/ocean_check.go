@@ -16,7 +16,7 @@ func MakePoint(x, y int) Point{
 	return p
 }
 
-func (ocl OceanLayer) MarkOcean(obj *LocalTerrainObject, x, y int, elevation_level float64) bool {
+func (ocl *OceanLayer) MarkOcean(obj *LocalTerrainObject, x, y int, elevation_level float64) bool {
 	ocean_table := ocl.OceanTable
 	
 	if obj.GetElevationByKmPoint(ocean_table[y][x].XKm, ocean_table[y][x].YKm) > elevation_level {
@@ -44,9 +44,9 @@ func (ocl OceanLayer) MarkOcean(obj *LocalTerrainObject, x, y int, elevation_lev
 
 }
 
-func (obj *LocalTerrainObject) MakeOceanTable(elevation_level float64){
+func (obj *LocalTerrainObject) MakeOceanLayer(){
 
-	ocl := obj.OceanLayers[elevation_level]
+	ocl := &obj.OceanLayerObj
 
 	pond_interval_km := obj.WorldTerrain.Config.OceanCheckIntervalKm
 	ocl.OceanTable = make([][]OceanPoint, int(math.Floor(obj.NSKm/pond_interval_km)))
@@ -64,28 +64,31 @@ func (obj *LocalTerrainObject) MakeOceanTable(elevation_level float64){
 
 	var open []Point
 	
+	xl := int(obj.WEKm/obj.WorldTerrain.Config.TerrainLevelingIntervalKm)
+	for x := 0; x<xl; x++ {
+		open = append(open, MakePoint(len(ocl.OceanTable[0])*x/xl,0))
+		open = append(open, MakePoint(len(ocl.OceanTable[0])*x/xl,len(ocl.OceanTable)-1))
+	}
+	
+	yl := int(obj.NSKm/obj.WorldTerrain.Config.TerrainLevelingIntervalKm)
+	for y := 1; y<yl-1; y ++ {
+		open = append(open, MakePoint(0,len(ocl.OceanTable)*y/yl))
+		open = append(open, MakePoint(len(ocl.OceanTable[0])-1,len(ocl.OceanTable)*y/yl))
+	}
 
 	
-	for x := 0; x<len(ocl.OceanTable[0]); x+=len(ocl.OceanTable[0])/10{
-		open = append(open, MakePoint(x,0))
-		open = append(open, MakePoint(x,len(ocl.OceanTable)-1))
-	}
-	for y := 1; y<len(ocl.OceanTable)-1; y+=(len(ocl.OceanTable[0])-1)/10{
-		open = append(open, MakePoint(0,y))
-		open = append(open, MakePoint(len(ocl.OceanTable[0])-1,y))
-	}
 
-	
-
-	for elv := elevation_level; elv <= obj.WorldTerrain.ElevationBaseM; elv += 10 {
+	for elv := -obj.WorldTerrain.ElevationBaseM; elv <= obj.WorldTerrain.ElevationBaseM; elv += obj.WorldTerrain.Config.TerrainLevelingHeightM {
 		
 		nxopen := make(map[Point]struct{})
-		//fmt.Println(elv)
 		for ;len(open) > 0;{
 			nwopen := make(map[Point]struct{})
 
 			for i := 0; i<len(open); i++ {
 
+				if len(checked) < open[i].Y || len(checked[0]) < open[i].X {
+					continue
+				}
 				if checked[open[i].Y][open[i].X] == true {
 					continue
 				}
@@ -124,7 +127,6 @@ func (obj *LocalTerrainObject) MakeOceanTable(elevation_level float64){
 
 				if mos == false {
 					nxopen[MakePoint(open[i].X,open[i].Y)] = struct{}{}
-					//nxopen = append(nxopen, MakePoint(open[i].X,open[i].Y)
 
 				} else {
 					checked[open[i].Y][open[i].X] = true
@@ -144,22 +146,11 @@ func (obj *LocalTerrainObject) MakeOceanTable(elevation_level float64){
 		open = []Point{}
 		
 		for point, _ := range nxopen{
-			/*
-			if checked[nxopen[i].Y][nxopen[i].X] == false {
-				open = append(open, nxopen[i])
-			}
-			*/
 			open = append(open, point)
-			//checked[nxopen[i].Y][nxopen[i].X] = false
 		}
-		
-		//open = nxopen
 	}
 
-
-	ocl.Available = true
-
-	obj.OceanLayers[elevation_level] = ocl
+	obj.OceanCheckIsAvailable = true
 }
 
 func (ocl OceanLayer) GetOceanPointByKmPoint(obj *LocalTerrainObject, xKm, yKm float64) OceanPoint{

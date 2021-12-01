@@ -36,7 +36,7 @@ func GetGlobalConfig() GlobalConfig {
 	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )
 	conf.TerrainReverseScale = 0.01
 
-	// Elevation of cavity areas to adjust
-	conf.VirtualOceanElevation = 0.0
+	conf.TerrainLevelingHeightM = 100.0
+	conf.TerrainLevelingIntervalKm = 100.0
 	return conf
 }

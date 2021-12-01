@@ -24,7 +24,7 @@ type LocalTerrainObject struct{
 	NSKm float64
 	WEKm float64
 	//OceanTable [][]OceanPoint
-	OceanLayers map[float64]OceanLayer
+	OceanLayerObj OceanLayer
 	OceanCheckIsAvailable bool
 	LiverTable [][]LiverPoint
 	LiverCheckIsAvailable bool
@@ -42,7 +42,9 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	OceanCheckIntervalKm float64
 	LiverCheckIntervalKm float64
 	TerrainReverseScale float64
-	VirtualOceanElevation float64
+	TerrainLevelingHeightM float64
+	TerrainLevelingIntervalKm float64
+
 }
 
 
@@ -79,8 +81,6 @@ type OceanPoint struct{
 
 type OceanLayer struct{
 	OceanTable [][]OceanPoint
-	Available bool
-	//ElevationLevel float64
 }
 
 type PathPoint struct{

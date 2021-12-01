@@ -3,13 +3,17 @@ package artograph
 import(
 	terrain "./TerrainGenelation"
 	"fmt"
+	"math"
 )
 type ArtoTerrainSurface struct{
-	Seed 			int64
-	ElevationAbsM	float64
-	UnitKm			float64
-	VerticalKm		float64
-	HorizontalKm	float64
+	Seed 				int64
+	ElevationAbsM		float64
+	ElevationIntervalM	float64
+	UnitKm				float64
+	VerticalKm			float64
+	HorizontalKm		float64
+
+
 	side_width		float64
 	w_obj terrain.WorldTerrainObject
 	l_obj terrain.LocalTerrainObject
@@ -21,6 +25,7 @@ func (ats *ArtoTerrainSurface) default_ats(){
 	ats.UnitKm = 1
 	ats.VerticalKm = 500
 	ats.HorizontalKm = 1000
+	ats.ElevationIntervalM = 5
 	ats.side_width = 3
 }
 
@@ -46,6 +51,9 @@ func (ats *ArtoTerrainSurface) Generate(){
 	ats.w_obj.Config.Seed = ats.Seed
 	ats.w_obj.Config.LiverCheckIntervalKm = ats.UnitKm
 	ats.w_obj.Config.OceanCheckIntervalKm = ats.UnitKm
+	ats.w_obj.Config.TerrainLevelingHeightM = ats.ElevationIntervalM
+	ats.w_obj.Config.TerrainLevelingIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
+
 	ats.w_obj.SetNEFPoint()
 	ats.w_obj.MakeWorldTerrain()
 

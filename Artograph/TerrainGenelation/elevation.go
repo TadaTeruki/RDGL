@@ -27,19 +27,21 @@ func (obj *WorldTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 
 func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	relv := obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
-	
-    for elevation_level, ocl := range obj.OceanLayers {
-		if ocl.Available == false {
-			continue
-		}
-		_= elevation_level
 
-		oc := ocl.GetOceanPointByKmPoint(obj, xKm, yKm)
+
+	if obj.OceanCheckIsAvailable == true {
+		oc := obj.OceanLayerObj.GetOceanPointByKmPoint(obj, xKm, yKm)
 
 		if oc.IsOcean == true{
-			relv = oc.ElevationLevel//elevation_level
+			relv = oc.ElevationLevel
 		}
-    }
+	}
+
+	/*
+	if relv > 0.0 && obj.LiverCheckIsAvailable == true {
+		relv = relv * obj.CheckLiverCavityByKmPoint(xKm, yKm)
+	}
+	*/
 	
 	return relv
 }
