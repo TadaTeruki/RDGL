@@ -58,14 +58,12 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 				count_land++
 			}
 			count_all++
-			score += elevation//*elevation
+			score += elevation*elevation
 		}
 	}
 	
 	land := float64(count_land)/float64(count_all)
 
-	
-	
 	if land < obj.WorldTerrain.Config.MinLand || land > obj.WorldTerrain.Config.MaxLand {
 		return 0, false
 	}
@@ -92,10 +90,10 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 		cobj[i] = *obj
 		cobj[i].xKm = (obj.WorldTerrain.WEKm-obj.WEKm)*rand.Float64()
 		cobj[i].yKm = (obj.WorldTerrain.NSKm-obj.NSKm)*rand.Float64()
-		score, available := cobj[i].SubmitLocalTerrain(5)
+		score, available := cobj[i].SubmitLocalTerrain(10)
 		if available == false{
 			i--
-			obj.WorldTerrain.Z += 1
+			obj.WorldTerrain.Z += 11
 			continue
 		}
 

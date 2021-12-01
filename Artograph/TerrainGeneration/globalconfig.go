@@ -42,10 +42,10 @@ func GetGlobalConfig() GlobalConfig {
 	conf.MinLand = 0.6				
 	
 	// Maximum-proportion of land 
-	conf.MaxLand = 0.95
+	conf.MaxLand = 0.85
 	
 	// Quality of terrain-generation
-	conf.LocalTerrainSelectionQuality = 100
+	conf.LocalTerrainSelectionQuality = 10
 
 	// Effects configuration
 	conf.LevelingCheckIntervalKm = 1.0 

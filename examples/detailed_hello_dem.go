@@ -1,6 +1,6 @@
 
 /*
-examples/character_terrain.go
+examples/detailed_hello_dem.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -23,31 +23,45 @@ import(
 	"fmt"
 )
 
-
 func main(){
-	ats := artograph.NewTerrainSurface(700)
+	ats := artograph.NewDEM(16)
+
+	// [ats.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter)
+	// (Example : ats.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
+	// (Recommendation : ats.ElevationAbsM >= 4000)
 	ats.ElevationAbsM = 8000
-	ats.UnitKm = 1
+
+	// [ats.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain
+	ats.UnitKm = 2
+
+	// [ats.VerticalKm] The vertical width of the DEM data (Km)
 	ats.VerticalKm = 1000
+
+	// [ats.HorizontalKm] The horizontal width of the DEM data (Km)
 	ats.HorizontalKm = 1000
 
-	ats.Generate()
+	// [ats.LevelingIntervalM] The elevation unit(Meter)
+	ats.LevelingIntervalM = 5
 
-	// output
-	for yKm := 0.0; yKm < ats.HorizontalKm; yKm+= 20.0{
+	ats.Generate()
+	// ---
+	
+	for yKm := 0.0; yKm < ats.HorizontalKm; yKm += ats.HorizontalKm/50.0{
 		str := ""
-		for xKm := 0.0; xKm < ats.VerticalKm; xKm+= 20.0{
+		for xKm := 0.0; xKm < ats.VerticalKm; xKm += ats.HorizontalKm/50.0{
+
 			elevation, _ := ats.GetElevationByKmPoint(xKm, yKm)
-			if elevation >= 1500{
+
+			if elevation >= 800{
 				str += "@@"
-			} else if elevation >= 500 {
+			} else if elevation >= 300 {
 				str += "[]"
 			} else if elevation >= 0 {
 				str += "__"
 			} else {
 				str += " "
 			}
-			
+
 		}
 		fmt.Println(str)
 	}
