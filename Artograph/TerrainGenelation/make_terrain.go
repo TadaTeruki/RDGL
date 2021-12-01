@@ -3,6 +3,7 @@ package terrain_generation
 import(
 	"math"
 	"math/rand"
+	"fmt"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){
@@ -55,6 +56,9 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	return score, true
 }
 
+func (obj *LocalTerrainObject) MakeOceanLayer(elevation_level float64){
+	obj.MakeOceanTable(elevation_level)
+}
 
 func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	
@@ -65,7 +69,8 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var max_score float64
 	var select_ad int
 	var select_z float64
-	obj.OceanCheckIsAvailable = false
+	obj.OceanLayers = make(map[float64]OceanLayer)
+	//obj.OceanCheckIsAvailable = false
 	obj.LiverCheckIsAvailable = false
 	
 
@@ -94,7 +99,9 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
 
-	obj.MakeOceanTable()
-	obj.MakeLiverTable()
+	fmt.Println("Process")
+	obj.MakeOceanLayer(-8000.0)
+	fmt.Println("Ok")
+	//obj.MakeLiverTable()
 
 }

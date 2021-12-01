@@ -1,6 +1,7 @@
 package terrain_generation
 import(
 	"math"
+	//"fmt"
 )
 
 type Point struct{
@@ -15,26 +16,27 @@ func MakePoint(x, y int) Point{
 	return p
 }
 
-func (obj *LocalTerrainObject) MarkOcean(x, y int) bool {
-
-
-	if obj.GetElevationByKmPoint(obj.OceanTable[y][x].XKm, obj.OceanTable[y][x].YKm) >= 
-		obj.WorldTerrain.Config.VirtualOceanElevation {
+func (ocl OceanLayer) MarkOcean(obj *LocalTerrainObject, x, y int, elevation_level float64) bool {
+	ocean_table := ocl.OceanTable
+	
+	if obj.GetElevationByKmPoint(ocean_table[y][x].XKm, ocean_table[y][x].YKm) > elevation_level {
 		return false
 	}
 
-	if  x == 0 || x == len(obj.OceanTable[0])-1 ||
-		y == 0 || y == len(obj.OceanTable)-1 {
-		obj.OceanTable[y][x].IsOcean = true
+	if  x == 0 || x == len(ocean_table[0])-1 ||
+		y == 0 || y == len(ocean_table)-1 {
+		ocean_table[y][x].IsOcean = true
+		ocean_table[y][x].ElevationLevel = elevation_level
 		return true
 	}
 
-	if  obj.OceanTable[y-1][x].IsOcean == true ||
-		obj.OceanTable[y+1][x].IsOcean == true ||
-		obj.OceanTable[y][x-1].IsOcean == true ||
-		obj.OceanTable[y][x+1].IsOcean == true {
+	if  ocean_table[y-1][x].IsOcean == true ||
+		ocean_table[y+1][x].IsOcean == true ||
+		ocean_table[y][x-1].IsOcean == true ||
+		ocean_table[y][x+1].IsOcean == true {
 
-		obj.OceanTable[y][x].IsOcean = true
+		ocean_table[y][x].IsOcean = true
+		ocean_table[y][x].ElevationLevel = elevation_level
 		return true
 	}
 
@@ -42,67 +44,127 @@ func (obj *LocalTerrainObject) MarkOcean(x, y int) bool {
 
 }
 
-func (obj *LocalTerrainObject) MakeOceanTable(){
+func (obj *LocalTerrainObject) MakeOceanTable(elevation_level float64){
+
+	ocl := obj.OceanLayers[elevation_level]
+
 	pond_interval_km := obj.WorldTerrain.Config.OceanCheckIntervalKm
-	obj.OceanTable = make([][]OceanPoint, int(math.Floor(obj.NSKm/pond_interval_km)))
-	checked := make([][]bool, len(obj.OceanTable))
-	for y := 0; y<len(obj.OceanTable); y++{
-	 	obj.OceanTable[y] = make([]OceanPoint, int(math.Floor(obj.WEKm/pond_interval_km)))
-		checked[y] = make([]bool, len(obj.OceanTable[0]))
-		for x := 0; x<len(obj.OceanTable[y]); x++{
-			obj.OceanTable[y][x].XKm = float64(x)*pond_interval_km
-			obj.OceanTable[y][x].YKm = float64(y)*pond_interval_km
-			obj.OceanTable[y][x].IsOcean = false
+	ocl.OceanTable = make([][]OceanPoint, int(math.Floor(obj.NSKm/pond_interval_km)))
+	checked := make([][]bool, len(ocl.OceanTable))
+	for y := 0; y<len(ocl.OceanTable); y++{
+	 	ocl.OceanTable[y] = make([]OceanPoint, int(math.Floor(obj.WEKm/pond_interval_km)))
+		checked[y] = make([]bool, len(ocl.OceanTable[0]))
+		for x := 0; x<len(ocl.OceanTable[y]); x++{
+			ocl.OceanTable[y][x].XKm = float64(x)*pond_interval_km
+			ocl.OceanTable[y][x].YKm = float64(y)*pond_interval_km
+			ocl.OceanTable[y][x].IsOcean = false
 			checked[y][x] = false
 		}
 	}
 
-	var open, nwopen []Point
+	var open []Point
 	
-	for x := 0; x<len(obj.OceanTable[0]); x++{
+
+	
+	for x := 0; x<len(ocl.OceanTable[0]); x+=len(ocl.OceanTable[0])/10{
 		open = append(open, MakePoint(x,0))
-		open = append(open, MakePoint(x,len(obj.OceanTable)-1))
+		open = append(open, MakePoint(x,len(ocl.OceanTable)-1))
 	}
-	for y := 1; y<len(obj.OceanTable)-1; y++{
+	for y := 1; y<len(ocl.OceanTable)-1; y+=(len(ocl.OceanTable[0])-1)/10{
 		open = append(open, MakePoint(0,y))
-		open = append(open, MakePoint(len(obj.OceanTable[0])-1,y))
+		open = append(open, MakePoint(len(ocl.OceanTable[0])-1,y))
 	}
 
+	
 
-	for ;len(open) > 0;{
-		nwopen = []Point{}
-		for i := 0; i<len(open); i++ {
-			if checked[open[i].Y][open[i].X] == true {
-				continue
-			}
-			if open[i].Y-1 >= 0 && checked[open[i].Y-1][open[i].X] == false {
-				mo := obj.MarkOcean(open[i].X,open[i].Y-1)
-				if mo == true {nwopen = append(nwopen, MakePoint(open[i].X,open[i].Y-1)) }
-			}
-			if open[i].Y+1 < len(obj.OceanTable) && checked[open[i].Y+1][open[i].X] == false {
-				mo := obj.MarkOcean(open[i].X,open[i].Y+1)
-				if mo == true { nwopen = append(nwopen, MakePoint(open[i].X,open[i].Y+1)) }
+	for elv := elevation_level; elv <= obj.WorldTerrain.ElevationBaseM; elv += 10 {
+		
+		nxopen := make(map[Point]struct{})
+		//fmt.Println(elv)
+		for ;len(open) > 0;{
+			nwopen := make(map[Point]struct{})
+
+			for i := 0; i<len(open); i++ {
+
+				if checked[open[i].Y][open[i].X] == true {
+					continue
+				}
+
+				mos := false
+				
+				if open[i].Y-1 >= 0 && checked[open[i].Y-1][open[i].X] == false {
+					mo := ocl.MarkOcean(obj, open[i].X,open[i].Y-1, elv)
+					if mo == true {
+						nwopen[MakePoint(open[i].X,open[i].Y-1)] = struct{}{}
+						mos = true
+					}
+				}
+				if open[i].Y+1 < len(ocl.OceanTable) && checked[open[i].Y+1][open[i].X] == false {
+					mo := ocl.MarkOcean(obj, open[i].X,open[i].Y+1, elv)
+					if mo == true {
+						nwopen[MakePoint(open[i].X,open[i].Y+1)] = struct{}{}
+						mos = true
+					}
+				}
+	
+				if open[i].X-1 >= 0 && checked[open[i].Y][open[i].X-1] == false {
+					mo := ocl.MarkOcean(obj, open[i].X-1,open[i].Y, elv)
+					if mo == true {
+						nwopen[MakePoint(open[i].X-1,open[i].Y)] = struct{}{}
+						mos = true
+					}
+				}
+				if open[i].X+1 < len(ocl.OceanTable[0]) && checked[open[i].Y][open[i].X+1] == false {
+					mo := ocl.MarkOcean(obj, open[i].X+1,open[i].Y, elv)
+					if mo == true {
+						nwopen[MakePoint(open[i].X+1,open[i].Y)] = struct{}{} 
+						mos = true
+					}
+				}
+
+				if mos == false {
+					nxopen[MakePoint(open[i].X,open[i].Y)] = struct{}{}
+					//nxopen = append(nxopen, MakePoint(open[i].X,open[i].Y)
+
+				} else {
+					checked[open[i].Y][open[i].X] = true
+				}
+				
 			}
 
-			if open[i].X-1 >= 0 && checked[open[i].Y][open[i].X-1] == false {
-				mo := obj.MarkOcean(open[i].X-1,open[i].Y)
-				if mo == true {nwopen = append(nwopen, MakePoint(open[i].X-1,open[i].Y)) }
+			open = []Point{}
+
+			for point, _ := range nwopen{
+				open = append(open, point)
+
 			}
-			if open[i].X+1 < len(obj.OceanTable[0]) && checked[open[i].Y][open[i].X+1] == false {
-				mo := obj.MarkOcean(open[i].X+1,open[i].Y)
-				if mo == true { nwopen = append(nwopen, MakePoint(open[i].X+1,open[i].Y)) }
-			}
-			checked[open[i].Y][open[i].X] = true
+			
 		}
-		open = nwopen
+
+		open = []Point{}
+		
+		for point, _ := range nxopen{
+			/*
+			if checked[nxopen[i].Y][nxopen[i].X] == false {
+				open = append(open, nxopen[i])
+			}
+			*/
+			open = append(open, point)
+			//checked[nxopen[i].Y][nxopen[i].X] = false
+		}
+		
+		//open = nxopen
 	}
 
-	obj.OceanCheckIsAvailable = true
+
+	ocl.Available = true
+
+	obj.OceanLayers[elevation_level] = ocl
 }
 
-func (obj *LocalTerrainObject) CheckOceanByKmPoint(xKm, yKm float64) bool{
+func (ocl OceanLayer) GetOceanPointByKmPoint(obj *LocalTerrainObject, xKm, yKm float64) OceanPoint{
 	pond_interval_km := obj.WorldTerrain.Config.OceanCheckIntervalKm
-	x := int(math.Min(math.Round(xKm/pond_interval_km),float64(len(obj.OceanTable[0])-1)))
-	y := int(math.Min(math.Round(yKm/pond_interval_km),float64(len(obj.OceanTable)-1)))
-	return obj.OceanTable[y][x].IsOcean
+	x := int(math.Min(math.Round(xKm/pond_interval_km),float64(len(ocl.OceanTable[0])-1)))
+	y := int(math.Min(math.Round(yKm/pond_interval_km),float64(len(ocl.OceanTable)-1)))
+	return ocl.OceanTable[y][x]
 }

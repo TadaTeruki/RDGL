@@ -44,6 +44,8 @@ func (ats *ArtoTerrainSurface) Generate(){
 	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
 	ats.w_obj.Config = terrain.GetGlobalConfig()
 	ats.w_obj.Config.Seed = ats.Seed
+	ats.w_obj.Config.LiverCheckIntervalKm = ats.UnitKm
+	ats.w_obj.Config.OceanCheckIntervalKm = ats.UnitKm
 	ats.w_obj.SetNEFPoint()
 	ats.w_obj.MakeWorldTerrain()
 

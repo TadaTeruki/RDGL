@@ -23,7 +23,8 @@ type LocalTerrainObject struct{
 	yKm float64
 	NSKm float64
 	WEKm float64
-	OceanTable [][]OceanPoint
+	//OceanTable [][]OceanPoint
+	OceanLayers map[float64]OceanLayer
 	OceanCheckIsAvailable bool
 	LiverTable [][]LiverPoint
 	LiverCheckIsAvailable bool
@@ -73,6 +74,13 @@ type OceanPoint struct{
 	XKm float64
 	YKm float64
 	IsOcean bool
+	ElevationLevel float64
+}
+
+type OceanLayer struct{
+	OceanTable [][]OceanPoint
+	Available bool
+	//ElevationLevel float64
 }
 
 type PathPoint struct{
