@@ -78,28 +78,11 @@ func (ats *ArtoDEM) config(){
 }
 
 func (ats *ArtoDEM) Generate(){
-	/*
-	ats.l_obj.NSKm = ats.VerticalKm + ats.UnitKm * ats.side_width * 2
-	ats.l_obj.WEKm = ats.HorizontalKm + ats.UnitKm * ats.side_width * 2
-
-	ats.w_obj.NSKm = ats.l_obj.NSKm * ats.side_width
-	ats.w_obj.WEKm = ats.l_obj.WEKm * ats.side_width
-
-	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
-	ats.w_obj.Config = terrain.GetGlobalConfig()
-	ats.w_obj.Config.Seed = ats.Seed
-	ats.w_obj.Config.LiverIntervalKm = ats.UnitKm
-	ats.w_obj.Config.LevelingIntervalKm = ats.UnitKm
-	ats.w_obj.Config.LevelingHeightM = ats.LevelingIntervalM
-	ats.w_obj.Config.LevelingStartPointIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
-	*/
 
 	ats.config()
 	ats.w_obj.SetNEFPoint()
 	ats.w_obj.MakeWorldTerrain()
 
-
-	//ats.l_obj.WorldTerrain = &ats.w_obj
 	ats.l_obj.MakeLocalTerrain()
 
 	ats.l_obj.TransformProcess(true, true)
