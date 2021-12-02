@@ -189,6 +189,8 @@ func Morphology(obj *terrain.LocalTerrainObject, first bool, base_class *[][]flo
 	}
 
 	top_list := make(map[MlPoint]struct{})
+
+
 	
 	for y := 0; y < data_h; y++ {
 		for x := 0; x < data_w; x++ {

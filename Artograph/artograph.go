@@ -117,11 +117,14 @@ func (ats *ArtoDEM) Process(file string){
 	}
 
 	ats.config()
+	ats.w_obj.SetNEFPoint()
+	ats.w_obj.Config.NoizeMinPersistence = ats.w_obj.Config.OutlineNoizeMinPersistence
+	ats.w_obj.Config.NoizeMaxPersistence = ats.w_obj.Config.OutlineNoizeMaxPersistence
 	ats.w_obj.MakeWorldTerrain()
 	
 	outline.LoadTerrainData(&ats.l_obj, &ats.w_obj.Config, file)
 	
-	ats.l_obj.TransformProcess(false, true)
+	ats.l_obj.TransformProcess(true, true)
 }
 
 func (ats *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){

@@ -1,4 +1,5 @@
 
+
 hello_dem:
 	go run hello_dem.go
 
@@ -10,3 +11,6 @@ png_dem:
 
 shadowed_dem:
 	go run shadowed_dem.go
+
+outline_dem:
+	go run outline_dem.go

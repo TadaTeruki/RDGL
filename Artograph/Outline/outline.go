@@ -4,6 +4,7 @@ import(
 	"image/png"
 	"os"
 	"strconv"
+	//"math"
 	terrain "../TerrainGeneration"
 	//"fmt"
 )
@@ -96,13 +97,11 @@ func LoadTerrainData(obj *terrain.LocalTerrainObject, config *terrain.GlobalConf
 		return (float64(r+g+b))/(255.0*3.0)
 	}
 
-	elevation_abs := obj.WorldTerrain.ElevationBaseM*0.5
-
 	for y := 0; y < data_h; y++ {
 		for x := 0; x < data_w; x++ {
 			target := get_pixel_color(x, y)
-			obj.ElevationTable[y][x] = (0.5-target)*elevation_abs
-			//fmt.Println(target, obj.ElevationTable[y][x])
+			obj.ElevationTable[y][x] = obj.WorldTerrain.GetElevationFromNoiseLevel(obj.WorldTerrain.Config.StandardLandProportion-(target-0.5)*0.5)
+			
 		}
 	}
 

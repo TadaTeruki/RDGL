@@ -58,7 +58,8 @@ var elevationList = []ColorElevation{
 	MakeColorElevation(0.85, 0.75, 0.4, 800),
 	MakeColorElevation(0.6, 0.4, 0.1, 1700),
 	MakeColorElevation(0.2, 0.1, 0.4, 2500),
-	MakeColorElevation(0.9, 0.9, 0.9, 8000),
+	MakeColorElevation(0.9, 0.9, 0.9, 4000),
+	MakeColorElevation(0.0, 0.0, 0.0, 8000),
 }
 
 func GetColorFromElevation(elevation float64) Color{

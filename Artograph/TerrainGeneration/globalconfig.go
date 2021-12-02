@@ -30,7 +30,7 @@ func GetGlobalConfig() GlobalConfig {
 	conf.NoizeScaleKm = 1000.0
 
 	// Fineness of terrain
-	conf.NoizeOctave = 20
+	conf.NoizeOctave = 30
 
 	// Minimum-complicatedness of terrain (Example : 0.4 -> genelates plains or beaches)
 	conf.NoizeMinPersistence = 0.4
@@ -61,10 +61,13 @@ func GetGlobalConfig() GlobalConfig {
 
 	conf.PlainDepth = 0.3
 
+	conf.OutlineInterpolationQuality = 10
+	conf.OutlineNoiseStrength = 0.5
 
-	conf.OutlineInterpolationQuality = conf.NoizeOctave
+	conf.OutlineNoizeMinPersistence = 0.7
+	conf.OutlineNoizeMaxPersistence = 0.8
 
-	conf.OutlineNoiseStrength = 0.105
+	conf.StandardLandProportion = 0.7
 	
 	return conf
 }

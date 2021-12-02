@@ -70,6 +70,9 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	LiverEndPointElevationM float64
 	OutlineInterpolationQuality int
 	OutlineNoiseStrength float64
+	StandardLandProportion float64
+	OutlineNoizeMinPersistence float64
+	OutlineNoizeMaxPersistence float64
 
 }
 
