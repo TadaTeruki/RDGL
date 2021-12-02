@@ -23,8 +23,14 @@ import(
 	terrain "../TerrainGeneration"
 	cairo "github.com/ungerik/go-cairo"
 	"math"
-	//"fmt"
+	
 )
+type Shadow struct{
+	DirectionZ 	float64
+	DirectionXY float64
+	WidthKm		float64
+	Strength01 	float64
+}
 
 func WriteWorldToPNG(file string, obj *terrain.WorldTerrainObject, image_pixel_w, image_pixel_h int){
 
@@ -80,9 +86,13 @@ func WriteLocalToPNG(file string, obj *terrain.LocalTerrainObject, image_pixel_w
 
 }
 
-func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int,
-				with_shadow bool, shadow_direction_z float64, shadow_direction_xy float64, shadow_width_Km float64,
-				shadow_strength_01 float64){
+func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int, with_shadow bool, shadow Shadow){
+
+	shadow_direction_z  := shadow.DirectionZ
+	shadow_direction_xy := shadow.DirectionXY
+	shadow_width_Km		:= shadow.WidthKm
+	shadow_strength_01	:= shadow.Strength01
+
 	fw := float64(image_pixel_w)
 	fh := float64(image_pixel_h)
 
@@ -144,28 +154,15 @@ func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h 
 			color := GetColorFromElevation(elevation)
 
 			if with_shadow == true {
-				//fb := 0.0
-				//count := 0.0
-				/*
-				for iy := y-1; iy <= y+1; iy++{
-					for ix := x-1; ix <= x+1; ix++{
-						if ix < 0 || iy <0 || ix >= fw || iy >= fh { continue }
-						fb += brightness[int(iy)][int(ix)]
-						count += 1.0
-					}
-				}
-				*/
-
-				//fb /= count
+				
 				fb := brightness[int(y)][int(x)]
-				//fmt.Println(fb)
 
-				fb = fb*shadow_strength_01+(1.0-shadow_strength_01)
+				shadow_strength := shadow_strength_01 * (elevation/ats.ElevationAbsM)
+				fb = fb*shadow_strength+(1.0-shadow_strength)
 				if fb < 0.0 { fb = 0.0 }
 				if fb > 1.0 { fb = 1.0 }
 				
 				surface.SetSourceRGB(color.R*fb, color.G*fb, color.B*fb)
-				//surface.SetSourceRGB(fb, fb, fb)
 			} else {
 				surface.SetSourceRGB(color.R, color.G, color.B)
 			}
@@ -182,9 +179,19 @@ func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h 
 }
 
 func WriteArtoDEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int){
-	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, false, 0.0, 0.0, 0.0, 0.0)
+	var shadow Shadow
+	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, false, shadow)
 }
 
-func WriteArtoDEMToPNGWithShadow(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int){
-	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, true, math.Pi/4.0, math.Pi/4.0, ats.UnitKm*5, 0.1)
+func DefaultShadow(ats *artograph.ArtoDEM) Shadow{
+	var shadow Shadow
+	shadow.DirectionZ = math.Pi/4.0
+	shadow.DirectionXY = math.Pi/4.0
+	shadow.WidthKm = ats.UnitKm*5.0
+	shadow.Strength01 = 0.5
+	return shadow
+}
+
+func WriteArtoDEMToPNGWithShadow(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int, shadow Shadow){
+	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, true, shadow)
 }

@@ -1,6 +1,6 @@
 
 /*
-examples/png_dem.go
+examples/shadowed_dem.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ func main(){
 	ats.LevelingIntervalM = 5
 
 	ats.Generate()
-
-	output.WriteArtoDEMToPNG("output.png", &ats, 300, -1)
+	
+	output.WriteArtoDEMToPNGWithShadow("output.png", &ats, 300, -1, output.DefaultShadow(&ats))
 
 }

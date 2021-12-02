@@ -24,6 +24,7 @@ import(
 	"fmt"
 	"math"
 )
+
 type ArtoDEM struct{
 	Seed 				int64
 	ElevationAbsM		float64
@@ -68,10 +69,10 @@ func (ats *ArtoDEM) Generate(){
 	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
 	ats.w_obj.Config = terrain.GetGlobalConfig()
 	ats.w_obj.Config.Seed = ats.Seed
-	ats.w_obj.Config.LiverCheckIntervalKm = ats.UnitKm
-	ats.w_obj.Config.LevelingCheckIntervalKm = ats.UnitKm
-	ats.w_obj.Config.TerrainLevelingHeightM = ats.LevelingIntervalM
-	ats.w_obj.Config.TerrainLevelingIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
+	ats.w_obj.Config.LiverIntervalKm = ats.UnitKm
+	ats.w_obj.Config.LevelingIntervalKm = ats.UnitKm
+	ats.w_obj.Config.LevelingHeightM = ats.LevelingIntervalM
+	ats.w_obj.Config.LevelingStartPointIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
 
 	ats.w_obj.SetNEFPoint()
 	ats.w_obj.MakeWorldTerrain()

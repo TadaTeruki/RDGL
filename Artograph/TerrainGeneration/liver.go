@@ -23,7 +23,7 @@ import(
 )
 
 func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *LiverPoint{
-	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
+	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
 	x := int(math.Min(xKm/liver_interval_km,float64(len(obj.LiverTable[0])-1)))
 	y := int(math.Min(yKm/liver_interval_km,float64(len(obj.LiverTable)-1)))
 	lt := &obj.LiverTable[y][x]
@@ -31,7 +31,7 @@ func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *Liver
 }
 
 func (obj *LocalTerrainObject) MakeLiverTable(){
-	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
+	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
 	obj.LiverTable = make([][]LiverPoint, int(math.Ceil(obj.NSKm/liver_interval_km)))
 	var lv_order []Point
 
@@ -43,7 +43,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			obj.LiverTable[y][x].Direction = DIRECTION_NONE
 			obj.LiverTable[y][x].Cavity = 1.0
 			obj.LiverTable[y][x].BaseElevation = obj.GetElevationByKmPoint(obj.LiverTable[y][x].XKm, obj.LiverTable[y][x].YKm)
-			if obj.LiverTable[y][x].BaseElevation >= 0.0 {
+			if obj.LiverTable[y][x].BaseElevation >= obj.WorldTerrain.Config.LiverEndPointElevationM {
 				lv_order = append(lv_order, MakePoint(x, y))
 			}
 			
@@ -63,12 +63,11 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 
 	loop_out_condition := func(xKm, yKm, sxKm, syKm, elevation float64) bool{
 
+		if xKm < 0.0 || yKm < 0.0 || xKm > obj.WEKm || yKm > obj.NSKm { return true }
 		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
-		if lt.Direction != DIRECTION_NONE {
-			return true
-		}		
-		
-		return elevation < 0
+		if lt.Direction != DIRECTION_NONE { return true }		
+
+		return elevation <= obj.WorldTerrain.Config.LiverEndPointElevationM 
 	}
 
 	// simulate the behavior of water
@@ -112,7 +111,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 func (obj *LocalTerrainObject) CheckLiverCavityByKmPoint(xKm, yKm float64) float64{
 
 
-	liver_interval_km := obj.WorldTerrain.Config.LiverCheckIntervalKm
+	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
 
 	var nw, ne, sw, se KmPoint
 	nw.XKm = math.Floor(xKm/liver_interval_km)*liver_interval_km

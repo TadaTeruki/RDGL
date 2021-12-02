@@ -67,7 +67,7 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
 	ocl := &obj.LevelingLayerObj
 
-	pond_interval_km := obj.WorldTerrain.Config.LevelingCheckIntervalKm
+	pond_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm
 	ocl.LevelingTable = make([][]LevelingPoint, int(math.Floor(obj.NSKm/pond_interval_km)))
 	checked := make([][]bool, len(ocl.LevelingTable))
 	for y := 0; y<len(ocl.LevelingTable); y++{
@@ -83,13 +83,13 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
 	var open []Point
 	
-	xl := int(obj.WEKm/obj.WorldTerrain.Config.TerrainLevelingIntervalKm)
+	xl := int(obj.WEKm/obj.WorldTerrain.Config.LevelingStartPointIntervalKm)
 	for x := 0; x<xl; x++ {
 		open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,0))
 		open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)-1))
 	}
 	
-	yl := int(obj.NSKm/obj.WorldTerrain.Config.TerrainLevelingIntervalKm)
+	yl := int(obj.NSKm/obj.WorldTerrain.Config.LevelingStartPointIntervalKm)
 	for y := 1; y<yl-1; y ++ {
 		open = append(open, MakePoint(0,len(ocl.LevelingTable)*y/yl))
 		open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)*y/yl))
@@ -97,7 +97,7 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
 	
 
-	for elv := -obj.WorldTerrain.ElevationBaseM; elv <= obj.WorldTerrain.ElevationBaseM; elv += obj.WorldTerrain.Config.TerrainLevelingHeightM {
+	for elv := -obj.WorldTerrain.ElevationBaseM; elv <= obj.WorldTerrain.ElevationBaseM; elv += obj.WorldTerrain.Config.LevelingHeightM {
 		
 		nxopen := make(map[Point]struct{})
 		for ;len(open) > 0;{
@@ -173,7 +173,7 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 }
 
 func (ocl LevelingLayer) GetLevelingPointByKmPoint(obj *LocalTerrainObject, xKm, yKm float64) LevelingPoint{
-	pond_interval_km := obj.WorldTerrain.Config.LevelingCheckIntervalKm
+	pond_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm
 	x := int(math.Min(math.Round(xKm/pond_interval_km),float64(len(ocl.LevelingTable[0])-1)))
 	y := int(math.Min(math.Round(yKm/pond_interval_km),float64(len(ocl.LevelingTable)-1)))
 	return ocl.LevelingTable[y][x]

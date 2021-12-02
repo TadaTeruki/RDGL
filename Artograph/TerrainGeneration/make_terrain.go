@@ -111,7 +111,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
 
-	fmt.Println("Process : LevelingLayer")
+	fmt.Println("Process : Leveling")
 	obj.MakeLevelingLayer()
 	fmt.Println("Process : Liver")
 	obj.MakeLiverTable()

@@ -57,12 +57,14 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	MinLand float64
 	MaxLand float64
 	LocalTerrainSelectionQuality int
-	LevelingCheckIntervalKm float64
-	LiverCheckIntervalKm float64
+	LevelingIntervalKm float64
+	LiverIntervalKm float64
 	TerrainReverseScale float64
-	TerrainLevelingHeightM float64
-	TerrainLevelingIntervalKm float64
-	PondDepthProportion float64
+	LevelingHeightM float64
+	LevelingStartPointIntervalKm float64
+	LevelingMinimumElevationM float64
+	PlainDepth float64
+	LiverEndPointElevationM float64
 
 }
 

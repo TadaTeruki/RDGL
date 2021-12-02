@@ -48,15 +48,19 @@ func GetGlobalConfig() GlobalConfig {
 	conf.LocalTerrainSelectionQuality = 10
 
 	// Effects configuration
-	conf.LevelingCheckIntervalKm = 1.0 
-	conf.LiverCheckIntervalKm = 1.0	
+	conf.LevelingIntervalKm = 1.0 
+	conf.LiverIntervalKm = 1.0	
+	conf.LiverEndPointElevationM = -10.0
 
 	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )
 	conf.TerrainReverseScale = 0.01
 
-	conf.TerrainLevelingHeightM = 100.0
-	conf.TerrainLevelingIntervalKm = 100.0
+	conf.LevelingHeightM = 100.0
+	conf.LevelingStartPointIntervalKm = 100.0
+	conf.LevelingMinimumElevationM = -1500.0
 
-	conf.PondDepthProportion = 0.3
+	conf.PlainDepth = 0.3
+
+	
 	return conf
 }
