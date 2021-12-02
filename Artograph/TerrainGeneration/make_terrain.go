@@ -81,10 +81,11 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var max_score float64
 	var select_ad int
 	var select_z float64
-
+	/*
 	obj.LevelingCheckIsAvailable = false
 	obj.LiverCheckIsAvailable = false
-	
+	obj.ElevationTableIsAvailable = false
+	*/
 
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
@@ -106,15 +107,22 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	
 	obj.WorldTerrain.Z = select_z
 
-
-
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
 
-	fmt.Println("Process : Leveling")
-	obj.MakeLevelingLayer()
-	fmt.Println("Process : Liver")
-	obj.MakeLiverTable()
-	fmt.Println("Terrain generation successfully finished")
 
+
+}
+
+func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
+	if leveling == true {
+		fmt.Println("Process : Leveling")
+		obj.MakeLevelingLayer()
+	}
+	if liver == true {
+		fmt.Println("Process : Liver")
+		obj.MakeLiverTable()
+	}
+
+	fmt.Println("Terrain generation successfully finished")
 }

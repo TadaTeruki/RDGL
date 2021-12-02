@@ -61,6 +61,10 @@ func GetGlobalConfig() GlobalConfig {
 
 	conf.PlainDepth = 0.3
 
+
+	conf.OutlineInterpolationQuality = conf.NoizeOctave
+
+	conf.OutlineNoiseStrength = 0.105
 	
 	return conf
 }

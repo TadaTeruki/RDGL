@@ -21,6 +21,7 @@ package artograph
 
 import(
 	terrain "./TerrainGeneration"
+	outline "./Outline"
 	"fmt"
 	"math"
 )
@@ -32,7 +33,6 @@ type ArtoDEM struct{
 	UnitKm				float64
 	VerticalKm			float64
 	HorizontalKm		float64
-
 
 	side_width		float64
 	w_obj terrain.WorldTerrainObject
@@ -58,8 +58,7 @@ func NewDEM(seed int64) ArtoDEM{
 	return ats
 }
 
-func (ats *ArtoDEM) Generate(){
-
+func (ats *ArtoDEM) config(){
 	ats.l_obj.NSKm = ats.VerticalKm + ats.UnitKm * ats.side_width * 2
 	ats.l_obj.WEKm = ats.HorizontalKm + ats.UnitKm * ats.side_width * 2
 
@@ -74,13 +73,55 @@ func (ats *ArtoDEM) Generate(){
 	ats.w_obj.Config.LevelingHeightM = ats.LevelingIntervalM
 	ats.w_obj.Config.LevelingStartPointIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
 
+	ats.l_obj.WorldTerrain = &ats.w_obj
+
+}
+
+func (ats *ArtoDEM) Generate(){
+	/*
+	ats.l_obj.NSKm = ats.VerticalKm + ats.UnitKm * ats.side_width * 2
+	ats.l_obj.WEKm = ats.HorizontalKm + ats.UnitKm * ats.side_width * 2
+
+	ats.w_obj.NSKm = ats.l_obj.NSKm * ats.side_width
+	ats.w_obj.WEKm = ats.l_obj.WEKm * ats.side_width
+
+	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
+	ats.w_obj.Config = terrain.GetGlobalConfig()
+	ats.w_obj.Config.Seed = ats.Seed
+	ats.w_obj.Config.LiverIntervalKm = ats.UnitKm
+	ats.w_obj.Config.LevelingIntervalKm = ats.UnitKm
+	ats.w_obj.Config.LevelingHeightM = ats.LevelingIntervalM
+	ats.w_obj.Config.LevelingStartPointIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
+	*/
+
+	ats.config()
 	ats.w_obj.SetNEFPoint()
 	ats.w_obj.MakeWorldTerrain()
 
 
-	ats.l_obj.WorldTerrain = &ats.w_obj
+	//ats.l_obj.WorldTerrain = &ats.w_obj
 	ats.l_obj.MakeLocalTerrain()
+
+	ats.l_obj.TransformProcess(true, true)
 	
+}
+
+func (ats *ArtoDEM) Process(file string){
+	data_fw, data_fh := outline.GetImageScale(file)
+
+	if ats.HorizontalKm < 0 {
+		ats.HorizontalKm = ats.VerticalKm/data_fh*data_fw
+	}
+	if ats.VerticalKm < 0 {
+		ats.VerticalKm = ats.HorizontalKm/data_fw*data_fh
+	}
+
+	ats.config()
+	ats.w_obj.MakeWorldTerrain()
+	
+	outline.LoadTerrainData(&ats.l_obj, &ats.w_obj.Config, file)
+	
+	ats.l_obj.TransformProcess(false, true)
 }
 
 func (ats *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){

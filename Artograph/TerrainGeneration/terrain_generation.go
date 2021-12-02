@@ -46,6 +46,9 @@ type LocalTerrainObject struct{
 	LevelingCheckIsAvailable bool
 	LiverTable [][]LiverPoint
 	LiverCheckIsAvailable bool
+
+	ElevationTableIsAvailable bool
+	ElevationTable [][]float64
 }
 
 type GlobalConfig struct{ // details -> <globalconfig.go>
@@ -65,6 +68,8 @@ type GlobalConfig struct{ // details -> <globalconfig.go>
 	LevelingMinimumElevationM float64
 	PlainDepth float64
 	LiverEndPointElevationM float64
+	OutlineInterpolationQuality int
+	OutlineNoiseStrength float64
 
 }
 
