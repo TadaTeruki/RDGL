@@ -23,7 +23,8 @@ import(
 	terrain "../TerrainGeneration"
 	cairo "github.com/ungerik/go-cairo"
 	"math"
-	
+	"os"
+	"strconv"
 )
 type Shadow struct{
 	DirectionZ 	float64
@@ -204,4 +205,80 @@ func DefaultShadow(ats *artograph.ArtoDEM) Shadow{
 
 func WriteDEMtoPNGwithShadow(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int, shadow Shadow){
 	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, true, shadow)
+}
+
+func FtoA(v float64) string{
+	return strconv.FormatFloat(v, 'f', -1, 64)
+}
+
+
+func ItoA(v int) string{
+	return strconv.Itoa(v)
+}
+
+func WriteDEMtoOBJ(filename string, ats *artograph.ArtoDEM, image_w float64, image_h float64, z_extend float64, z_is_vertical bool) error {
+	var file *os.File
+	var err error
+
+	file, err = os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	
+
+	if image_w < 0 { image_w = image_h/ats.VerticalKm*ats.HorizontalKm }
+	if image_h < 0 { image_h = image_w/ats.HorizontalKm*ats.VerticalKm }
+
+	write := func(s string){
+		_, err = file.WriteString(s)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	//_ = write
+	write("g DEM\n")
+	
+	data_w := 0
+	data_h := 0
+
+	for yKm := 0.0; yKm < ats.VerticalKm; yKm += ats.UnitKm {
+		
+		for xKm := 0.0; xKm < ats.HorizontalKm; xKm += ats.UnitKm {
+
+			elevation, err := ats.GetElevationByKmPoint(xKm, yKm)
+			if err != nil {
+				continue
+			}
+			px := xKm/ats.HorizontalKm*image_w
+			py := yKm/ats.VerticalKm*image_h
+			pz := (elevation*0.001)/ats.HorizontalKm*image_w*z_extend
+			if z_is_vertical == true {
+				write("v "+FtoA(px)+" "+FtoA(py)+" "+FtoA(pz)+"\n")
+			} else {
+				write("v "+FtoA(px)+" "+FtoA(pz)+" "+FtoA(py)+"\n")
+			}
+			if yKm== 0.0 { data_w++ }
+		}
+		data_h++
+	}
+
+	ad := func(ix, iy int) int{
+		return iy*data_w+ix+1
+	}
+
+	for y := 0; y < data_h-1; y++{
+		for x := 0; x < data_w-1; x++{
+
+			a := ItoA(ad(x,y))
+			b := ItoA(ad(x+1,y))
+			c := ItoA(ad(x,y+1))
+			d := ItoA(ad(x+1,y+1))
+			
+			write("f "+a+" "+b+" "+d+" "+c+"\n")
+		}
+	}
+
+	return nil
 }

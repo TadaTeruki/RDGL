@@ -14,3 +14,6 @@ shadowed_dem:
 
 outline_dem:
 	go run outline_dem.go
+
+obj_dem:
+	go run obj_dem.go

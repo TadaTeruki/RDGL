@@ -95,6 +95,10 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 		open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)*y/yl))
 	}
 
+	open = append(open, MakePoint(0,len(ocl.LevelingTable)-1))
+	open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,0))
+	open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)-1))
+
 	utility.EchoProcessPercentage("Leveling", 0)
 	checked_sum := 0.0
 	checked_all := float64(len(ocl.LevelingTable[0])*len(ocl.LevelingTable))

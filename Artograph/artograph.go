@@ -122,8 +122,8 @@ func (dem *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){
 		err := fmt.Errorf(ARTO_ERROR_1)
 		return 0, err
 	} 
-	dxKm := xKm + dem.UnitKm * dem.w_obj.Config.MapSideWidthKm
-	dyKm := yKm + dem.UnitKm * dem.w_obj.Config.MapSideWidthKm
+	dxKm := xKm + dem.w_obj.Config.MapSideWidthKm
+	dyKm := yKm + dem.w_obj.Config.MapSideWidthKm
 
 	return dem.l_obj.GetElevationByKmPoint(dxKm, dyKm), nil
 }

@@ -54,7 +54,7 @@ func (obj *WorldTerrainObject) NEF1(nlv float64) float64{
 	by := obj.NEFPointList[1].Elevation
 	cx := obj.NEFPointList[2].NoiseLevel
 	cy := obj.NEFPointList[2].Elevation
-	return -math.Pow((nlv-bx)/(cx-bx),2.7)*(by-cy)+by
+	return -math.Pow((nlv-bx)/(cx-bx),2.3)*(by-cy)+by
 }
 
 func (obj *WorldTerrainObject) NEF2(nlv float64) float64{
@@ -71,7 +71,7 @@ func (obj *WorldTerrainObject) NEF3(nlv float64) float64{
 	dy := obj.NEFPointList[3].Elevation
 	//ex := obj.NEFPointList[4].NoiseLevel
 	ey := obj.NEFPointList[4].Elevation
-	return math.Pow((1-nlv)/(1-dx),0.12)*(dy-ey)+ey
+	return math.Pow((1-nlv)/(1-dx),0.15)*(dy-ey)+ey
 }
 
 
