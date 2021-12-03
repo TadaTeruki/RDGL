@@ -40,13 +40,10 @@ func GetInternalConfig() InternalConfig {
 
 	// Minimum-proportion of land (Example : 0.7 -> 70% (of generated terrain) will covered with land)
 	conf.MinLandProportion = 0.0				
-	
 	// Maximum-proportion of land 
 	conf.MaxLandProportion = 1.0
 
 	conf.MapSideWidthKm = 0.0
-
-	//conf.LandProportionOrder = 0.9
 
 	// Proportion of land of WorldTerrain
 	conf.StandardLandProportion = 0.5

@@ -26,20 +26,21 @@ import(
 
 func main(){
 
-	dem := artograph.NewDEM(18)
+	dem := artograph.NewDEM(14)
 
 	dem.ElevationAbsM = 8000
 	dem.UnitKm = 2
 	dem.VerticalKm = 1000
-	// When use OutlineInterpolation, you can substitute -1 for either VerticalKm or HorizontalKm
+	// When using OutlineInterpolation, you can substitute -1 for either VerticalKm or HorizontalKm
 	//  to apply the aspect ratio of outline image to the DEM.
 	dem.HorizontalKm = -1
 	dem.LevelingIntervalM = 5
+	dem.Quality01 = 1.0
 
 	artograph.EnableProcessLog()
 
 	// Assign the filename of outline image.
-	dem.Process("./outline_example.png")
+	dem.Process("./resources/draft.png")
 
 	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, shadow)
 	output.WriteDEMtoPNGwithShadow("result.png", &dem, 300, -1, output.DefaultShadow(&dem))

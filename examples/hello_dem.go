@@ -25,7 +25,7 @@ import(
 
 func main(){
 	// Use 'NewDEM' to make a new DEM (assigning the seed value).
-	dem := artograph.NewDEM(18)
+	dem := artograph.NewDEM(14)
 	// Start DEM generation.
 	dem.Generate()
 	// DEM generation will be completed automatically. Easy!

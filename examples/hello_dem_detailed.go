@@ -24,23 +24,26 @@ import(
 )
 
 func main(){
-	dem := artograph.NewDEM(18)
+	dem := artograph.NewDEM(14)
 
-	// [dem.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter)
+	// [dem.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter) (>0.0)
 	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
 	dem.ElevationAbsM = 8000
 
-	// [dem.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain
+	// [dem.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain (>0.0)
 	dem.UnitKm = 2
 
-	// [dem.VerticalKm] The vertical width of the DEM data (Km)
+	// [dem.VerticalKm] The vertical width of the DEM data (Km) (>0.0)
 	dem.VerticalKm = 1000
 
-	// [dem.HorizontalKm] The horizontal width of the DEM data (Km)
+	// [dem.HorizontalKm] The horizontal width of the DEM data (Km) (>0.0)
 	dem.HorizontalKm = 1000
 
-	// [dem.LevelingIntervalM] The elevation unit(Meter)
+	// [dem.LevelingIntervalM] The interval of elevation level (Meter) (>0.0)
 	dem.LevelingIntervalM = 5
+
+	// [dem.Quality01] The quality of DEM (>0.0) (Recommend : 1.0)
+	dem.Quality01 = 1.0
 
 	dem.Generate()
 

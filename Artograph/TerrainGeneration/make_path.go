@@ -55,8 +55,7 @@ func (obj *LocalTerrainObject) MakePath(
 			//exists
 			return
 		}
-
-		//height := GetHeight(point.X, point.Y, data, property_list)
+		
 		elevation := obj.GetElevationByKmPoint(point.XKm, point.YKm)
 		score := get_score(point.XKm, point.YKm, start_x_km, start_y_km, elevation)
 		idscore := get_score_id(point.XKm, point.YKm, start_x_km, start_y_km, elevation)

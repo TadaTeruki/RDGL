@@ -34,6 +34,7 @@ type ArtoDEM struct{
 	UnitKm				float64
 	VerticalKm			float64
 	HorizontalKm		float64
+	Quality01 			float64
 
 	side_width		float64
 	w_obj terrain.WorldTerrainObject
@@ -48,6 +49,12 @@ func (dem *ArtoDEM) default_dem(){
 	dem.HorizontalKm = 1000
 	dem.LevelingIntervalM = 5
 	dem.side_width = 3.0
+	dem.Quality01 = 1.0
+}
+
+func (dem *ArtoDEM) quality_max() float64{
+	maxKm := math.Max(dem.VerticalKm, dem.HorizontalKm)
+	return math.Log2(maxKm/dem.UnitKm)
 }
 
 const ARTO_ERROR_1 = "<Artograph> Error : The coodinate assigned to 'GetElevationByKmPoint' is outside of the DEM"
@@ -78,6 +85,8 @@ func (dem *ArtoDEM) config(){
 	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
 	dem.w_obj.Config.LevelingHeightM = dem.LevelingIntervalM
 	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100
+	dem.w_obj.Config.OutlineInterpolationQuality = int(math.Ceil(dem.quality_max()*dem.Quality01))
+	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
 
 	dem.l_obj.WorldTerrain = &dem.w_obj
 
@@ -91,7 +100,6 @@ func (dem *ArtoDEM) Generate(){
 
 	dem.l_obj.MakeLocalTerrain()
 	
-
 	dem.l_obj.TransformProcess(true, true)
 	
 }

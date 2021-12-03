@@ -74,6 +74,7 @@ func GetInterpolatedClass(obj *terrain.LocalTerrainObject, x, y, xp, yp int) flo
 	}
 
 	spline := gospline.NewCubicSpline(dist, class)
+	
 	return spline.At(base)
 	
 }
@@ -159,6 +160,14 @@ func Morphology(obj *terrain.LocalTerrainObject, first bool, base_class *[][]flo
 			check_class_border(x, y, x+1, y)
 			check_class_border(x, y, x, y-1)
 			check_class_border(x, y, x, y+1)
+
+			if (x == 0 || y == 0 || x == data_w-1 || y == data_h-1){
+				var target MlPoint
+				target.x = x
+				target.y = y
+				class_border_list = append(class_border_list, target)
+				(*base_class)[y][x] = obj.ElevationTable[y][x]
+			}
 
 		}
 	}

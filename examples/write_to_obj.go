@@ -24,12 +24,13 @@ import(
 )
 
 func main(){
-	dem := artograph.NewDEM(18)
+	dem := artograph.NewDEM(14)
 	dem.ElevationAbsM = 8000
 	dem.UnitKm = 2
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = 1000
 	dem.LevelingIntervalM = 5
+	dem.Quality01 = 1.0
 
 	artograph.EnableProcessLog()
 
