@@ -37,6 +37,6 @@ func main(){
 	dem.Generate()
 
 	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image)
-	output.WriteDEMtoPNG("output.png", &dem, 300, -1)
+	output.WriteDEMtoPNG("result.png", &dem, 300, -1)
 
 }

@@ -39,8 +39,8 @@ func main(){
 	artograph.EnableProcessLog()
 
 	// Assign the filename of outline image.
-	dem.Process("./example.png")
+	dem.Process("./outline_example.png")
 
 	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, shadow)
-	output.WriteDEMtoPNGwithShadow("output.png", &dem, 300, -1, output.DefaultShadow(&dem))
+	output.WriteDEMtoPNGwithShadow("result.png", &dem, 300, -1, output.DefaultShadow(&dem))
 }
