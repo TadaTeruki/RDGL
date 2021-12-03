@@ -66,7 +66,7 @@ func (ats *ArtoDEM) config(){
 	ats.w_obj.WEKm = ats.l_obj.WEKm * ats.side_width
 
 	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
-	ats.w_obj.Config = terrain.GetGlobalConfig()
+	ats.w_obj.Config = terrain.GetInternalConfig()
 	ats.w_obj.Config.Seed = ats.Seed
 	ats.w_obj.Config.LiverIntervalKm = ats.UnitKm
 	ats.w_obj.Config.LevelingIntervalKm = ats.UnitKm
@@ -84,10 +84,13 @@ func (ats *ArtoDEM) Generate(){
 	ats.w_obj.MakeWorldTerrain()
 
 	ats.l_obj.MakeLocalTerrain()
+	
 
 	ats.l_obj.TransformProcess(true, true)
 	
 }
+
+
 
 func (ats *ArtoDEM) Process(file string){
 	data_fw, data_fh := outline.GetImageScale(file)

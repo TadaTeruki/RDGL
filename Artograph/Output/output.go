@@ -29,7 +29,8 @@ type Shadow struct{
 	DirectionZ 	float64
 	DirectionXY float64
 	WidthKm		float64
-	Strength01 	float64
+	StrengthLand01 	float64
+	StrengthOcean01	float64
 }
 
 func WriteWorldToPNG(file string, obj *terrain.WorldTerrainObject, image_pixel_w, image_pixel_h int){
@@ -91,7 +92,8 @@ func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h 
 	shadow_direction_z  := shadow.DirectionZ
 	shadow_direction_xy := shadow.DirectionXY
 	shadow_width_Km		:= shadow.WidthKm
-	shadow_strength_01	:= shadow.Strength01
+	shadow_strength_land_01	:= shadow.StrengthLand01
+	shadow_strength_ocean_01	:= shadow.StrengthOcean01
 
 	fw := float64(image_pixel_w)
 	fh := float64(image_pixel_h)
@@ -157,7 +159,14 @@ func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h 
 				
 				fb := brightness[int(y)][int(x)]
 
-				shadow_strength := shadow_strength_01 * (elevation/ats.ElevationAbsM)
+				var shadow_strength float64
+				
+				if elevation >= 0.0{
+					shadow_strength = shadow_strength_land_01 * (elevation/ats.ElevationAbsM)
+				} else {
+					shadow_strength = shadow_strength_ocean_01 * ((-elevation)/ats.ElevationAbsM)
+				}
+				
 				fb = fb*shadow_strength+(1.0-shadow_strength)
 				if fb < 0.0 { fb = 0.0 }
 				if fb > 1.0 { fb = 1.0 }
@@ -188,7 +197,8 @@ func DefaultShadow(ats *artograph.ArtoDEM) Shadow{
 	shadow.DirectionZ = math.Pi/4.0
 	shadow.DirectionXY = math.Pi/4.0
 	shadow.WidthKm = ats.UnitKm*5.0
-	shadow.Strength01 = 0.5
+	shadow.StrengthLand01 = 0.5
+	shadow.StrengthOcean01 = 0.05
 	return shadow
 }
 

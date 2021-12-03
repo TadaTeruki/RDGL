@@ -1,5 +1,5 @@
 /*
-Artograph/TerrainGeneration/globalconfig.go
+Artograph/TerrainGeneration/internalconfig.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -19,9 +19,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package terrain_generation
 
 // sets parameters for configuration
-func GetGlobalConfig() GlobalConfig {
+func GetInternalConfig() InternalConfig {
 
-	var conf GlobalConfig
+	var conf InternalConfig
 
 	// The seed value for terrain-generation
 	conf.Seed = 0
@@ -39,13 +39,13 @@ func GetGlobalConfig() GlobalConfig {
 	conf.NoizeMaxPersistence = 0.7
 
 	// Minimum-proportion of land (Example : 0.7 -> 70% (of generated terrain) will covered with land)
-	conf.MinLand = 0.6				
+	conf.MinLandProportion = 0.5				
 	
 	// Maximum-proportion of land 
-	conf.MaxLand = 0.85
+	conf.MaxLandProportion = 0.65
 	
 	// Quality of terrain-generation
-	conf.LocalTerrainSelectionQuality = 10
+	conf.LocalTerrainSelectionQuality = 100
 
 	// Effects configuration
 	conf.LevelingIntervalKm = 1.0 
@@ -64,10 +64,10 @@ func GetGlobalConfig() GlobalConfig {
 	conf.OutlineInterpolationQuality = 10
 	conf.OutlineNoiseStrength = 0.5
 
-	conf.OutlineNoizeMinPersistence = 0.7
+	conf.OutlineNoizeMinPersistence = 0.6
 	conf.OutlineNoizeMaxPersistence = 0.8
 
-	conf.StandardLandProportion = 0.7
+	conf.StandardLandProportion = 0.5
 	
 	return conf
 }

@@ -39,7 +39,7 @@ func (obj *WorldTerrainObject) GetNoiseLevelByKmPoint(xKm, yKm float64) float64{
 		obj.Config.NoizeMinPersistence+noise_adj*(obj.Config.NoizeMaxPersistence-obj.Config.NoizeMinPersistence),
 		xfix, yfix, obj.Z)
 
-	return TerrainAdjustmentFade(noise, noise_adj)//obj.GetElevationFromNoiseLevel(TerrainAdjustmentFade(noise, noise_adj))
+	return TerrainAdjustmentFade(noise, noise_adj)
 	
 }
 

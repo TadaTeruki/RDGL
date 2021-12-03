@@ -81,7 +81,7 @@ func GetImageScale(file_name string) (float64, float64){
 	
 }
 
-func LoadTerrainData(obj *terrain.LocalTerrainObject, config *terrain.GlobalConfig, file_name string){
+func LoadTerrainData(obj *terrain.LocalTerrainObject, config *terrain.InternalConfig, file_name string){
 
     png_file, err := os.Open(file_name)
     if err != nil {

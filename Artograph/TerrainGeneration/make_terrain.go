@@ -58,13 +58,13 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 				count_land++
 			}
 			count_all++
-			score += elevation*elevation
+			score += elevation//*elevation
 		}
 	}
 	
 	land := float64(count_land)/float64(count_all)
 
-	if land < obj.WorldTerrain.Config.MinLand || land > obj.WorldTerrain.Config.MaxLand {
+	if land < obj.WorldTerrain.Config.MinLandProportion || land > obj.WorldTerrain.Config.MaxLandProportion {
 		return 0, false
 	}
 	
@@ -81,11 +81,6 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var max_score float64
 	var select_ad int
 	var select_z float64
-	/*
-	obj.LevelingCheckIsAvailable = false
-	obj.LiverCheckIsAvailable = false
-	obj.ElevationTableIsAvailable = false
-	*/
 
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
@@ -95,6 +90,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 		if available == false{
 			i--
 			obj.WorldTerrain.Z += 11
+			
 			continue
 		}
 

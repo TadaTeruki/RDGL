@@ -243,7 +243,7 @@ func Morphology(obj *terrain.LocalTerrainObject, first bool, base_class *[][]flo
 }
 
 
-func Interpolate(obj *terrain.LocalTerrainObject, config *terrain.GlobalConfig){
+func Interpolate(obj *terrain.LocalTerrainObject, config *terrain.InternalConfig){
 
 	data_w := len(obj.ElevationTable[0])
 	data_h := len(obj.ElevationTable)

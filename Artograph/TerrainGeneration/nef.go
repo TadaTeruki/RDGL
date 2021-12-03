@@ -33,9 +33,9 @@ func MakeNEFPoint(n,e float64) NEFPoint{
 func (obj *WorldTerrainObject) SetNEFPoint(){
 	var NEFPointList = []NEFPoint{
 		MakeNEFPoint(0.0, -obj.ElevationBaseM),
-		MakeNEFPoint(0.5, -4000),
-		MakeNEFPoint(0.63, -1000),
-		MakeNEFPoint(obj.Config.StandardLandProportion, 0),
+		MakeNEFPoint(obj.Config.StandardLandProportion*0.7, -obj.ElevationBaseM*0.5),
+		MakeNEFPoint(obj.Config.StandardLandProportion*0.85, -obj.ElevationBaseM*0.1),
+		MakeNEFPoint(obj.Config.StandardLandProportion, 0.0),
 		MakeNEFPoint(1.0, obj.ElevationBaseM),
 	}
 	obj.NEFPointList = NEFPointList

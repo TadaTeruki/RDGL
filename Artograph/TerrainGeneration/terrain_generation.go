@@ -31,7 +31,7 @@ type WorldTerrainObject struct{
 	Z float64
 	ElevationBaseM float64
 	NEFPointList []NEFPoint
-	Config GlobalConfig
+	Config InternalConfig
 }
 
 // LocalTerrain ... A part of terrains generated in WorldTerrain
@@ -51,14 +51,14 @@ type LocalTerrainObject struct{
 	ElevationTable [][]float64
 }
 
-type GlobalConfig struct{ // details -> <globalconfig.go>
+type InternalConfig struct{ // details -> <globalconfig.go>
 	Seed int64
 	NoizeScaleKm float64
 	NoizeOctave int
 	NoizeMinPersistence float64
 	NoizeMaxPersistence float64
-	MinLand float64
-	MaxLand float64
+	MinLandProportion float64
+	MaxLandProportion float64
 	LocalTerrainSelectionQuality int
 	LevelingIntervalKm float64
 	LiverIntervalKm float64
