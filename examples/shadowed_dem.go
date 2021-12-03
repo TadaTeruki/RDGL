@@ -28,12 +28,14 @@ func main(){
 	dem := artograph.NewDEM(18)
 	dem.ElevationAbsM = 8000
 	dem.UnitKm = 2
-	dem.VerticalKm = 1000
+	dem.VerticalKm = 250
 	dem.HorizontalKm = 1000
 	dem.LevelingIntervalM = 5
 
+	artograph.EnableProcessLog()
+
 	dem.Generate()
 	
-	output.WriteDEMtoPNGwithShadow("output.png", &dem, 300, -1, output.DefaultShadow(&dem))
+	output.WriteDEMtoPNGwithShadow("output.png", &dem, 1000, -1, output.DefaultShadow(&dem))
 
 }

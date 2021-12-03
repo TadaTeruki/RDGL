@@ -65,8 +65,6 @@ func (ocl *LevelingLayer) MarkLeveling(obj *LocalTerrainObject, x, y int, elevat
 
 func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
-	
-
 	ocl := &obj.LevelingLayerObj
 
 	pond_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm

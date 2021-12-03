@@ -24,11 +24,10 @@ import(
 )
 
 func main(){
-	dem := artograph.NewDEM(16)
+	dem := artograph.NewDEM(18)
 
 	// [dem.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter)
 	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
-	// (Recommendation : dem.ElevationAbsM >= 4000)
 	dem.ElevationAbsM = 8000
 
 	// [dem.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain
@@ -44,8 +43,11 @@ func main(){
 	dem.LevelingIntervalM = 5
 
 	dem.Generate()
+
 	// ---
-	
+
+	artograph.EnableProcessLog()
+
 	for yKm := 0.0; yKm < dem.HorizontalKm; yKm += dem.HorizontalKm/50.0{
 		str := ""
 		for xKm := 0.0; xKm < dem.VerticalKm; xKm += dem.HorizontalKm/50.0{

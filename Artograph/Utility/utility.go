@@ -22,6 +22,8 @@ import(
 	"math"
 )
 
+var Debug = fmt.Println
+
 var ProcessLog bool = false
 
 func EchoProcessPercentage(context string, process_proportion float64){

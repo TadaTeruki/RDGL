@@ -71,8 +71,10 @@ type InternalConfig struct{ // details -> <globalconfig.go>
 	OutlineInterpolationQuality int
 	OutlineNoiseStrength float64
 	StandardLandProportion float64
+	StandardOceanProportion float64
 	OutlineNoizeMinPersistence float64
 	OutlineNoizeMaxPersistence float64
+	MapSideWidthKm float64
 
 }
 

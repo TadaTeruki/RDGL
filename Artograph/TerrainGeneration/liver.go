@@ -33,6 +33,7 @@ func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *Liver
 
 func (obj *LocalTerrainObject) MakeLiverTable(){
 	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
+	side_width_km := obj.WorldTerrain.Config.MapSideWidthKm
 	obj.LiverTable = make([][]LiverPoint, int(math.Ceil(obj.NSKm/liver_interval_km)))
 	var lv_order []Point
 
@@ -64,7 +65,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 
 	loop_out_condition := func(xKm, yKm, sxKm, syKm, elevation float64) bool{
 
-		if xKm < 0.0 || yKm < 0.0 || xKm > obj.WEKm || yKm > obj.NSKm { return true }
+		if xKm < side_width_km || yKm < side_width_km || xKm > obj.WEKm-side_width_km || yKm > obj.NSKm-side_width_km { return true }
 		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
 		if lt.Direction != DIRECTION_NONE { return true }		
 

@@ -47,7 +47,7 @@ func (dem *ArtoDEM) default_dem(){
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = 1000
 	dem.LevelingIntervalM = 5
-	dem.side_width = 3
+	dem.side_width = 3.0
 }
 
 const ARTO_ERROR_1 = "<Artograph> Error : The coodinate assigned to 'GetElevationByKmPoint' is outside of the DEM"
@@ -60,14 +60,19 @@ func NewDEM(seed int64) ArtoDEM{
 }
 
 func (dem *ArtoDEM) config(){
-	dem.l_obj.NSKm = dem.VerticalKm + dem.UnitKm * dem.side_width * 2
-	dem.l_obj.WEKm = dem.HorizontalKm + dem.UnitKm * dem.side_width * 2
 
-	dem.w_obj.NSKm = dem.l_obj.NSKm * dem.side_width
-	dem.w_obj.WEKm = dem.l_obj.WEKm * dem.side_width
+	dem.w_obj.Config = terrain.GetInternalConfig()
+
+	dem.w_obj.Config.MapSideWidthKm = dem.UnitKm * dem.side_width
+
+	dem.l_obj.NSKm = dem.VerticalKm + dem.w_obj.Config.MapSideWidthKm * 2
+	dem.l_obj.WEKm = dem.HorizontalKm + dem.w_obj.Config.MapSideWidthKm * 2
+
+	dem.w_obj.NSKm = dem.l_obj.NSKm * dem.side_width * 2
+	dem.w_obj.WEKm = dem.l_obj.WEKm * dem.side_width * 2
 
 	dem.w_obj.ElevationBaseM = dem.ElevationAbsM
-	dem.w_obj.Config = terrain.GetInternalConfig()
+	
 	dem.w_obj.Config.Seed = dem.Seed
 	dem.w_obj.Config.LiverIntervalKm = dem.UnitKm
 	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
@@ -117,8 +122,8 @@ func (dem *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){
 		err := fmt.Errorf(ARTO_ERROR_1)
 		return 0, err
 	} 
-	dxKm := xKm + dem.UnitKm * dem.side_width
-	dyKm := yKm + dem.UnitKm * dem.side_width
+	dxKm := xKm + dem.UnitKm * dem.w_obj.Config.MapSideWidthKm
+	dyKm := yKm + dem.UnitKm * dem.w_obj.Config.MapSideWidthKm
 
 	return dem.l_obj.GetElevationByKmPoint(dxKm, dyKm), nil
 }

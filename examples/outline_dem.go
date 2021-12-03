@@ -26,11 +26,13 @@ import(
 
 func main(){
 
-	dem := artograph.NewDEM(20)
+	dem := artograph.NewDEM(18)
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = -1
 	dem.UnitKm = 1.5
 	dem.Process("./example.png")
+
+	artograph.EnableProcessLog()
 	
 	output.WriteDEMtoPNGwithShadow("output.png", &dem, 500, -1, output.DefaultShadow(&dem))
 

@@ -35,12 +35,12 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	var score float64
 	fcount := float64(count)
 
-	var maxWHkm float64
+	var minWHkm float64
 
-	if obj.NSKm > obj.WEKm { 
-		maxWHkm = obj.NSKm
+	if obj.NSKm < obj.WEKm { 
+		minWHkm = obj.NSKm
 	} else {
-		maxWHkm = obj.WEKm
+		minWHkm = obj.WEKm
 	}
 
 	cxKm := obj.xKm + obj.WEKm/2
@@ -48,25 +48,29 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	count_land := 0
 	count_all := 0
 
-	for yKm := obj.yKm; yKm < obj.yKm + obj.NSKm; yKm += maxWHkm/fcount{
-		for xKm := obj.xKm; xKm < obj.xKm + obj.WEKm; xKm += maxWHkm/fcount{
+	for yKm := obj.yKm; yKm < obj.yKm + obj.NSKm; yKm += minWHkm/fcount{
+		for xKm := obj.xKm; xKm < obj.xKm + obj.WEKm; xKm += minWHkm/fcount{
 			distKm := math.Sqrt((cxKm-xKm)*(cxKm-xKm)+(cyKm-yKm)*(cyKm-yKm))
-			rDistKm := 0.5-distKm/(maxWHkm/2)
+			rDistKm := 0.5-distKm/(minWHkm/2)
 			_,_ = distKm, rDistKm
 			elevation := obj.WorldTerrain.GetElevationByKmPoint(xKm, yKm)
 			if elevation >= 0 {
 				count_land++
 			}
 			count_all++
-			score += elevation//*elevation
+			//score += elevation
 		}
 	}
 	
 	land := float64(count_land)/float64(count_all)
+	if land > 1.0 { land = 1.0 }
+	if land < 0.0 { land = 0.0 }
 
 	if land < obj.WorldTerrain.Config.MinLandProportion || land > obj.WorldTerrain.Config.MaxLandProportion {
 		return 0, false
 	}
+
+	score = 1.0 - math.Abs(obj.WorldTerrain.Config.StandardLandProportion-land)
 	
 
 	return score, true
@@ -82,6 +86,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	var select_ad int
 	var select_z float64
 
+
 	for i:=0; i<submit_model_num; i++{
 		cobj[i] = *obj
 		cobj[i].xKm = (obj.WorldTerrain.WEKm-obj.WEKm)*rand.Float64()
@@ -90,7 +95,6 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 		if available == false{
 			i--
 			obj.WorldTerrain.Z += 11
-			
 			continue
 		}
 
@@ -100,6 +104,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 			select_z = obj.WorldTerrain.Z
 		}
 	}
+
 	
 	obj.WorldTerrain.Z = select_z
 
@@ -111,6 +116,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 }
 
 func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
+
 	if leveling == true {
 		obj.MakeLevelingLayer()
 	}
@@ -118,5 +124,5 @@ func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
 		obj.MakeLiverTable()
 	}
 
-	utility.EchoProcessEnd("TerrainGeneration")
+	utility.EchoProcessEnd("DEM generation")
 }
