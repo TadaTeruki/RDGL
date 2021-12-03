@@ -1,6 +1,6 @@
 
 /*
-examples/detailed_hello_dem.go
+examples/hello_dem_detailed.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify

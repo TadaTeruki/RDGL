@@ -3,17 +3,20 @@
 hello_dem:
 	go run hello_dem.go
 
-detailed_hello_dem:
-	go run detailed_hello_dem.go
+hello_dem_detailed:
+	go run hello_dem_detailed.go
 
-png_dem:
-	go run png_dem.go
+outline_interpolation:
+	go run outline_interpolation.go
 
-shadowed_dem:
-	go run shadowed_dem.go
+write_to_png:
+	go run write_to_png.go
 
-outline_dem:
-	go run outline_dem.go
+write_to_png_with_shadow:
+	go run write_to_png_with_shadow.go
 
-obj_dem:
-	go run obj_dem.go
+write_to_obj:
+	go run write_to_obj.go
+
+write_to_txt:
+	go run write_to_txt.go

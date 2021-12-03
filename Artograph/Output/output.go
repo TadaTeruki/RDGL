@@ -237,7 +237,6 @@ func WriteDEMtoOBJ(filename string, ats *artograph.ArtoDEM, image_w float64, ima
 		}
 	}
 
-	//_ = write
 	write("g DEM\n")
 	
 	data_w := 0
@@ -278,6 +277,51 @@ func WriteDEMtoOBJ(filename string, ats *artograph.ArtoDEM, image_w float64, ima
 			
 			write("f "+a+" "+b+" "+d+" "+c+"\n")
 		}
+	}
+
+	return nil
+}
+
+
+func WriteDEMtoTXT(filename string, ats *artograph.ArtoDEM, image_w float64, image_h float64) error {
+	var file *os.File
+	var err error
+
+	file, err = os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	
+	if image_w < 0 { image_w = image_h/ats.VerticalKm*ats.HorizontalKm }
+	if image_h < 0 { image_h = image_w/ats.HorizontalKm*ats.VerticalKm }
+
+	write := func(s string){
+		_, err = file.WriteString(s)
+		if err != nil {
+			panic(err)
+		}
+	}
+	write("#HorizontalKm\n")
+	write(FtoA(ats.HorizontalKm)+"\n\n")
+	write("#VerticalKm\n")
+	write(FtoA(ats.VerticalKm)+"\n\n")
+	write("#UnitKm\n")
+	write(FtoA(ats.UnitKm)+"\n\n")
+
+
+	for yKm := 0.0; yKm < ats.VerticalKm; yKm += ats.UnitKm {
+		for xKm := 0.0; xKm < ats.HorizontalKm; xKm += ats.UnitKm {
+			elevation, err := ats.GetElevationByKmPoint(xKm, yKm)
+			if err != nil {
+				continue
+			}
+			write(FtoA(elevation))
+			if xKm+ats.UnitKm < ats.HorizontalKm {
+				write(",")
+			}
+		}
+		write("\n")
 	}
 
 	return nil

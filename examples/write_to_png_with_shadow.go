@@ -1,6 +1,6 @@
 
 /*
-examples/shadowed_dem.go
+examples/write_to_png_with_shadow.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,7 @@ func main(){
 
 	dem.Generate()
 	
+	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, shadow)
 	output.WriteDEMtoPNGwithShadow("output.png", &dem, 300, -1, output.DefaultShadow(&dem))
 
 }

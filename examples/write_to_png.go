@@ -1,6 +1,6 @@
 
 /*
-examples/png_dem.go
+examples/write_to_png.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,7 @@ func main(){
 
 	dem.Generate()
 
+	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image)
 	output.WriteDEMtoPNG("output.png", &dem, 300, -1)
 
 }

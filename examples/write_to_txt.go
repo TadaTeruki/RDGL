@@ -1,5 +1,5 @@
 /*
-examples/outline_dem.go
+examples/write_to_txt.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -21,26 +21,21 @@ package main
 import(
 	output "../Artograph/Output"
 	artograph "../Artograph"
-	
 )
 
 func main(){
-
 	dem := artograph.NewDEM(18)
-
 	dem.ElevationAbsM = 8000
 	dem.UnitKm = 2
 	dem.VerticalKm = 1000
-	// When use OutlineInterpolation, you can substitute -1 for either VerticalKm or HorizontalKm
-	//  to apply the aspect ratio of outline image to the DEM.
-	dem.HorizontalKm = -1
+	dem.HorizontalKm = 1000
 	dem.LevelingIntervalM = 5
 
 	artograph.EnableProcessLog()
 
-	// assign the filename of outline image.
-	dem.Process("./example.png")
+	dem.Generate()
 
-	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, shadow)
-	output.WriteDEMtoPNGwithShadow("output.png", &dem, 300, -1, output.DefaultShadow(&dem))
+	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image)
+	output.WriteDEMtoTXT("output.txt", &dem, 1000, -1)
+
 }
