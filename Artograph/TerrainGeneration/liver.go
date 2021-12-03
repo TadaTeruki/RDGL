@@ -20,6 +20,7 @@ package terrain_generation
 import(
 	"math"
 	"sort"
+	utility "../Utility"
 )
 
 func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *LiverPoint{
@@ -70,6 +71,11 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 		return elevation <= obj.WorldTerrain.Config.LiverEndPointElevationM 
 	}
 
+	utility.EchoProcessPercentage("Liver simulation", 0)
+
+	checked_sum := 0.0
+	checked_all := float64(len(lv_order))
+
 	// simulate the behavior of water
 	for i := 0; i<len(lv_order); i++{
 		ltroot := obj.LiverTable[lv_order[i].Y][lv_order[i].X]
@@ -100,10 +106,24 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 				lt2.Cavity = lt.Cavity
 				if lt.BaseElevation*lt.Cavity < lt2.BaseElevation*lt2.Cavity {
 					lt2.Cavity = math.Max(lt.BaseElevation*lt.Cavity/lt2.BaseElevation,0)
+
+
 				}
 			}
+
+			checked_before_sum := checked_sum
+			checked_sum ++
+			if math.Floor(checked_before_sum/checked_all*10) != math.Floor(checked_sum/checked_all*10) &&
+			   checked_sum < checked_all{
+				
+				utility.EchoProcessPercentage("Liver simulation", checked_sum/checked_all)
+			}
 		}
+
+
 	}
+
+	utility.EchoProcessEnd("Liver simulation")
 
 	obj.LiverCheckIsAvailable = true
 }

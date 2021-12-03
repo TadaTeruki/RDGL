@@ -21,7 +21,7 @@ package terrain_generation
 import(
 	"math"
 	"math/rand"
-	"fmt"
+	utility "../Utility"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){
@@ -112,13 +112,11 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 
 func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
 	if leveling == true {
-		fmt.Println("Process : Leveling")
 		obj.MakeLevelingLayer()
 	}
 	if liver == true {
-		fmt.Println("Process : Liver")
 		obj.MakeLiverTable()
 	}
 
-	fmt.Println("Terrain generation successfully finished")
+	utility.EchoProcessEnd("TerrainGeneration")
 }

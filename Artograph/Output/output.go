@@ -187,7 +187,7 @@ func DEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h 
 	surface.Finish()
 }
 
-func WriteArtoDEMToPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int){
+func WriteDEMtoPNG(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int){
 	var shadow Shadow
 	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, false, shadow)
 }
@@ -202,6 +202,6 @@ func DefaultShadow(ats *artograph.ArtoDEM) Shadow{
 	return shadow
 }
 
-func WriteArtoDEMToPNGWithShadow(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int, shadow Shadow){
+func WriteDEMtoPNGwithShadow(file string, ats *artograph.ArtoDEM, image_pixel_w, image_pixel_h int, shadow Shadow){
 	DEMToPNG(file, ats, image_pixel_w, image_pixel_h, true, shadow)
 }

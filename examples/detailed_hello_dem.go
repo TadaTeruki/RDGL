@@ -24,33 +24,33 @@ import(
 )
 
 func main(){
-	ats := artograph.NewDEM(16)
+	dem := artograph.NewDEM(16)
 
-	// [ats.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter)
-	// (Example : ats.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
-	// (Recommendation : ats.ElevationAbsM >= 4000)
-	ats.ElevationAbsM = 8000
+	// [dem.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter)
+	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
+	// (Recommendation : dem.ElevationAbsM >= 4000)
+	dem.ElevationAbsM = 8000
 
-	// [ats.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain
-	ats.UnitKm = 2
+	// [dem.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain
+	dem.UnitKm = 2
 
-	// [ats.VerticalKm] The vertical width of the DEM data (Km)
-	ats.VerticalKm = 1000
+	// [dem.VerticalKm] The vertical width of the DEM data (Km)
+	dem.VerticalKm = 1000
 
-	// [ats.HorizontalKm] The horizontal width of the DEM data (Km)
-	ats.HorizontalKm = 1000
+	// [dem.HorizontalKm] The horizontal width of the DEM data (Km)
+	dem.HorizontalKm = 1000
 
-	// [ats.LevelingIntervalM] The elevation unit(Meter)
-	ats.LevelingIntervalM = 5
+	// [dem.LevelingIntervalM] The elevation unit(Meter)
+	dem.LevelingIntervalM = 5
 
-	ats.Generate()
+	dem.Generate()
 	// ---
 	
-	for yKm := 0.0; yKm < ats.HorizontalKm; yKm += ats.HorizontalKm/50.0{
+	for yKm := 0.0; yKm < dem.HorizontalKm; yKm += dem.HorizontalKm/50.0{
 		str := ""
-		for xKm := 0.0; xKm < ats.VerticalKm; xKm += ats.HorizontalKm/50.0{
+		for xKm := 0.0; xKm < dem.VerticalKm; xKm += dem.HorizontalKm/50.0{
 
-			elevation, _ := ats.GetElevationByKmPoint(xKm, yKm)
+			elevation, _ := dem.GetElevationByKmPoint(xKm, yKm)
 
 			if elevation >= 800{
 				str += "@@"

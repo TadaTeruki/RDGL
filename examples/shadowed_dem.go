@@ -25,15 +25,15 @@ import(
 )
 
 func main(){
-	ats := artograph.NewDEM(18)
-	ats.ElevationAbsM = 8000
-	ats.UnitKm = 2
-	ats.VerticalKm = 1000
-	ats.HorizontalKm = 1000
-	ats.LevelingIntervalM = 5
+	dem := artograph.NewDEM(18)
+	dem.ElevationAbsM = 8000
+	dem.UnitKm = 2
+	dem.VerticalKm = 1000
+	dem.HorizontalKm = 1000
+	dem.LevelingIntervalM = 5
 
-	ats.Generate()
+	dem.Generate()
 	
-	output.WriteArtoDEMToPNGWithShadow("output.png", &ats, 300, -1, output.DefaultShadow(&ats))
+	output.WriteDEMtoPNGwithShadow("output.png", &dem, 300, -1, output.DefaultShadow(&dem))
 
 }

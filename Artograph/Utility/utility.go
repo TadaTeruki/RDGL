@@ -1,5 +1,5 @@
 /*
-examples/outline_dem.go
+Artograph/Utility/utility.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -15,24 +15,21 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-
-package main
+package utility
 
 import(
-	output "../Artograph/Output"
-	artograph "../Artograph"
-	
+	"fmt"
+	"math"
 )
 
-func main(){
+var ProcessLog bool = false
 
-	dem := artograph.NewDEM(20)
-	dem.VerticalKm = 1000
-	dem.HorizontalKm = -1
-	dem.UnitKm = 1.5
-	dem.Process("./example.png")
-	
-	output.WriteDEMtoPNGwithShadow("output.png", &dem, 500, -1, output.DefaultShadow(&dem))
+func EchoProcessPercentage(context string, process_proportion float64){
+	if ProcessLog == false { return }
+	fmt.Println("Process log : " + context + " (",math.Floor(process_proportion*100),"% )")
+}
 
-
+func EchoProcessEnd(context string){
+	if ProcessLog == false { return }
+	fmt.Println("Process log : " + context + " was successfully finished")
 }

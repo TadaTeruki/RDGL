@@ -25,9 +25,9 @@ import(
 
 func main(){
 	// Use 'NewDEM' to make a new DEM (assigning the seed value).
-	ats := artograph.NewDEM(16)
+	dem := artograph.NewDEM(16)
 	// Start DEM generation.
-	ats.Generate()
+	dem.Generate()
 	// DEM generation will be completed automatically. Easy!
 
 	// ---
@@ -35,13 +35,13 @@ func main(){
 	// Now let's output the DEM data onto your terminal.
 	// 'HorizontalKm' means the horizontal width of the DEM data (unit:Km)
 	
-	for yKm := 0.0; yKm < ats.HorizontalKm; yKm += ats.HorizontalKm/50.0{
+	for yKm := 0.0; yKm < dem.HorizontalKm; yKm += dem.HorizontalKm/50.0{
 		str := ""
 		// 'VerticalKm' means the vertical width of the DEM data (unit:Km)
-		for xKm := 0.0; xKm < ats.VerticalKm; xKm += ats.HorizontalKm/50.0{
+		for xKm := 0.0; xKm < dem.VerticalKm; xKm += dem.HorizontalKm/50.0{
 
 			// Get elevation (unit:Meter) by Km coodinate
-			elevation, _ := ats.GetElevationByKmPoint(xKm, yKm)
+			elevation, _ := dem.GetElevationByKmPoint(xKm, yKm)
 
 			// The maximum elevation is 8000M, and the minimum elvation is -8000M by default.
 			if elevation >= 800{

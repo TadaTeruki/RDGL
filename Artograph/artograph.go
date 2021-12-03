@@ -22,6 +22,7 @@ package artograph
 import(
 	terrain "./TerrainGeneration"
 	outline "./Outline"
+	utility "./Utility"
 	"fmt"
 	"math"
 )
@@ -39,87 +40,89 @@ type ArtoDEM struct{
 	l_obj terrain.LocalTerrainObject
 }
 
-func (ats *ArtoDEM) default_ats(){
-	ats.Seed = 0
-	ats.ElevationAbsM = 8000
-	ats.UnitKm = 2
-	ats.VerticalKm = 1000
-	ats.HorizontalKm = 1000
-	ats.LevelingIntervalM = 5
-	ats.side_width = 3
+func (dem *ArtoDEM) default_dem(){
+	dem.Seed = 0
+	dem.ElevationAbsM = 8000
+	dem.UnitKm = 2
+	dem.VerticalKm = 1000
+	dem.HorizontalKm = 1000
+	dem.LevelingIntervalM = 5
+	dem.side_width = 3
 }
 
 const ARTO_ERROR_1 = "<Artograph> Error : The coodinate assigned to 'GetElevationByKmPoint' is outside of the DEM"
 
 func NewDEM(seed int64) ArtoDEM{
-	var ats ArtoDEM
-	ats.default_ats()
-	ats.Seed = seed
-	return ats
+	var dem ArtoDEM
+	dem.default_dem()
+	dem.Seed = seed
+	return dem
 }
 
-func (ats *ArtoDEM) config(){
-	ats.l_obj.NSKm = ats.VerticalKm + ats.UnitKm * ats.side_width * 2
-	ats.l_obj.WEKm = ats.HorizontalKm + ats.UnitKm * ats.side_width * 2
+func (dem *ArtoDEM) config(){
+	dem.l_obj.NSKm = dem.VerticalKm + dem.UnitKm * dem.side_width * 2
+	dem.l_obj.WEKm = dem.HorizontalKm + dem.UnitKm * dem.side_width * 2
 
-	ats.w_obj.NSKm = ats.l_obj.NSKm * ats.side_width
-	ats.w_obj.WEKm = ats.l_obj.WEKm * ats.side_width
+	dem.w_obj.NSKm = dem.l_obj.NSKm * dem.side_width
+	dem.w_obj.WEKm = dem.l_obj.WEKm * dem.side_width
 
-	ats.w_obj.ElevationBaseM = ats.ElevationAbsM
-	ats.w_obj.Config = terrain.GetInternalConfig()
-	ats.w_obj.Config.Seed = ats.Seed
-	ats.w_obj.Config.LiverIntervalKm = ats.UnitKm
-	ats.w_obj.Config.LevelingIntervalKm = ats.UnitKm
-	ats.w_obj.Config.LevelingHeightM = ats.LevelingIntervalM
-	ats.w_obj.Config.LevelingStartPointIntervalKm = math.Max(ats.l_obj.NSKm, ats.l_obj.WEKm)/100
+	dem.w_obj.ElevationBaseM = dem.ElevationAbsM
+	dem.w_obj.Config = terrain.GetInternalConfig()
+	dem.w_obj.Config.Seed = dem.Seed
+	dem.w_obj.Config.LiverIntervalKm = dem.UnitKm
+	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
+	dem.w_obj.Config.LevelingHeightM = dem.LevelingIntervalM
+	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100
 
-	ats.l_obj.WorldTerrain = &ats.w_obj
+	dem.l_obj.WorldTerrain = &dem.w_obj
 
 }
 
-func (ats *ArtoDEM) Generate(){
+func (dem *ArtoDEM) Generate(){
 
-	ats.config()
-	ats.w_obj.SetNEFPoint()
-	ats.w_obj.MakeWorldTerrain()
+	dem.config()
+	dem.w_obj.SetNEFPoint()
+	dem.w_obj.MakeWorldTerrain()
 
-	ats.l_obj.MakeLocalTerrain()
+	dem.l_obj.MakeLocalTerrain()
 	
 
-	ats.l_obj.TransformProcess(true, true)
+	dem.l_obj.TransformProcess(true, true)
 	
 }
 
-
-
-func (ats *ArtoDEM) Process(file string){
+func (dem *ArtoDEM) Process(file string){
 	data_fw, data_fh := outline.GetImageScale(file)
 
-	if ats.HorizontalKm < 0 {
-		ats.HorizontalKm = ats.VerticalKm/data_fh*data_fw
+	if dem.HorizontalKm < 0 {
+		dem.HorizontalKm = dem.VerticalKm/data_fh*data_fw
 	}
-	if ats.VerticalKm < 0 {
-		ats.VerticalKm = ats.HorizontalKm/data_fw*data_fh
+	if dem.VerticalKm < 0 {
+		dem.VerticalKm = dem.HorizontalKm/data_fw*data_fh
 	}
 
-	ats.config()
-	ats.w_obj.SetNEFPoint()
-	ats.w_obj.Config.NoizeMinPersistence = ats.w_obj.Config.OutlineNoizeMinPersistence
-	ats.w_obj.Config.NoizeMaxPersistence = ats.w_obj.Config.OutlineNoizeMaxPersistence
-	ats.w_obj.MakeWorldTerrain()
+	dem.config()
+	dem.w_obj.SetNEFPoint()
+	dem.w_obj.Config.NoizeMinPersistence = dem.w_obj.Config.OutlineNoizeMinPersistence
+	dem.w_obj.Config.NoizeMaxPersistence = dem.w_obj.Config.OutlineNoizeMaxPersistence
+	dem.w_obj.MakeWorldTerrain()
 	
-	outline.LoadTerrainData(&ats.l_obj, &ats.w_obj.Config, file)
+	outline.LoadTerrainData(&dem.l_obj, &dem.w_obj.Config, file)
 	
-	ats.l_obj.TransformProcess(true, true)
+	dem.l_obj.TransformProcess(true, true)
 }
 
-func (ats *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){
-	if xKm < 0 || yKm < 0 || xKm > ats.HorizontalKm || yKm > ats.VerticalKm {
+func (dem *ArtoDEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){
+	if xKm < 0 || yKm < 0 || xKm > dem.HorizontalKm || yKm > dem.VerticalKm {
 		err := fmt.Errorf(ARTO_ERROR_1)
 		return 0, err
 	} 
-	dxKm := xKm + ats.UnitKm * ats.side_width
-	dyKm := yKm + ats.UnitKm * ats.side_width
+	dxKm := xKm + dem.UnitKm * dem.side_width
+	dyKm := yKm + dem.UnitKm * dem.side_width
 
-	return ats.l_obj.GetElevationByKmPoint(dxKm, dyKm), nil
+	return dem.l_obj.GetElevationByKmPoint(dxKm, dyKm), nil
+}
+
+func EnableProcessLog(){
+	utility.ProcessLog = true
 }

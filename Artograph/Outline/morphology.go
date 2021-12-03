@@ -22,8 +22,8 @@ package outline
 import(
 	"github.com/cnkei/gospline"
 	terrain "../TerrainGeneration"
+	utility "../Utility"
 	"math"
-	"fmt"
 )
 
 type MlPoint struct{
@@ -255,8 +255,9 @@ func Interpolate(obj *terrain.LocalTerrainObject, config *terrain.InternalConfig
 	}
 
 	for i := 0; i < config.OutlineInterpolationQuality; i++{
-		fmt.Println("processing...(",i,"/",config.OutlineInterpolationQuality,")")
+		utility.EchoProcessPercentage("Outline interpolation", float64(i)/float64(config.OutlineInterpolationQuality))
 		Morphology(obj, i == 0, &base_class, &class_group)
 	}
-
+	utility.EchoProcessEnd("Outline interpolation")
+	
 }

@@ -20,7 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package terrain_generation
 import(
 	"math"
-	//"fmt"
+	utility "../Utility"
 )
 
 type Point struct{
@@ -65,6 +65,8 @@ func (ocl *LevelingLayer) MarkLeveling(obj *LocalTerrainObject, x, y int, elevat
 
 func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
+	
+
 	ocl := &obj.LevelingLayerObj
 
 	pond_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm
@@ -95,7 +97,9 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 		open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)*y/yl))
 	}
 
-	
+	utility.EchoProcessPercentage("Leveling", 0)
+	checked_sum := 0.0
+	checked_all := float64(len(ocl.LevelingTable[0])*len(ocl.LevelingTable))
 
 	for elv := -obj.WorldTerrain.ElevationBaseM; elv <= obj.WorldTerrain.ElevationBaseM; elv += obj.WorldTerrain.Config.LevelingHeightM {
 		
@@ -149,6 +153,13 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
 				} else {
 					checked[open[i].Y][open[i].X] = true
+
+					checked_before_sum := checked_sum
+					checked_sum++
+					if math.Floor(checked_before_sum/checked_all*10) != math.Floor(checked_sum/checked_all*10) {
+						utility.EchoProcessPercentage("Leveling", checked_sum/checked_all)
+					}
+
 				}
 				
 			}
@@ -168,6 +179,8 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 			open = append(open, point)
 		}
 	}
+
+	utility.EchoProcessEnd("Leveling")
 
 	obj.LevelingCheckIsAvailable = true
 }

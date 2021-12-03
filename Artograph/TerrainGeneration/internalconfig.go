@@ -43,31 +43,40 @@ func GetInternalConfig() InternalConfig {
 	
 	// Maximum-proportion of land 
 	conf.MaxLandProportion = 0.65
+
+	// Proportion of land of WorldTerrain
+	conf.StandardLandProportion = 0.5
 	
 	// Quality of terrain-generation
 	conf.LocalTerrainSelectionQuality = 100
 
-	// Effects configuration
-	conf.LevelingIntervalKm = 1.0 
+	// Liver effects configuration
+	
 	conf.LiverIntervalKm = 1.0	
 	conf.LiverEndPointElevationM = -10.0
 
 	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )
 	conf.TerrainReverseScale = 0.01
 
+	// Leveling effects configuration
+	conf.LevelingIntervalKm = 1.0 
 	conf.LevelingHeightM = 100.0
 	conf.LevelingStartPointIntervalKm = 100.0
-	conf.LevelingMinimumElevationM = -1500.0
+	conf.LevelingMinimumElevationM = -5000.0
 
+	// The pressure strength (on plain)
 	conf.PlainDepth = 0.3
 
+	// Interpolation quality of outline data
 	conf.OutlineInterpolationQuality = 10
-	conf.OutlineNoiseStrength = 0.5
+	// Noise strength of outline data
+	conf.OutlineNoiseStrength = 0.7
 
-	conf.OutlineNoizeMinPersistence = 0.6
+	// Minimum/Maximum-complicatedness of terrain
+	conf.OutlineNoizeMinPersistence = 0.5
 	conf.OutlineNoizeMaxPersistence = 0.8
 
-	conf.StandardLandProportion = 0.5
+
 	
 	return conf
 }
