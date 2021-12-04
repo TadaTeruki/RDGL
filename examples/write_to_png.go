@@ -26,18 +26,14 @@ import(
 
 func main(){
 	dem := artograph.NewDEM(14)
-	dem.ElevationAbsM = 8000
-	dem.UnitKm = 2
-	dem.VerticalKm = 1000
-	dem.HorizontalKm = 1000
-	dem.LevelingIntervalM = 5
-	dem.Quality01 = 1.0
 
 	artograph.EnableProcessLog()
 
 	dem.Generate()
 
 	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image)
+	// width|height, when either of them is -1,
+	//  will be applied proper value according to the height|width and the aspect ratio of DEM.
 	output.WriteDEMtoPNG("result.png", &dem, 300, -1)
 
 }

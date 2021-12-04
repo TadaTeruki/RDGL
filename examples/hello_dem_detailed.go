@@ -26,24 +26,34 @@ import(
 func main(){
 	dem := artograph.NewDEM(14)
 
-	// [dem.ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter) (>0.0)
+	// [ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter) (>0.0)
 	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
-	dem.ElevationAbsM = 8000
+	// default : 8000.0
+	dem.ElevationAbsM = 8000.0
 
-	// [dem.UnitKm] The interval of datum point(Km) for generating liver & leveling terrain (>0.0)
-	dem.UnitKm = 2
+	// [UnitKm] The interval of datum point(Km) for generating liver & leveling terrain (>0.0)
+	// default : 2.0
+	dem.UnitKm = 2.0
 
-	// [dem.VerticalKm] The vertical width of the DEM data (Km) (>0.0)
-	dem.VerticalKm = 1000
+	// [VerticalKm] The vertical width of the DEM data (Km) (>0.0)
+	// default : 1000.0
+	dem.VerticalKm = 1000.0
 
-	// [dem.HorizontalKm] The horizontal width of the DEM data (Km) (>0.0)
-	dem.HorizontalKm = 1000
+	// [HorizontalKm] The horizontal width of the DEM data (Km) (>0.0)
+	// default : 1000.0
+	dem.HorizontalKm = 1000.0
 
-	// [dem.LevelingIntervalM] The interval of elevation level (Meter) (>0.0)
-	dem.LevelingIntervalM = 5
+	// [LevelingIntervalM] The interval of elevation level (Meter) (>0.0)
+	// default : 5.0
+	dem.LevelingIntervalM = 5.0
 
-	// [dem.Quality01] The quality of DEM (>0.0) (Recommend : 1.0)
+	// [Quality01] The quality of DEM (>0.0) (Recommend : 1.0)
+	// default : 1.0
 	dem.Quality01 = 1.0
+
+	// [LandProportion] The proportion of land (>0.0, <1.0) (Example : 0.7 -> 70% (of generated terrain) will covered with land)
+	// The less this value is, the faster liver generation process runs.
+	dem.LandProportion01 = 0.5
 
 	dem.Generate()
 
