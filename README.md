@@ -4,6 +4,8 @@
 
 # RDGL - Realistic procedural DEM generation library
 
+**DEM** : Digital Elevation Model
+
 by TadaTeruki (Perukii) <tadateruki.public@gmail.com> <br>
 written in **Golang**
 
