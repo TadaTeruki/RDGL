@@ -35,6 +35,7 @@ type ArtoDEM struct{
 	VerticalKm			float64
 	HorizontalKm		float64
 	Quality01 			float64
+	LandProportion01	float64
 
 	side_width		float64
 	w_obj terrain.WorldTerrainObject
@@ -50,6 +51,7 @@ func (dem *ArtoDEM) default_dem(){
 	dem.LevelingIntervalM = 5
 	dem.side_width = 3.0
 	dem.Quality01 = 1.0
+	dem.LandProportion01 = 0.5
 }
 
 func (dem *ArtoDEM) quality_max() float64{
@@ -87,6 +89,7 @@ func (dem *ArtoDEM) config(){
 	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100
 	dem.w_obj.Config.OutlineInterpolationQuality = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
+	dem.w_obj.Config.StandardLandProportion = dem.LandProportion01
 
 	dem.l_obj.WorldTerrain = &dem.w_obj
 

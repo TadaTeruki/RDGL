@@ -264,9 +264,9 @@ func Interpolate(obj *terrain.LocalTerrainObject, config *terrain.InternalConfig
 	}
 
 	for i := 0; i < config.OutlineInterpolationQuality; i++{
-		utility.EchoProcessPercentage("Outline interpolation", float64(i)/float64(config.OutlineInterpolationQuality))
+		utility.EchoProcessPercentage("Outline process", float64(i)/float64(config.OutlineInterpolationQuality))
 		Morphology(obj, i == 0, &base_class, &class_group)
 	}
-	utility.EchoProcessEnd("Outline interpolation")
+	utility.EchoProcessEnd("Outline process")
 	
 }

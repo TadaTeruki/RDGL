@@ -65,13 +65,13 @@ type InternalConfig struct{ // details -> <globalconfig.go>
 	TerrainReverseScale float64
 	LevelingHeightM float64
 	LevelingStartPointIntervalKm float64
-	LevelingMinimumElevationM float64
+	LevelingMinimumElevationProportion float64
 	PlainDepth float64
-	LiverEndPointElevationM float64
+	LiverEndPointElevationProportion float64
 	OutlineInterpolationQuality int
 	OutlineNoiseStrength float64
 	StandardLandProportion float64
-	StandardOceanProportion float64
+	//StandardOceanProportion float64
 	OutlineNoizeMinPersistence float64
 	OutlineNoizeMaxPersistence float64
 	MapSideWidthKm float64

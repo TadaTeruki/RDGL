@@ -31,11 +31,12 @@ func MakeNEFPoint(n,e float64) NEFPoint{
 }
 
 func (obj *WorldTerrainObject) SetNEFPoint(){
+	ocean_proportion := 1.0-obj.Config.StandardLandProportion
 	var NEFPointList = []NEFPoint{
 		MakeNEFPoint(0.0, -obj.ElevationBaseM),
-		MakeNEFPoint(obj.Config.StandardOceanProportion*0.7, -obj.ElevationBaseM*0.5),
-		MakeNEFPoint(obj.Config.StandardOceanProportion*0.85, -obj.ElevationBaseM*0.1),
-		MakeNEFPoint(obj.Config.StandardOceanProportion, 0.0),
+		MakeNEFPoint(ocean_proportion*0.7, -obj.ElevationBaseM*0.5),
+		MakeNEFPoint(ocean_proportion*0.85, -obj.ElevationBaseM*0.1),
+		MakeNEFPoint(ocean_proportion, 0.0),
 		MakeNEFPoint(1.0, obj.ElevationBaseM),
 	}
 	obj.NEFPointList = NEFPointList
