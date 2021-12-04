@@ -26,10 +26,7 @@ import(
 func main(){
 	dem := artograph.NewDEM(14)
 
-	// [ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter) (>0.0)
-	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
-	// default : 8000.0
-	dem.ElevationAbsM = 8000.0
+	// --- Basic configurations ---
 
 	// [UnitKm] The interval of datum point(Km) for generating liver & leveling terrain (>0.0)
 	// default : 2.0
@@ -43,20 +40,27 @@ func main(){
 	// default : 1000.0
 	dem.HorizontalKm = 1000.0
 
+	// [ElevationAbsM] Absolute value of the maximum/minimum elevation(Meter) (>0.0)
+	// (Example : dem.ElevationAbsM = 8000 -> the minimum/maximum elevation : -8000 ~ 8000)
+	// default : 8000.0
+	dem.ElevationAbsM = 8000.0
+
 	// [LevelingIntervalM] The interval of elevation level (Meter) (>0.0)
 	// default : 5.0
 	dem.LevelingIntervalM = 5.0
-
-	// [Quality01] The quality of DEM (>0.0)
-	// default : 1.0
-	// recommend : 1.0
-	dem.Quality01 = 1.0
 
 	// [LandProportion] The proportion of land (>0.0, <1.0) (Example : 0.7 -> 70% (of generated terrain) will covered with land)
 	// The less this value is, the faster liver generation process runs.
 	// default : 0.5
 	// recommend : <0.75
 	dem.LandProportion01 = 0.5
+
+	// --- Advanced configurations ---
+
+	// [Quality01] The quality of DEM (>0.0)
+	// default : 1.0
+	// recommend : 1.0
+	dem.Quality01 = 1.0
 
 	// [PlateSizeKm] The size of a continental plate (>0.0)
 	// default : 1000.0
