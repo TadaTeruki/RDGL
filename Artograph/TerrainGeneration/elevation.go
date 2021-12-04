@@ -89,11 +89,13 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 
 	var relv float64
 
-
 	if obj.ElevationTableIsAvailable == true {
 		noise := obj.WorldTerrain.GetNoiseLevelByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 		relv = obj.GetElevationByKmPointFromElevationTable(xKm, yKm)
-		relv += (noise-0.5)*(noise-0.5)*obj.WorldTerrain.ElevationAbsM*obj.WorldTerrain.Config.OutlineNoiseStrength
+		mins := obj.WorldTerrain.Config.OutlineNoiseMinStrength
+		maxs := obj.WorldTerrain.Config.OutlineNoiseMaxStrength
+		elevation_abs := obj.WorldTerrain.ElevationAbsM
+		relv += math.Abs(noise-0.5)*2.0*(elevation_abs*(math.Abs(relv)/elevation_abs*(maxs-mins)+mins))
 	} else {
 		relv = obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 	}

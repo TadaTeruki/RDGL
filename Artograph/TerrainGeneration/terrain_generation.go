@@ -66,7 +66,8 @@ type InternalConfig struct{ // details -> <globalconfig.go>
 	LakeDepthProportion float64
 	LiverEndPointElevationProportion float64
 	OutlineInterpolationQuality int
-	OutlineNoiseStrength float64
+	OutlineNoiseMinStrength float64
+	OutlineNoiseMaxStrength float64
 	StandardLandProportion float64
 	OutlineNoizeMinPersistence float64
 	OutlineNoizeMaxPersistence float64

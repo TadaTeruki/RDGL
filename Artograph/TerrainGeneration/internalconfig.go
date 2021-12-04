@@ -62,7 +62,8 @@ func GetInternalConfig() InternalConfig {
 	// Interpolation quality of outline data
 	conf.OutlineInterpolationQuality = 10
 	// Noise strength of outline data
-	conf.OutlineNoiseStrength = 0.7
+	conf.OutlineNoiseMinStrength = 0.01
+	conf.OutlineNoiseMaxStrength = 1.0
 
 	// Minimum/Maximum-complicatedness of terrain
 	conf.OutlineNoizeMinPersistence = 0.5
