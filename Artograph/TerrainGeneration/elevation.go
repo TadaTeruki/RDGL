@@ -105,14 +105,25 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 		   oc.ElevationLevel > obj.WorldTerrain.Config.LevelingMinimumElevationProportion*obj.WorldTerrain.ElevationBaseM{
 			diff := (oc.ElevationLevel-relv)
 			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.PlainDepth
+			/*
 			if oc.ElevationLevel >= 0.0 && relv < 0.0 {
 				relv = 0.0
 			}
+			*/
 		}
 	}
+
+	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationBaseM
 	
-	if relv > 0.0 && obj.LiverCheckIsAvailable == true {
-		relv = relv * obj.CheckLiverCavityByKmPoint(xKm, yKm)
+	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true {
+		
+		arelv := (relv-liver_elevation) * obj.CheckLiverCavityByKmPoint(xKm, yKm)+liver_elevation
+			
+		if relv <= arelv{
+
+		} else {
+			relv = arelv
+		}
 	}
 	
 	return relv

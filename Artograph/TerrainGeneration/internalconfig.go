@@ -51,9 +51,12 @@ func GetInternalConfig() InternalConfig {
 	// Quality of terrain-generation
 	conf.LocalTerrainSelectionQuality = 100
 
+	// The pressure strength (on plain)
+	conf.PlainDepth = 0.3
+
 	// Liver effects configuration
 	conf.LiverIntervalKm = 1.0	
-	conf.LiverEndPointElevationProportion = 0.0
+	conf.LiverEndPointElevationProportion = -0.005
 
 	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )
 	conf.TerrainReverseScale = 0.01
@@ -64,8 +67,7 @@ func GetInternalConfig() InternalConfig {
 	conf.LevelingStartPointIntervalKm = 100.0
 	conf.LevelingMinimumElevationProportion = -0.5
 
-	// The pressure strength (on plain)
-	conf.PlainDepth = 0.0
+
 
 	// Interpolation quality of outline data
 	conf.OutlineInterpolationQuality = 10

@@ -96,7 +96,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			
 			lt2 := obj.GetLiverPointFromKmPoint(path[j-1].XKm,path[j-1].YKm)
 
-			if j == 1 && lt2.Cavity < 0.99{
+			if j == 1 && lt2.Cavity < 1.0{
 				for l := 1; l < len(path); l++{
 					p := float64(l)/float64(len(path))
 					lt3 := obj.GetLiverPointFromKmPoint(path[l].XKm,path[l].YKm)
