@@ -22,7 +22,7 @@ RDGL generates various procedural-terrains like :
 
 |Seed = 8|Seed=14<br>LandProportion01=0.85|Seed = 3<br>LandProportion01=0.15|Seed = 25|
 |---|---|---|---|
-|<img src="https://user-images.githubusercontent.com/57752033/144703940-64409bae-8279-4bf1-9b6c-df8f3a44ce2d.png" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704213-c1d2c452-8970-40fb-a219-f904dbf18d1b.png" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704154-9f09cbc2-91d1-4ee1-91bb-d8e977acddf8.png" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704341-eaa2d1ca-49d2-4889-8847-26b7fce88692.png" height="200px">|
+|<img src="https://user-images.githubusercontent.com/57752033/144703940-64409bae-8279-4bf1-9b6c-df8f3a44ce2d.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704213-c1d2c452-8970-40fb-a219-f904dbf18d1b.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704154-9f09cbc2-91d1-4ee1-91bb-d8e977acddf8.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704341-eaa2d1ca-49d2-4889-8847-26b7fce88692.png" width="200px" height="200px">|
 ```go
 package main
 import output "github.com/TadaTeruki/RDGL/Output"
