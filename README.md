@@ -19,7 +19,7 @@ written in **Golang**
 
 |examples/resources/draft.png|examples/resources/swan.png|
 |---|---|
-|<img src="https://user-images.githubusercontent.com/57752033/144703651-cc438a8d-84e3-4ac7-bd37-e10074ad2340.png" height="150px"><img src="https://user-images.githubusercontent.com/57752033/144703715-acad18ba-f2c9-4438-aac4-712b112b80e6.png" height="150px">|<img src="https://user-images.githubusercontent.com/57752033/144702040-b51fb5fa-a7f5-4cfb-9bd8-4950b1d05734.jpg" height="150px"><img src="https://user-images.githubusercontent.com/57752033/144703435-9a51b668-8640-4ac8-aa9c-0f36871f224d.png" height="150px">|
+|<img src="https://user-images.githubusercontent.com/57752033/144703651-cc438a8d-84e3-4ac7-bd37-e10074ad2340.png" height="150px"><br><img src="https://user-images.githubusercontent.com/57752033/144703715-acad18ba-f2c9-4438-aac4-712b112b80e6.png" height="150px">|<img src="https://user-images.githubusercontent.com/57752033/144702040-b51fb5fa-a7f5-4cfb-9bd8-4950b1d05734.jpg" height="150px"><br><img src="https://user-images.githubusercontent.com/57752033/144703435-9a51b668-8640-4ac8-aa9c-0f36871f224d.png" height="150px">|
 
 **TXT/PNG/OBJ output**
 |PNG|OBJ (3D model) [*1] [*2]|
