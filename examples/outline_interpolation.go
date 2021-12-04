@@ -19,14 +19,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import(
-	output "../Artograph/Output"
-	artograph "../Artograph"
+	output "../RDGL/Output"
+	rdg "../RDGL"
 	
 )
 
 func main(){
 
-	dem := artograph.NewDEM(14)
+	dem := rdg.NewDEM(14)
 
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = -1
@@ -36,10 +36,10 @@ func main(){
 	//    the aspect ratio of outline image.
 
 	
-	artograph.EnableProcessLog()
+	rdg.EnableProcessLog()
 
 	// Assign the filename of outline image.
-	dem.Process("./resources/swan.png")
+	dem.Interpolate("./resources/draft.png")
 
 	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, shadow)
 	// width|height, when either of them is -1,

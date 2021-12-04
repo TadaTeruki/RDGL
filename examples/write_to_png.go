@@ -20,14 +20,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import(
-	output "../Artograph/Output"
-	artograph "../Artograph"
+	output "../RDGL/Output"
+	rdg "../RDGL"
 )
 
 func main(){
-	dem := artograph.NewDEM(14)
+	dem := rdg.NewDEM(14)
 
-	artograph.EnableProcessLog()
+	rdg.EnableProcessLog()
 
 	dem.Generate()
 

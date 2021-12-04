@@ -19,12 +19,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import(
-	artograph "../Artograph"
+	rdg "../RDGL"
 	"fmt"
 )
 
 func main(){
-	dem := artograph.NewDEM(14)
+	dem := rdg.NewDEM(14)
 
 	// --- Basic configurations ---
 
@@ -71,7 +71,7 @@ func main(){
 
 	// ---
 
-	artograph.EnableProcessLog()
+	rdg.EnableProcessLog()
 
 	for yKm := 0.0; yKm < dem.HorizontalKm; yKm += dem.HorizontalKm/50.0{
 		str := ""

@@ -1,5 +1,5 @@
 /*
-examples/write_to_obj.go
+RDGL/Utility/utility.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -15,23 +15,23 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-
-package main
+package utility
 
 import(
-	output "../RDGL/Output"
-	rdg "../RDGL"
+	"fmt"
+	"math"
 )
 
-func main(){
-	dem := rdg.NewDEM(14)
+var Debug = fmt.Println
 
-	rdg.EnableProcessLog()
+var ProcessLog bool = false
 
-	dem.Generate()
+func EchoProcessPercentage(context string, process_proportion float64){
+	if ProcessLog == false { return }
+	fmt.Println("Process log : " + context + " (",math.Floor(process_proportion*100),"% )")
+}
 
-	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image, 
-	//        scale of elevation, whether Z-axis is vertical or not ['true' -> Z-axis is vertical, 'false' -> Y-axis is vertical ] )
-	output.WriteDEMtoOBJ("result.obj", &dem, 100, -1, 5.0, false)
-
+func EchoProcessEnd(context string){
+	if ProcessLog == false { return }
+	fmt.Println("Process log : " + context + " was successfully finished")
 }

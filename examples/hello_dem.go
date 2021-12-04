@@ -19,13 +19,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import(
-	artograph "../Artograph"
+	rdg "../RDGL"
 	"fmt"
 )
 
 func main(){
 	// Use 'NewDEM' to make a new DEM (assigning the seed value).
-	dem := artograph.NewDEM(14)
+	dem := rdg.NewDEM(14)
 	// Start DEM generation.
 	dem.Generate()
 	// DEM generation will be completed automatically. Easy!
@@ -34,7 +34,7 @@ func main(){
 
 	// Enabling 'ProcessLog', you can check the stage of process during DEM generation.  
 	// If you think it unnecessary, comment out the below row to disable ProcessLog.
-	artograph.EnableProcessLog()
+	rdg.EnableProcessLog()
 
 	// Now let's output the DEM data onto your terminal.
 	// 'HorizontalKm' means the horizontal width of the DEM data (unit:Km)
