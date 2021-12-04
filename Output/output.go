@@ -1,5 +1,5 @@
 /*
-RDGL/Output/output.go
+github.com/TadaTeruki/RDGL/Output/output.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -19,8 +19,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package output
 
 import(
-	rdg "../"
-	terrain "../TerrainGeneration"
+	rdg "github.com/TadaTeruki/RDGL"
+	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 	cairo "github.com/ungerik/go-cairo"
 	"math"
 	"os"

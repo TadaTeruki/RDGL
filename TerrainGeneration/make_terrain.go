@@ -1,6 +1,6 @@
 
 /*
-RDGL/TerrainGeneration/make_terrain.go
+github.com/TadaTeruki/RDGL/TerrainGeneration/make_terrain.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@ package terrain_generation
 import(
 	"math"
 	"math/rand"
-	utility "../Utility"
+	utility "github.com/TadaTeruki/RDGL/Utility"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){

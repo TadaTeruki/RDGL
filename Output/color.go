@@ -1,5 +1,5 @@
 /*
-RDGL/Output/color.go
+github.com/TadaTeruki/RDGL/Output/color.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify

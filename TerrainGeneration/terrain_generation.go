@@ -1,5 +1,5 @@
 /*
-RDGL/TerrainGeneration/terrain_generation.go
+github.com/TadaTeruki/RDGL/TerrainGeneration/terrain_generation.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package terrain_generation
 
 import(
-	perlin "../PerlinNoise"
+	perlin "github.com/TadaTeruki/RDGL/PerlinNoise"
 )
 
 // WorldTerrain ... Whole area to generate terrains

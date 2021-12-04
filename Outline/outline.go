@@ -1,6 +1,6 @@
 
 /*
-RDGL/Outline/outline.go
+github.com/TadaTeruki/RDGL/Outline/outline.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -24,9 +24,7 @@ import(
 	"image/png"
 	"os"
 	"strconv"
-	//"math"
-	terrain "../TerrainGeneration"
-	//"fmt"
+	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 )
 
 const(

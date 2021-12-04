@@ -19,8 +19,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import(
-	output "../RDGL/Output"
-	rdg "../RDGL"
+	output "github.com/TadaTeruki/RDGL/Output"
+	rdg "github.com/TadaTeruki/RDGL"
 )
 
 func main(){

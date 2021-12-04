@@ -1,5 +1,5 @@
 /*
-RDGL/RDGL.go
+github.com/TadaTeruki/RDGL/RDGL.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -20,9 +20,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package RDGL
 
 import(
-	terrain "./TerrainGeneration"
-	outline "./Outline"
-	utility "./Utility"
+	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
+	outline "github.com/TadaTeruki/RDGL/Outline"
+	utility "github.com/TadaTeruki/RDGL/Utility"
 	"fmt"
 	"math"
 )

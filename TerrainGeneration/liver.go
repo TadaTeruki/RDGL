@@ -1,5 +1,5 @@
 /*
-RDGL/TerrainGeneration/liver.go
+github.com/TadaTeruki/RDGL/TerrainGeneration/liver.go
 Copyright (C) 2021 Tada Teruki
 
 This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@ package terrain_generation
 import(
 	"math"
 	"sort"
-	utility "../Utility"
+	utility "github.com/TadaTeruki/RDGL/Utility"
 )
 
 func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *LiverPoint{
