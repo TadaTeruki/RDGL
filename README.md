@@ -6,7 +6,6 @@
 
 **DEM** : Digital Elevation Model
 
-by TadaTeruki (Perukii) <tadateruki.public@gmail.com> <br>
 written in **Golang**
 
 ## Features
@@ -93,3 +92,5 @@ $ go get github.com/TadaTeruki/RDGL
 ## LICENSE
 
 LGPL - v3.0
+
+Author : TadaTeruki tadateruki.public@gmail.com
