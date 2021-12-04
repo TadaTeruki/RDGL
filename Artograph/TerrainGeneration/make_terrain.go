@@ -66,13 +66,8 @@ func (obj *LocalTerrainObject) SubmitLocalTerrain(count int) (float64, bool){
 	if land > 1.0 { land = 1.0 }
 	if land < 0.0 { land = 0.0 }
 
-	if land < obj.WorldTerrain.Config.MinLandProportion || land > obj.WorldTerrain.Config.MaxLandProportion {
-		return 0, false
-	}
-
 	score = 1.0 - math.Abs(obj.WorldTerrain.Config.StandardLandProportion-land)
 	
-
 	return score, true
 }
 

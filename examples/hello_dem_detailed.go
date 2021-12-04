@@ -47,13 +47,21 @@ func main(){
 	// default : 5.0
 	dem.LevelingIntervalM = 5.0
 
-	// [Quality01] The quality of DEM (>0.0) (Recommend : 1.0)
+	// [Quality01] The quality of DEM (>0.0)
 	// default : 1.0
+	// recommend : 1.0
 	dem.Quality01 = 1.0
 
 	// [LandProportion] The proportion of land (>0.0, <1.0) (Example : 0.7 -> 70% (of generated terrain) will covered with land)
 	// The less this value is, the faster liver generation process runs.
+	// default : 0.5
+	// recommend : <0.75
 	dem.LandProportion01 = 0.5
+
+	// [PlateSizeKm] The size of a continental plate (>0.0)
+	// default : 1000.0
+	// recommend : == VerticalKm  &  == HorizontalKm
+	dem.PlateSizeKm = 1000.0
 
 	dem.Generate()
 

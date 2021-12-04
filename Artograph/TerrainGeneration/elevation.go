@@ -30,8 +30,8 @@ func TerrainAdjustmentFade(px, strength float64) float64{
 
 func (obj *WorldTerrainObject) GetNoiseLevelByKmPoint(xKm, yKm float64) float64{
 
-	xfix := xKm/obj.Config.NoizeScaleKm
-	yfix := yKm/obj.Config.NoizeScaleKm
+	xfix := xKm/obj.Config.PlateSizeKm
+	yfix := yKm/obj.Config.PlateSizeKm
 
 	noise_adj := obj.NoiseSrc.OctaveNoise(1, 0.5, xfix, yfix, 0.0)
 
@@ -93,37 +93,29 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	if obj.ElevationTableIsAvailable == true {
 		noise := obj.WorldTerrain.GetNoiseLevelByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 		relv = obj.GetElevationByKmPointFromElevationTable(xKm, yKm)
-		relv += (noise-0.5)*(noise-0.5)*obj.WorldTerrain.ElevationBaseM*obj.WorldTerrain.Config.OutlineNoiseStrength
+		relv += (noise-0.5)*(noise-0.5)*obj.WorldTerrain.ElevationAbsM*obj.WorldTerrain.Config.OutlineNoiseStrength
 	} else {
 		relv = obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 	}
+
+	leveling_elevation := obj.WorldTerrain.Config.LevelingMinimumElevationProportion*obj.WorldTerrain.ElevationAbsM
+	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
 
 	if obj.LevelingCheckIsAvailable == true {
 		oc := obj.LevelingLayerObj.GetLevelingPointByKmPoint(obj, xKm, yKm)
 
 		if oc.IsLeveling == true &&
-		   oc.ElevationLevel > obj.WorldTerrain.Config.LevelingMinimumElevationProportion*obj.WorldTerrain.ElevationBaseM{
+		   oc.ElevationLevel > leveling_elevation{
 			diff := (oc.ElevationLevel-relv)
-			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.PlainDepth
-			/*
-			if oc.ElevationLevel >= 0.0 && relv < 0.0 {
-				relv = 0.0
-			}
-			*/
+			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.LakeDepthProportion
 		}
 	}
 
-	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationBaseM
 	
 	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true {
 		
 		arelv := (relv-liver_elevation) * obj.CheckLiverCavityByKmPoint(xKm, yKm)+liver_elevation
-			
-		if relv <= arelv{
-
-		} else {
-			relv = arelv
-		}
+		relv = math.Min(relv,arelv)
 	}
 	
 	return relv

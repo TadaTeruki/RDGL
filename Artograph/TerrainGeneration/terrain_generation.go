@@ -29,7 +29,7 @@ type WorldTerrainObject struct{
 	NSKm float64
 	WEKm float64
 	Z float64
-	ElevationBaseM float64
+	ElevationAbsM float64
 	NEFPointList []NEFPoint
 	Config InternalConfig
 }
@@ -53,25 +53,21 @@ type LocalTerrainObject struct{
 
 type InternalConfig struct{ // details -> <globalconfig.go>
 	Seed int64
-	NoizeScaleKm float64
+	PlateSizeKm float64
 	NoizeOctave int
 	NoizeMinPersistence float64
 	NoizeMaxPersistence float64
-	MinLandProportion float64
-	MaxLandProportion float64
 	LocalTerrainSelectionQuality int
 	LevelingIntervalKm float64
 	LiverIntervalKm float64
-	TerrainReverseScale float64
 	LevelingHeightM float64
 	LevelingStartPointIntervalKm float64
 	LevelingMinimumElevationProportion float64
-	PlainDepth float64
+	LakeDepthProportion float64
 	LiverEndPointElevationProportion float64
 	OutlineInterpolationQuality int
 	OutlineNoiseStrength float64
 	StandardLandProportion float64
-	//StandardOceanProportion float64
 	OutlineNoizeMinPersistence float64
 	OutlineNoizeMaxPersistence float64
 	MapSideWidthKm float64

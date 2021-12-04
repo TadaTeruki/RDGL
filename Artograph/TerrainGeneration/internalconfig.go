@@ -26,8 +26,8 @@ func GetInternalConfig() InternalConfig {
 	// The seed value for terrain-generation
 	conf.Seed = 0
 	
-	// Scale of a plate of a continent (Square)
-	conf.NoizeScaleKm = 1000.0
+	// Size of a continental plate of a continent (Square)
+	conf.PlateSizeKm = 1000.0
 
 	// Fineness of terrain
 	conf.NoizeOctave = 30
@@ -38,11 +38,6 @@ func GetInternalConfig() InternalConfig {
 	// Maximum-complicatedness of terrain (Example : 0.7 -> genelates steep valleys or sawtooth shaped coasts)
 	conf.NoizeMaxPersistence = 0.7
 
-	// Minimum-proportion of land (Example : 0.7 -> 70% (of generated terrain) will covered with land)
-	conf.MinLandProportion = 0.0				
-	// Maximum-proportion of land 
-	conf.MaxLandProportion = 1.0
-
 	conf.MapSideWidthKm = 0.0
 
 	// Proportion of land of WorldTerrain
@@ -51,23 +46,18 @@ func GetInternalConfig() InternalConfig {
 	// Quality of terrain-generation
 	conf.LocalTerrainSelectionQuality = 100
 
-	// The pressure strength (on plain)
-	conf.PlainDepth = 0.3
+	// The maximum depth of lake (LakeDepthProportion*ElevationAbsM)
+	conf.LakeDepthProportion = 0.3
 
 	// Liver effects configuration
 	conf.LiverIntervalKm = 1.0	
-	conf.LiverEndPointElevationProportion = -0.005
-
-	// Elevation adjustment of cavity areas (Example : 0.01 -> previous_elevation*(-0.01) (m) )
-	conf.TerrainReverseScale = 0.01
+	conf.LiverEndPointElevationProportion = -0.002
 
 	// Leveling effects configuration
 	conf.LevelingIntervalKm = 1.0 
 	conf.LevelingHeightM = 100.0
-	conf.LevelingStartPointIntervalKm = 100.0
+	conf.LevelingStartPointIntervalKm = 10.0
 	conf.LevelingMinimumElevationProportion = -0.5
-
-
 
 	// Interpolation quality of outline data
 	conf.OutlineInterpolationQuality = 10

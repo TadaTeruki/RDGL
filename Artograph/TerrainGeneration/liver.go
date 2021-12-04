@@ -45,7 +45,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 			obj.LiverTable[y][x].Direction = DIRECTION_NONE
 			obj.LiverTable[y][x].Cavity = 1.0
 			obj.LiverTable[y][x].BaseElevation = obj.GetElevationByKmPoint(obj.LiverTable[y][x].XKm, obj.LiverTable[y][x].YKm)
-			if obj.LiverTable[y][x].BaseElevation >= obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationBaseM {
+			if obj.LiverTable[y][x].BaseElevation >= obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM {
 				lv_order = append(lv_order, MakePoint(x, y))
 			}
 			
@@ -69,7 +69,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
 		if lt.Direction != DIRECTION_NONE { return true }		
 
-		return elevation <= obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationBaseM
+		return elevation <= obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
 	}
 
 	utility.EchoProcessPercentage("Liver simulation", 0)

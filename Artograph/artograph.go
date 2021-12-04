@@ -36,6 +36,7 @@ type ArtoDEM struct{
 	HorizontalKm		float64
 	Quality01 			float64
 	LandProportion01	float64
+	PlateSizeKm			float64
 
 	side_width		float64
 	w_obj terrain.WorldTerrainObject
@@ -52,6 +53,7 @@ func (dem *ArtoDEM) default_dem(){
 	dem.side_width = 3.0
 	dem.Quality01 = 1.0
 	dem.LandProportion01 = 0.5
+	dem.PlateSizeKm = 1000.0
 }
 
 func (dem *ArtoDEM) quality_max() float64{
@@ -80,16 +82,17 @@ func (dem *ArtoDEM) config(){
 	dem.w_obj.NSKm = dem.l_obj.NSKm * dem.side_width * 2
 	dem.w_obj.WEKm = dem.l_obj.WEKm * dem.side_width * 2
 
-	dem.w_obj.ElevationBaseM = dem.ElevationAbsM
+	dem.w_obj.ElevationAbsM = dem.ElevationAbsM
 	
 	dem.w_obj.Config.Seed = dem.Seed
 	dem.w_obj.Config.LiverIntervalKm = dem.UnitKm
 	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
 	dem.w_obj.Config.LevelingHeightM = dem.LevelingIntervalM
-	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100
 	dem.w_obj.Config.OutlineInterpolationQuality = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.StandardLandProportion = dem.LandProportion01
+	dem.w_obj.Config.PlateSizeKm = dem.PlateSizeKm
+	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100*dem.PlateSizeKm/1000
 
 	dem.l_obj.WorldTerrain = &dem.w_obj
 

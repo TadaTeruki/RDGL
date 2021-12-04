@@ -33,11 +33,11 @@ func MakeNEFPoint(n,e float64) NEFPoint{
 func (obj *WorldTerrainObject) SetNEFPoint(){
 	ocean_proportion := 1.0-obj.Config.StandardLandProportion
 	var NEFPointList = []NEFPoint{
-		MakeNEFPoint(0.0, -obj.ElevationBaseM),
-		MakeNEFPoint(ocean_proportion*0.7, -obj.ElevationBaseM*0.5),
-		MakeNEFPoint(ocean_proportion*0.85, -obj.ElevationBaseM*0.1),
+		MakeNEFPoint(0.0, -obj.ElevationAbsM),
+		MakeNEFPoint(ocean_proportion*0.7, -obj.ElevationAbsM*0.5),
+		MakeNEFPoint(ocean_proportion*0.85, -obj.ElevationAbsM*0.1),
 		MakeNEFPoint(ocean_proportion, 0.0),
-		MakeNEFPoint(1.0, obj.ElevationBaseM),
+		MakeNEFPoint(1.0, obj.ElevationAbsM),
 	}
 	obj.NEFPointList = NEFPointList
 }
@@ -77,10 +77,10 @@ func (obj *WorldTerrainObject) NEF3(nlv float64) float64{
 
 
 func (obj *WorldTerrainObject) GetElevationFromNoiseLevel(nlv float64)float64{
-	if nlv < 0 { return -obj.ElevationBaseM }
+	if nlv < 0 { return -obj.ElevationAbsM }
 	if nlv < obj.NEFPointList[1].NoiseLevel { return obj.NEF0(nlv) }
 	if nlv < obj.NEFPointList[2].NoiseLevel { return obj.NEF1(nlv) }
 	if nlv < obj.NEFPointList[3].NoiseLevel { return obj.NEF2(nlv) }
 	if nlv < 1.0 { return obj.NEF3(nlv) }
-	return obj.ElevationBaseM
+	return obj.ElevationAbsM
 }
