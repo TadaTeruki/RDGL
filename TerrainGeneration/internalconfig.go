@@ -57,7 +57,7 @@ func GetInternalConfig() InternalConfig {
 	conf.LevelingIntervalKm = 1.0 
 	conf.LevelingHeightM = 100.0
 	conf.LevelingStartPointIntervalKm = 10.0
-	conf.LevelingMinimumElevationProportion = -0.5
+	conf.LevelingMinimumElevationProportion = -0.1
 
 	// Interpolation quality of outline data
 	conf.OutlineInterpolationQuality = 10

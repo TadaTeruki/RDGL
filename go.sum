@@ -1,0 +1,6 @@
+github.com/cnkei/gospline v0.0.0-20191204072713-842a72f86331 h1:LaKIRdLDg4mn0OkEtcr3unP0M8uQ1oyEw/05SbX/O48=
+github.com/cnkei/gospline v0.0.0-20191204072713-842a72f86331/go.mod h1:DXXGDL64/wxXgBSgmGMEL0vYC0tdvpgNhkJrvavhqDM=
+github.com/emirpasic/gods v1.12.0 h1:QAUIPSaCu4G+POclxeqb3F+WPpdKqFGlw36+yOzGlrg=
+github.com/emirpasic/gods v1.12.0/go.mod h1:YfzfFFoVP/catgzJb4IKIqXjX78Ha8FMSDh3ymbK86o=
+github.com/ungerik/go-cairo v0.0.0-20210317133935-984b32e6bac6 h1:KrKqo3an56mwfObaZtHlyhN+IVDyw1XaoIT5Cr2Ttvk=
+github.com/ungerik/go-cairo v0.0.0-20210317133935-984b32e6bac6/go.mod h1:yLTJg56omDJ+JVxZ5whpCrZgQdaSs+OBdFa+X6ViJcI=
