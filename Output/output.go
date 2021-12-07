@@ -20,12 +20,14 @@ package output
 
 import(
 	rdg "github.com/TadaTeruki/RDGL"
-	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
-	cairo "github.com/ungerik/go-cairo"
 	"math"
 	"os"
+    "image"
+	"image/color"
+    "image/png"
 	"strconv"
 )
+
 type Shadow struct{
 	DirectionZ 	float64
 	DirectionXY float64
@@ -34,61 +36,7 @@ type Shadow struct{
 	StrengthOcean01	float64
 }
 
-func WriteWorldToPNG(file string, obj *terrain.WorldTerrainObject, image_pixel_w, image_pixel_h int){
-
-	fw := float64(image_pixel_w)
-	fh := float64(image_pixel_h)
-
-	if fw < 0 { fw = fh/obj.NSKm*obj.WEKm }
-	if fh < 0 { fh = fw/obj.WEKm*obj.NSKm }
-
-	surface := cairo.NewSurface(cairo.FORMAT_ARGB32, int(fw), int(fh))
-
-	for y := 0.0; y < fh; y += 1.0{
-		for x := 0.0; x < fw; x += 1.0{
-			px := x/fw
-			py := y/fh
-			color := GetColorFromElevation(obj.GetElevationByKmPoint(px*obj.WEKm, py*obj.NSKm))
-			surface.SetSourceRGB(color.R, color.G, color.B)
-			surface.Rectangle(x, y, 2, 2)
-			surface.Fill()
-
-		}
-	} 
-
-	surface.WriteToPNG(file)
-	surface.Finish()
-
-}
-
-func WriteLocalToPNG(file string, obj *terrain.LocalTerrainObject, image_pixel_w, image_pixel_h int){
-
-	fw := float64(image_pixel_w)
-	fh := float64(image_pixel_h)
-
-	if fw < 0 { fw = fh/obj.NSKm*obj.WEKm }
-	if fh < 0 { fh = fw/obj.WEKm*obj.NSKm }
-
-	surface := cairo.NewSurface(cairo.FORMAT_ARGB32, int(fw), int(fh))
-
-	for y := 0.0; y < fh; y += 1.0{
-		for x := 0.0; x < fw; x += 1.0{
-			px := x/fw
-			py := y/fh
-			color := GetColorFromElevation(obj.GetElevationByKmPoint(px*obj.WEKm, py*obj.NSKm))
-			surface.SetSourceRGB(color.R, color.G, color.B)
-			surface.Rectangle(x, y, 2, 2)
-			surface.Fill()
-
-		}
-	}
-
-	surface.WriteToPNG(file)
-	surface.Finish()
-
-}
-
-func DEMToPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, with_shadow bool, shadow Shadow){
+func DEMToPNG(filename string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, with_shadow bool, shadow Shadow){
 
 	shadow_direction_z  := shadow.DirectionZ
 	shadow_direction_xy := shadow.DirectionXY
@@ -102,8 +50,10 @@ func DEMToPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, with_
 	if fw < 0 { fw = fh/ats.VerticalKm*ats.HorizontalKm }
 	if fh < 0 { fh = fw/ats.HorizontalKm*ats.VerticalKm }
 
-	surface := cairo.NewSurface(cairo.FORMAT_ARGB32, int(fw), int(fh))
+	//surface := cairo.NewSurface(cairo.FORMAT_ARGB32, int(fw), int(fh))
+	surface := image.NewRGBA(image.Rect(0, 0, int(fw), int(fh)))
 
+	
 	brightness := make([][]float64, int(fh))
 
 	for y := 0.0; y < fh; y += 1.0{
@@ -154,7 +104,7 @@ func DEMToPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, with_
 			if err != nil {
 				continue
 			}
-			color := GetColorFromElevation(elevation)
+			dcolor := GetColorFromElevation(elevation)
 
 			if with_shadow == true {
 				
@@ -171,21 +121,36 @@ func DEMToPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, with_
 				fb = fb*shadow_strength+(1.0-shadow_strength)
 				if fb < 0.0 { fb = 0.0 }
 				if fb > 1.0 { fb = 1.0 }
+
+
+				dcolor.R *= fb
+				dcolor.G *= fb
+				dcolor.B *= fb
 				
-				surface.SetSourceRGB(color.R*fb, color.G*fb, color.B*fb)
-			} else {
-				surface.SetSourceRGB(color.R, color.G, color.B)
+				//surface.SetSourceRGB(color.R*fb, color.G*fb, color.B*fb)
 			}
 
 			
-			surface.Rectangle(x, y, 2, 2)
-			surface.Fill()
+			
+			col := color.RGBA{uint8(int(dcolor.R*255)), uint8(int(dcolor.G*255)), uint8(int(dcolor.B*255)), 255}
+			//fmt.Println(col)
+
+			surface.Set(int(x), int(y), col)
+
+			//surface.Rectangle(x, y, 2, 2)
+			//surface.Fill()
 
 		}
 	}
 
-	surface.WriteToPNG(file)
-	surface.Finish()
+	file, _ := os.Create(filename)
+    defer file.Close()
+
+    if err := png.Encode(file, surface); err != nil {
+        panic(err)
+    }
+	//surface.WriteToPNG(file)
+	//surface.Finish()
 }
 
 func WriteDEMtoPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int){
@@ -309,7 +274,7 @@ func WriteDEMtoTXT(filename string, ats *rdg.DEM, image_w float64, image_h float
 	write("#UnitKm\n")
 	write(FtoA(ats.UnitKm)+"\n\n")
 
-
+	write("#DATA\n")
 	for yKm := 0.0; yKm < ats.VerticalKm; yKm += ats.UnitKm {
 		for xKm := 0.0; xKm < ats.HorizontalKm; xKm += ats.UnitKm {
 			elevation, err := ats.GetElevationByKmPoint(xKm, yKm)
