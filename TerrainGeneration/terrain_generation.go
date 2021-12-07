@@ -62,7 +62,7 @@ type InternalConfig struct{ // details -> <globalconfig.go>
 	LiverIntervalKm float64
 	LevelingHeightM float64
 	LevelingStartPointIntervalKm float64
-	LevelingMinimumElevationProportion float64
+	ContShelfElevationProportion float64
 	LakeDepthProportion float64
 	LiverEndPointElevationProportion float64
 	OutlineInterpolationQuality int

@@ -32,10 +32,11 @@ func MakeHCFPoint(n,e float64) HCFPoint{
 
 func (obj *WorldTerrainObject) SetHCFPoint(){
 	ocean_proportion := 1.0-obj.Config.StandardLandProportion
+	
 	var HCFPointList = []HCFPoint{
 		MakeHCFPoint(0.0, -obj.ElevationAbsM),
 		MakeHCFPoint(ocean_proportion*0.7, -obj.ElevationAbsM*0.5),
-		MakeHCFPoint(ocean_proportion*0.85, -obj.ElevationAbsM*0.1),
+		MakeHCFPoint(ocean_proportion*0.85, obj.Config.ContShelfElevationProportion*obj.ElevationAbsM),
 		MakeHCFPoint(ocean_proportion, 0.0),
 		MakeHCFPoint(1.0, obj.ElevationAbsM),
 	}

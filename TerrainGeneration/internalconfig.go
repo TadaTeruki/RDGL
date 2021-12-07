@@ -24,13 +24,13 @@ func GetInternalConfig() InternalConfig {
 	var conf InternalConfig
 
 	// The seed value for terrain-generation
-	conf.Seed = 0
+	//conf.Seed = 0
 	
 	// Size of a continental plate of a continent (Square)
-	conf.PlateSizeKm = 1000.0
+	//conf.PlateSizeKm = 1000.0
 
 	// Fineness of terrain
-	conf.NoizeOctave = 30
+	//conf.NoizeOctave = 30
 
 	// Minimum-complicatedness of terrain (Example : 0.4 -> genelates plains or beaches)
 	conf.NoizeMinPersistence = 0.4
@@ -41,26 +41,26 @@ func GetInternalConfig() InternalConfig {
 	conf.MapSideWidthKm = 0.0
 
 	// Proportion of land of WorldTerrain
-	conf.StandardLandProportion = 0.5
+	//conf.StandardLandProportion = 0.5
 	
 	// Quality of terrain-generation
 	conf.LocalTerrainSelectionQuality = 100
 
 	// The maximum depth of lake (LakeDepthProportion*ElevationAbsM)
-	conf.LakeDepthProportion = 0.3
+	conf.LakeDepthProportion = 1.0
 
 	// Liver effects configuration
-	conf.LiverIntervalKm = 1.0	
+	//conf.LiverIntervalKm = 1.0	
 	conf.LiverEndPointElevationProportion = -0.002
 
 	// Leveling effects configuration
-	conf.LevelingIntervalKm = 1.0 
-	conf.LevelingHeightM = 100.0
-	conf.LevelingStartPointIntervalKm = 10.0
-	conf.LevelingMinimumElevationProportion = -0.1
+	//conf.LevelingIntervalKm = 1.0 
+	//conf.LevelingHeightM = 100.0
+	//conf.LevelingStartPointIntervalKm = 10.0
+	conf.ContShelfElevationProportion = -0.1
 
 	// Interpolation quality of outline data
-	conf.OutlineInterpolationQuality = 10
+	//conf.OutlineInterpolationQuality = 10
 	// Noise strength of outline data
 	conf.OutlineNoiseMinStrength = 0.01
 	conf.OutlineNoiseMaxStrength = 1.0

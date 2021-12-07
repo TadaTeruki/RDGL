@@ -30,7 +30,7 @@ import(
 type DEM struct{
 	Seed 				int64
 	ElevationAbsM		float64
-	LevelingIntervalM	float64
+	LevelingElevationM	float64
 	UnitKm				float64
 	VerticalKm			float64
 	HorizontalKm		float64
@@ -49,7 +49,7 @@ func (dem *DEM) default_dem(){
 	dem.UnitKm = 2
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = 1000
-	dem.LevelingIntervalM = 5
+	dem.LevelingElevationM = 5
 	dem.side_width = 3.0
 	dem.Quality01 = 1.0
 	dem.LandProportion01 = 0.5
@@ -87,7 +87,7 @@ func (dem *DEM) config(){
 	dem.w_obj.Config.Seed = dem.Seed
 	dem.w_obj.Config.LiverIntervalKm = dem.UnitKm
 	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
-	dem.w_obj.Config.LevelingHeightM = dem.LevelingIntervalM
+	dem.w_obj.Config.LevelingHeightM = dem.LevelingElevationM
 	dem.w_obj.Config.OutlineInterpolationQuality = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.StandardLandProportion = dem.LandProportion01
