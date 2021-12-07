@@ -30,7 +30,7 @@ type WorldTerrainObject struct{
 	WEKm float64
 	Z float64
 	ElevationAbsM float64
-	NEFPointList []NEFPoint
+	HCFPointList []HCFPoint
 	Config InternalConfig
 }
 
@@ -95,7 +95,7 @@ type LiverPoint struct{
 	BaseElevation float64
 }
 
-type NEFPoint struct {
+type HCFPoint struct {
 	NoiseLevel float64
 	Elevation float64
 }
