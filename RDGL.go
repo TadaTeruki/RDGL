@@ -101,7 +101,7 @@ func (dem *DEM) config(){
 func (dem *DEM) Generate(){
 
 	dem.config()
-	dem.w_obj.SetNEFPoint()
+	dem.w_obj.SetHCFPoint()
 	dem.w_obj.MakeWorldTerrain()
 
 	dem.l_obj.MakeLocalTerrain()
@@ -121,7 +121,7 @@ func (dem *DEM) Interpolate(file string){
 	}
 
 	dem.config()
-	dem.w_obj.SetNEFPoint()
+	dem.w_obj.SetHCFPoint()
 	dem.w_obj.Config.NoizeMinPersistence = dem.w_obj.Config.OutlineNoizeMinPersistence
 	dem.w_obj.Config.NoizeMaxPersistence = dem.w_obj.Config.OutlineNoizeMaxPersistence
 	dem.w_obj.MakeWorldTerrain()
