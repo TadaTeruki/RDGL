@@ -42,17 +42,10 @@ func (ocl *LevelingLayer) MarkLeveling(obj *LocalTerrainObject, x, y int, elevat
 		return false
 	}
 
-	if  x == 0 || x == len(leveling_table[0])-1 ||
-		y == 0 || y == len(leveling_table)-1 {
-		leveling_table[y][x].IsLeveling = true
-		leveling_table[y][x].ElevationLevel = elevation_level
-		return true
-	}
-
-	if  leveling_table[y-1][x].IsLeveling == true ||
-		leveling_table[y+1][x].IsLeveling == true ||
-		leveling_table[y][x-1].IsLeveling == true ||
-		leveling_table[y][x+1].IsLeveling == true {
+	if  ( y > 0 						&& leveling_table[y-1][x].IsLeveling == true ) ||
+		( y < len(leveling_table)-1		&& leveling_table[y+1][x].IsLeveling == true ) ||
+		( x > 0 						&& leveling_table[y][x-1].IsLeveling == true ) ||
+		( x < len(leveling_table[0])-1	&& leveling_table[y][x+1].IsLeveling == true ) {
 
 		leveling_table[y][x].IsLeveling = true
 		leveling_table[y][x].ElevationLevel = elevation_level
@@ -67,63 +60,52 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 
 	ocl := &obj.LevelingLayerObj
 
-	leveling_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm
-	ocl.LevelingTable = make([][]LevelingPoint, int(math.Ceil(obj.NSKm/leveling_interval_km)))
+	unit_km := obj.WorldTerrain.Config.UnitKm
+	ocl.LevelingTable = make([][]LevelingPoint, int(math.Ceil(obj.NSKm/unit_km)))
 	checked := make([][]bool, len(ocl.LevelingTable))
 	for y := 0; y<len(ocl.LevelingTable); y++{
-	 	ocl.LevelingTable[y] = make([]LevelingPoint, int(math.Ceil(obj.WEKm/leveling_interval_km)))
+	 	ocl.LevelingTable[y] = make([]LevelingPoint, int(math.Ceil(obj.WEKm/unit_km)))
 		checked[y] = make([]bool, len(ocl.LevelingTable[0]))
 		for x := 0; x<len(ocl.LevelingTable[y]); x++{
-			ocl.LevelingTable[y][x].XKm = float64(x)*leveling_interval_km
-			ocl.LevelingTable[y][x].YKm = float64(y)*leveling_interval_km
+			ocl.LevelingTable[y][x].XKm = float64(x)*unit_km
+			ocl.LevelingTable[y][x].YKm = float64(y)*unit_km
 			ocl.LevelingTable[y][x].IsLeveling = false
+			ocl.LevelingTable[y][x].ElevationLevel  = obj.GetElevationByKmPoint(ocl.LevelingTable[y][x].XKm, ocl.LevelingTable[y][x].YKm)
 			checked[y][x] = false
 		}
 	}
 
 	var open []Point
-	
-	xl := int(obj.WEKm/obj.WorldTerrain.Config.LevelingStartPointIntervalKm)
-	yl := int(obj.NSKm/obj.WorldTerrain.Config.PlateSizeKm)
-	for x := 0; x<=xl; x++ {
-		if x == xl {
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,0))
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)-1))
-		} else {
-			/*
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,0))
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)-1))
-			*/
-			for y := 0; y<yl; y++{
-				open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)*y/yl))
-				//open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)-1))
+
+	shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion * obj.WorldTerrain.ElevationAbsM
+	ocean_exists := false
+	min_root_elevation_m := obj.WorldTerrain.ElevationAbsM
+
+	for n := false; ;n=true {
+		
+		for i := 0 ; i< len(obj.RootList); i++{
+			ix := int(math.Floor(obj.RootList[i].XKm/unit_km))
+			iy := int(math.Floor(obj.RootList[i].YKm/unit_km))
+
+			if n == false {
+				if ocl.LevelingTable[iy][ix].ElevationLevel < shelf_elevation_m {
+					ocean_exists = true
+				} else {
+					min_root_elevation_m = math.Min(min_root_elevation_m, ocl.LevelingTable[iy][ix].ElevationLevel)
+				}
+			} else {
+				if (ocean_exists == true  && ocl.LevelingTable[iy][ix].ElevationLevel < shelf_elevation_m ) ||
+				   (ocean_exists == false && ocl.LevelingTable[iy][ix].ElevationLevel == min_root_elevation_m){
+					open = append(open, MakePoint(ix, iy))
+					ocl.LevelingTable[iy][ix].IsLeveling = true
+				}
+
 			}
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)-1))
+			
+
 		}
+		if n==true { break }
 	}
-	
-	yl = int(obj.NSKm/obj.WorldTerrain.Config.LevelingStartPointIntervalKm)
-	xl = int(obj.WEKm/obj.WorldTerrain.Config.PlateSizeKm)
-	for y := 1; y<yl; y ++ {
-		if y == yl-1 {
-			open = append(open, MakePoint(0,len(ocl.LevelingTable)-1))
-		} else {
-			/*
-			open = append(open, MakePoint(0,len(ocl.LevelingTable)*y/yl))
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)*y/yl))
-			*/
-			for x := 0; x<xl; x++{
-				open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)*y/yl))
-				//open = append(open, MakePoint(len(ocl.LevelingTable[0])*x/xl,len(ocl.LevelingTable)-1))
-			}
-			open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)*y/yl))
-		}
-	}
-	/*
-	open = append(open, MakePoint(0,len(ocl.LevelingTable)-1))
-	open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,0))
-	open = append(open, MakePoint(len(ocl.LevelingTable[0])-1,len(ocl.LevelingTable)-1))
-	*/
 
 	utility.EchoProcessPercentage("Leveling", 0)
 	checked_sum := 0.0
@@ -211,11 +193,37 @@ func (obj *LocalTerrainObject) MakeLevelingLayer(){
 	utility.EchoProcessEnd("Leveling")
 
 	obj.LevelingCheckIsAvailable = true
+
+
+
+
+	
 }
 
 func (ocl LevelingLayer) GetLevelingPointByKmPoint(obj *LocalTerrainObject, xKm, yKm float64) LevelingPoint{
-	leveling_interval_km := obj.WorldTerrain.Config.LevelingIntervalKm
-	x := int(math.Min(math.Round(xKm/leveling_interval_km),float64(len(ocl.LevelingTable[0])-1)))
-	y := int(math.Min(math.Round(yKm/leveling_interval_km),float64(len(ocl.LevelingTable)-1)))
+	unit_km := obj.WorldTerrain.Config.UnitKm
+	x := int(math.Min(math.Round(xKm/unit_km),float64(len(ocl.LevelingTable[0])-1)))
+	y := int(math.Min(math.Round(yKm/unit_km),float64(len(ocl.LevelingTable)-1)))
 	return ocl.LevelingTable[y][x]
+}
+
+func (ocl LevelingLayer) GetLevelingElevationByKmPoint(obj *LocalTerrainObject, xKm, yKm float64) float64{
+	unit_km := obj.WorldTerrain.Config.UnitKm
+	x := xKm/unit_km
+	y := yKm/unit_km
+	fx := math.Max(math.Floor(x), 0)
+	fy := math.Max(math.Floor(y), 0)
+	cx := math.Min(fx+1, float64(len(ocl.LevelingTable[0])-1))
+	cy := math.Min(fy+1, float64(len(ocl.LevelingTable)-1))
+
+	ffsc := (x-fx)*(y-fy)
+	cfsc := (cx-x)*(y-fy)
+	fcsc := (x-fx)*(cy-y)
+	ccsc := (cx-x)*(cy-y)
+
+	return  ccsc*ocl.LevelingTable[int(fy)][int(fx)].ElevationLevel +
+			cfsc*ocl.LevelingTable[int(cy)][int(fx)].ElevationLevel +
+			fcsc*ocl.LevelingTable[int(fy)][int(cx)].ElevationLevel +
+			ffsc*ocl.LevelingTable[int(cy)][int(cx)].ElevationLevel
+
 }

@@ -47,14 +47,13 @@ func GetInternalConfig() InternalConfig {
 	conf.LocalTerrainSelectionQuality = 100
 
 	// The maximum depth of lake (LakeDepthProportion*ElevationAbsM)
-	conf.LakeDepthProportion = 1.0
+	conf.LakeDepthProportion = 0.0
 
 	// Liver effects configuration
-	//conf.LiverIntervalKm = 1.0	
-	conf.LiverEndPointElevationProportion = -0.002
+	conf.LiverEndPointElevationProportion = 0.0
 
 	// Leveling effects configuration
-	//conf.LevelingIntervalKm = 1.0 
+	//conf.RootIntervalKm = 1.0 
 	//conf.LevelingHeightM = 100.0
 	//conf.LevelingStartPointIntervalKm = 10.0
 	conf.ContShelfElevationProportion = -0.1
@@ -68,6 +67,8 @@ func GetInternalConfig() InternalConfig {
 	// Minimum/Maximum-complicatedness of terrain
 	conf.OutlineNoizeMinPersistence = 0.5
 	conf.OutlineNoizeMaxPersistence = 0.8
+
+	conf.RootIntervalKm = 99.0
 
 
 	

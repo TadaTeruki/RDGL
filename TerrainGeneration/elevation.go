@@ -100,19 +100,15 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 		relv = obj.WorldTerrain.GetElevationByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
 	}
 
-	leveling_elevation := obj.WorldTerrain.Config.ContShelfElevationProportion*obj.WorldTerrain.ElevationAbsM
 	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
-
+	
 	if obj.LevelingCheckIsAvailable == true {
-		oc := obj.LevelingLayerObj.GetLevelingPointByKmPoint(obj, xKm, yKm)
+		oc := obj.LevelingLayerObj.GetLevelingElevationByKmPoint(obj, xKm, yKm)
 
-		if oc.IsLeveling == true &&
-		   oc.ElevationLevel > leveling_elevation{
-			diff := (oc.ElevationLevel-relv)
-			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.LakeDepthProportion
-		}
+		diff := (oc-relv)
+		relv = oc-diff*obj.WorldTerrain.Config.LakeDepthProportion
+
 	}
-
 	
 	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true {
 		

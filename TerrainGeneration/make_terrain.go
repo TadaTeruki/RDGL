@@ -106,11 +106,24 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 	obj.xKm = cobj[select_ad].xKm
 	obj.yKm = cobj[select_ad].yKm
 
+}
 
+func (obj *LocalTerrainObject) SetRoot(){
+	root_interval_km := obj.WorldTerrain.Config.RootIntervalKm
+	start_x_km := (obj.WEKm-math.Floor(obj.WEKm/root_interval_km)*root_interval_km)*0.5
+	start_y_km := (obj.NSKm-math.Floor(obj.NSKm/root_interval_km)*root_interval_km)*0.5
 
+	for yKm := start_y_km; yKm < obj.NSKm; yKm += root_interval_km  {
+		for xKm := start_x_km; xKm < obj.WEKm; xKm += root_interval_km  {
+			obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
+			
+		}
+	}
 }
 
 func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
+
+	obj.SetRoot()
 
 	if leveling == true {
 		obj.MakeLevelingLayer()

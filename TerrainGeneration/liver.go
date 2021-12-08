@@ -24,7 +24,7 @@ import(
 )
 
 func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *LiverPoint{
-	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
+	liver_interval_km := obj.WorldTerrain.Config.UnitKm
 	x := int(math.Min(xKm/liver_interval_km,float64(len(obj.LiverTable[0])-1)))
 	y := int(math.Min(yKm/liver_interval_km,float64(len(obj.LiverTable)-1)))
 	lt := &obj.LiverTable[y][x]
@@ -32,8 +32,9 @@ func (obj *LocalTerrainObject) GetLiverPointFromKmPoint(xKm, yKm float64) *Liver
 }
 
 func (obj *LocalTerrainObject) MakeLiverTable(){
-	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
-	side_width_km := obj.WorldTerrain.Config.MapSideWidthKm
+	
+	liver_interval_km := obj.WorldTerrain.Config.UnitKm
+	//side_width_km := obj.WorldTerrain.Config.MapSideWidthKm
 	obj.LiverTable = make([][]LiverPoint, int(math.Ceil(obj.NSKm/liver_interval_km)))
 	var lv_order []Point
 
@@ -65,7 +66,7 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 
 	loop_out_condition := func(xKm, yKm, sxKm, syKm, elevation float64) bool{
 
-		if xKm < side_width_km || yKm < side_width_km || xKm > obj.WEKm-side_width_km || yKm > obj.NSKm-side_width_km { return true }
+		//if xKm < side_width_km || yKm < side_width_km || xKm > obj.WEKm-side_width_km || yKm > obj.NSKm-side_width_km { return true }
 		lt := obj.GetLiverPointFromKmPoint(xKm, yKm)
 		if lt.Direction != DIRECTION_NONE { return true }		
 
@@ -127,12 +128,13 @@ func (obj *LocalTerrainObject) MakeLiverTable(){
 	utility.EchoProcessEnd("Liver simulation")
 
 	obj.LiverCheckIsAvailable = true
+	
 }
 
 func (obj *LocalTerrainObject) CheckLiverCavityByKmPoint(xKm, yKm float64) float64{
 
 
-	liver_interval_km := obj.WorldTerrain.Config.LiverIntervalKm
+	liver_interval_km := obj.WorldTerrain.Config.UnitKm
 
 	var nw, ne, sw, se KmPoint
 	nw.XKm = math.Floor(xKm/liver_interval_km)*liver_interval_km
