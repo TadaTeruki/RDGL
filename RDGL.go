@@ -49,7 +49,7 @@ func (dem *DEM) default_dem(){
 	dem.UnitKm = 2
 	dem.VerticalKm = 1000
 	dem.HorizontalKm = 1000
-	dem.LevelingElevationM = 5
+	dem.LevelingElevationM = 1
 	dem.side_width = 3.0
 	dem.Quality01 = 1.0
 	dem.LandProportion01 = 0.5
@@ -85,14 +85,13 @@ func (dem *DEM) config(){
 	dem.w_obj.ElevationAbsM = dem.ElevationAbsM
 	
 	dem.w_obj.Config.Seed = dem.Seed
-	dem.w_obj.Config.LiverIntervalKm = dem.UnitKm
-	dem.w_obj.Config.LevelingIntervalKm = dem.UnitKm
+	dem.w_obj.Config.UnitKm = dem.UnitKm
 	dem.w_obj.Config.LevelingHeightM = dem.LevelingElevationM
 	dem.w_obj.Config.OutlineInterpolationQuality = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.StandardLandProportion = dem.LandProportion01
 	dem.w_obj.Config.PlateSizeKm = dem.PlateSizeKm
-	dem.w_obj.Config.LevelingStartPointIntervalKm = math.Max(dem.l_obj.NSKm, dem.l_obj.WEKm)/100*dem.PlateSizeKm/1000
+	dem.w_obj.Config.RootIntervalKm = math.Sqrt(dem.l_obj.NSKm*dem.l_obj.NSKm+dem.l_obj.WEKm*dem.l_obj.WEKm)*0.01
 
 	dem.l_obj.WorldTerrain = &dem.w_obj
 
@@ -144,4 +143,9 @@ func (dem *DEM) GetElevationByKmPoint(xKm, yKm float64) (float64, error){
 
 func EnableProcessLog(){
 	utility.ProcessLog = true
+}
+
+// only for development use 
+func (dem *DEM) GetLocalTerrain() terrain.LocalTerrainObject{
+	return dem.l_obj
 }

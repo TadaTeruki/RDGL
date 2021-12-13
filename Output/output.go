@@ -20,6 +20,7 @@ package output
 
 import(
 	rdg "github.com/TadaTeruki/RDGL"
+	//terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 	"math"
 	"os"
     "image"
@@ -50,14 +51,13 @@ func DEMToPNG(filename string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, w
 	if fw < 0 { fw = fh/ats.VerticalKm*ats.HorizontalKm }
 	if fh < 0 { fh = fw/ats.HorizontalKm*ats.VerticalKm }
 
-	//surface := cairo.NewSurface(cairo.FORMAT_ARGB32, int(fw), int(fh))
 	surface := image.NewRGBA(image.Rect(0, 0, int(fw), int(fh)))
 
 	
-	brightness := make([][]float64, int(fh))
+	brightness := make([][]float64, int(fh)+1)
 
 	for y := 0.0; y < fh; y += 1.0{
-		brightness[int(y)] = make([]float64, int(fw))
+		brightness[int(y)] = make([]float64, int(fw)+1)
 		for x := 0.0; x < fw; x += 1.0{
 			px := x/fw
 			py := y/fh
@@ -126,19 +126,10 @@ func DEMToPNG(filename string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, w
 				dcolor.R *= fb
 				dcolor.G *= fb
 				dcolor.B *= fb
-				
-				//surface.SetSourceRGB(color.R*fb, color.G*fb, color.B*fb)
 			}
 
-			
-			
 			col := color.RGBA{uint8(int(dcolor.R*255)), uint8(int(dcolor.G*255)), uint8(int(dcolor.B*255)), 255}
-			//fmt.Println(col)
-
 			surface.Set(int(x), int(y), col)
-
-			//surface.Rectangle(x, y, 2, 2)
-			//surface.Fill()
 
 		}
 	}
@@ -149,8 +140,6 @@ func DEMToPNG(filename string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, w
     if err := png.Encode(file, surface); err != nil {
         panic(err)
     }
-	//surface.WriteToPNG(file)
-	//surface.Finish()
 }
 
 func WriteDEMtoPNG(file string, ats *rdg.DEM, image_pixel_w, image_pixel_h int){

@@ -27,19 +27,31 @@ func TerrainAdjustmentFade(px, strength float64) float64{
 	return math.Atan((2*x-1.0)*math.Tan(strength*math.Pi*0.5))/(strength*math.Pi*0.5)*0.5+0.5
 }
 
+func (obj *WorldTerrainObject) GetNoiseStrengthByKmPoint(xKm, yKm float64) float64{
+	xfix := xKm/obj.Config.PlateSizeKm
+	yfix := yKm/obj.Config.PlateSizeKm
+
+	noise_adj := obj.NoiseSrc.OctaveNoise(1, 0.5, xfix, yfix, 0.0)
+
+	return noise_adj
+}
+
+func (obj *WorldTerrainObject) NoiseStrengthToPersistence(strength float64) float64{
+	return obj.Config.NoizeMinPersistence+strength*(obj.Config.NoizeMaxPersistence-obj.Config.NoizeMinPersistence)
+}
 
 func (obj *WorldTerrainObject) GetNoiseLevelByKmPoint(xKm, yKm float64) float64{
 
 	xfix := xKm/obj.Config.PlateSizeKm
 	yfix := yKm/obj.Config.PlateSizeKm
 
-	noise_adj := obj.NoiseSrc.OctaveNoise(1, 0.5, xfix, yfix, 0.0)
+	strength := obj.GetNoiseStrengthByKmPoint(xKm, yKm)
 
 	noise := obj.NoiseSrc.OctaveNoiseFixed(obj.Config.NoizeOctave,
-		obj.Config.NoizeMinPersistence+noise_adj*(obj.Config.NoizeMaxPersistence-obj.Config.NoizeMinPersistence),
+		obj.Config.NoizeMinPersistence+strength*(obj.Config.NoizeMaxPersistence-obj.Config.NoizeMinPersistence),
 		xfix, yfix, obj.Z)
 
-	return TerrainAdjustmentFade(noise, noise_adj)
+	return TerrainAdjustmentFade(noise, strength)
 	
 }
 
@@ -80,6 +92,17 @@ func (obj *LocalTerrainObject) GetElevationByKmPointFromElevationTable(xKm, yKm 
 
 }
 
+func (obj *LocalTerrainObject) GetDepthStrengthByKmPoint(xKm, yKm float64) float64{
+	if xKm < 0 { xKm = 0 }
+	if yKm < 0 { yKm = 0 }
+	if xKm > obj.WEKm { xKm = obj.WEKm }
+	if yKm > obj.NSKm { yKm = obj.NSKm }
+	return obj.WorldTerrain.GetNoiseStrengthByKmPoint(xKm+obj.xKm, yKm+obj.yKm)
+}
+func (obj *LocalTerrainObject) GetPersistenceByKmPoint(xKm, yKm float64) float64{
+	return obj.WorldTerrain.NoiseStrengthToPersistence(obj.GetDepthStrengthByKmPoint(xKm, yKm))
+}
+
 func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 
 	if xKm < 0 { xKm = 0 }
@@ -103,17 +126,17 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
 	
 	if obj.LevelingCheckIsAvailable == true {
-		oc := obj.LevelingLayerObj.GetLevelingElevationByKmPoint(obj, xKm, yKm)
-
+		oc := obj.UnitLayerObj.GetLevelingElevationByKmPoint(obj, xKm, yKm)
 		diff := (oc-relv)
+		//if relv < 
 		relv = oc-diff*obj.WorldTerrain.Config.LakeDepthProportion
-
 	}
 	
-	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true {
-		
-		arelv := (relv-liver_elevation) * obj.CheckLiverCavityByKmPoint(xKm, yKm)+liver_elevation
+	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true{
+		cavity := obj.CheckLiverCavityByKmPoint(xKm, yKm)
+		arelv := (relv-liver_elevation) * cavity + liver_elevation
 		relv = math.Min(relv,arelv)
+		
 	}
 	
 	return relv

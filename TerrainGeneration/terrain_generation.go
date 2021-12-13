@@ -32,6 +32,7 @@ type InternalConfig struct{ // details -> <globalconfig.go>
 	NoizeMaxPersistence float64
 	LocalTerrainSelectionQuality int
 	LevelingHeightM float64
+	PlainElevationProportion float64
 	ContShelfElevationProportion float64
 	LakeDepthProportion float64
 	LiverEndPointElevationProportion float64
@@ -60,28 +61,39 @@ type KmPoint struct{
 	YKm float64
 }
 
-type LiverPoint struct{
-	XKm float64
-	YKm float64
-	Direction int
-	Cavity float64
-	BaseElevation float64
-}
-
 type HCFPoint struct {
 	NoiseLevel float64
 	Elevation float64
 }
 
-type LevelingPoint struct{
+
+type UnitPoint struct{
+	XKm float64
+	YKm float64
+	
+	// leveling
+	IsLeveling bool
+	ElevationLevel float64
+
+	// liver
+	Direction int
+	Cavity float64
+	BaseElevation float64
+	Root *KmPoint
+	RootDistKm float64
+}
+
+/*
+type UnitPoint struct{
 	XKm float64
 	YKm float64
 	IsLeveling bool
 	ElevationLevel float64
 }
+*/
 
-type LevelingLayer struct{
-	LevelingTable [][]LevelingPoint
+type UnitLayer struct{
+	Table [][]UnitPoint
 }
 
 type PathPoint struct{
@@ -120,10 +132,8 @@ type LocalTerrainObject struct{
 
 	RootList []KmPoint
 
-	LevelingLayerObj LevelingLayer
+	UnitLayerObj UnitLayer
 	LevelingCheckIsAvailable bool
-
-	LiverTable [][]LiverPoint
 	LiverCheckIsAvailable bool
 
 	ElevationTableIsAvailable bool

@@ -22,6 +22,7 @@ import(
 	"math"
 	"math/rand"
 	utility "github.com/TadaTeruki/RDGL/Utility"
+	"sort"
 )
 
 func (obj *WorldTerrainObject) MakeWorldTerrain(){
@@ -110,26 +111,81 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 
 func (obj *LocalTerrainObject) SetRoot(){
 	root_interval_km := obj.WorldTerrain.Config.RootIntervalKm
-	start_x_km := (obj.WEKm-math.Floor(obj.WEKm/root_interval_km)*root_interval_km)*0.5
-	start_y_km := (obj.NSKm-math.Floor(obj.NSKm/root_interval_km)*root_interval_km)*0.5
+	unit_km := obj.WorldTerrain.Config.UnitKm
+	//shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion*obj.WorldTerrain.ElevationAbsM
+	//start_x_km := (obj.WEKm-math.Floor(obj.WEKm/root_interval_km)*root_interval_km)*0.5
+	//start_y_km := (obj.NSKm-math.Floor(obj.NSKm/root_interval_km)*root_interval_km)*0.5
+	/*
+	for syKm := 0.0; syKm < obj.NSKm; syKm += root_interval_km  {
+		for sxKm := 0.0; sxKm < obj.WEKm; sxKm += root_interval_km  {
+			//obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
 
-	for yKm := start_y_km; yKm < obj.NSKm; yKm += root_interval_km  {
-		for xKm := start_x_km; xKm < obj.WEKm; xKm += root_interval_km  {
-			obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
+			if sxKm != 0.0 && syKm != 0.0 && sxKm+root_interval_km <= obj.NSKm && syKm+root_interval_km <= obj.WEKm {
+				continue
+			}
+			
+			min_point := MakeKmPoint(sxKm, syKm);
+			max_elevation := -obj.WorldTerrain.ElevationAbsM
+			for yKm := syKm; yKm < syKm+root_interval_km; yKm += unit_km{
+				for xKm := sxKm; xKm < sxKm+root_interval_km; xKm += unit_km{
+					elevation := obj.GetElevationByKmPoint(xKm,yKm)
+					if elevation > max_elevation {
+						max_elevation = elevation
+						min_point = MakeKmPoint(xKm, yKm);
+					}
+				}
+			}
+			obj.RootList = append(obj.RootList, min_point)
 			
 		}
 	}
+	*/
+	
+
+	
+	for syKm := 0.0; syKm < obj.NSKm; syKm += root_interval_km  {
+		for sxKm := 0.0; sxKm < obj.WEKm; sxKm += root_interval_km  {
+			//obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
+			if sxKm != 0.0 && syKm != 0.0 && sxKm+root_interval_km <= obj.NSKm && syKm+root_interval_km <= obj.WEKm {
+				continue
+			}
+			
+			min_point := MakeKmPoint(sxKm, syKm);
+			min_elevation := -obj.WorldTerrain.ElevationAbsM
+			for yKm := syKm; yKm < syKm+root_interval_km; yKm += unit_km{
+				for xKm := sxKm; xKm < sxKm+root_interval_km; xKm += unit_km{
+					elevation := obj.GetElevationByKmPoint(xKm,yKm)
+					if elevation < min_elevation {
+						min_elevation = elevation
+						min_point = MakeKmPoint(xKm, yKm);
+					}
+				}
+			}
+			obj.RootList = append(obj.RootList, min_point)
+			
+		}
+	}
+	
+
+	sort.Slice(obj.RootList, func(i,j int) bool{
+		i_elevation := obj.GetElevationByKmPoint(obj.RootList[i].XKm,obj.RootList[i].YKm)
+		j_elevation := obj.GetElevationByKmPoint(obj.RootList[j].XKm,obj.RootList[j].YKm)
+		return i_elevation < j_elevation
+	})
 }
 
 func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
 
 	obj.SetRoot()
 
+	obj.MakeUnitLayer()
+	
 	if leveling == true {
-		obj.MakeLevelingLayer()
+		obj.Leveling()
 	}
+
 	if liver == true {
-		obj.MakeLiverTable()
+		obj.MakeLiver()
 	}
 
 	utility.EchoProcessEnd("DEM generation")
