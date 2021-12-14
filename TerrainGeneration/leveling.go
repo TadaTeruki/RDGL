@@ -20,10 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package terrain_generation
 import(
 	"math"
-	//"math/rand"
 	utility "github.com/TadaTeruki/RDGL/Utility"
-	//prque "github.com/TadaTeruki/RDGL/PriorityQueue"
-	
 )
 
 type Point struct{
@@ -40,9 +37,7 @@ func MakePoint(x, y int) Point{
 
 func (ocl *UnitLayer) MarkLeveling(obj *LocalTerrainObject, x, y int, elevation_level float64) bool {
 	leveling_table := ocl.Table
-	//shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion * obj.WorldTerrain.ElevationAbsM
-	//plain_elevation_m := obj.WorldTerrain.Config.PlainElevationProportion * obj.WorldTerrain.ElevationAbsM
-	
+
 	if obj.GetElevationByKmPoint(leveling_table[y][x].XKm, leveling_table[y][x].YKm) >= elevation_level {
 		return false
 	}
@@ -53,10 +48,6 @@ func (ocl *UnitLayer) MarkLeveling(obj *LocalTerrainObject, x, y int, elevation_
 		( x < len(leveling_table[0])-1	&& leveling_table[y][x+1].IsLeveling == true ) {
 
 		leveling_table[y][x].IsLeveling = true
-		// && elevation_level < plain_elevation_m
-		//if elevation_level > shelf_elevation_m {
-			
-		//}
 		if elevation_level > 0.0{
 			leveling_table[y][x].ElevationLevel = elevation_level
 		}
@@ -115,41 +106,6 @@ func (obj *LocalTerrainObject) Leveling(){
 	var open []Point
 
 	shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion * obj.WorldTerrain.ElevationAbsM
-	//plain_elevation_m := obj.WorldTerrain.Config.PlainElevationProportion*obj.WorldTerrain.ElevationAbsM
-
-	/*
-	ocean_exists := false
-	min_root_elevation_m := obj.WorldTerrain.ElevationAbsM
-
-	for n := false; ;n=true {
-		
-		for i := 0 ; i< len(obj.RootList); i++{
-			ix := int(math.Floor(obj.RootList[i].XKm/unit_km))
-			iy := int(math.Floor(obj.RootList[i].YKm/unit_km))
-			if ix >= len(ocl.Table[0]) {
-				ix = len(ocl.Table[0])-1
-			}
-			if iy >= len(ocl.Table) {
-				iy = len(ocl.Table)-1
-			}
-
-			if n == false {
-				if ocl.Table[iy][ix].ElevationLevel < shelf_elevation_m {
-					ocean_exists = true
-				} else {
-					min_root_elevation_m = math.Min(min_root_elevation_m, ocl.Table[iy][ix].ElevationLevel)
-				}
-			} else {
-				if (ocean_exists == true  && ocl.Table[iy][ix].ElevationLevel < shelf_elevation_m ) ||
-				   (ocean_exists == false && ocl.Table[iy][ix].ElevationLevel == min_root_elevation_m){
-					open = append(open, MakePoint(ix, iy))
-					ocl.Table[iy][ix].IsLeveling = true
-				}
-
-			}
-		}
-		if n==true { break }
-	}*/
 
 	for i := 0 ; i< len(obj.RootList); i++{
 		ix := int(math.Floor(obj.RootList[i].XKm/unit_km))
@@ -281,123 +237,3 @@ func (ocl UnitLayer) GetLevelingElevationByKmPoint(obj *LocalTerrainObject, xKm,
 			ffsc*ocl.Table[int(cy)][int(cx)].ElevationLevel
 
 }
-
-	/*
-
-	//liver_end_elevation_m := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
-
-	for y := 0; y<len(ocl.Table); y++{
-		for x := 0; x<len(ocl.Table[y]); x++{
-			ocl.Table[y][x].BaseElevation = obj.GetElevationByKmPoint(ocl.Table[y][x].XKm, ocl.Table[y][x].YKm)
-			checked[y][x] = false
-		}
-	}
-
-	//len(obj.RootList)
-	//prque
-
-	get_score := func(xKm, yKm, bxKm, byKm, rxKm, ryKm, distKm float64) float64{
-
-		elevation := obj.GetElevationByKmPoint(xKm, yKm)
-		b_elevation := obj.GetElevationByKmPoint(bxKm, byKm)
-		r_elevation := obj.GetElevationByKmPoint(rxKm, ryKm)
-		shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion*obj.WorldTerrain.ElevationAbsM
-		_,_,_,_ = elevation,b_elevation,r_elevation,shelf_elevation_m
-		
-		if elevation < b_elevation-20.0{
-			return -0.001
-		} 
-		
-		//score_elevation := elevation- shelf_elevation_m
-		//return score_elevation
-		return (elevation-r_elevation)*(1000-distKm*2)
-	}
-
-	
-
-		//i = 5
-	var queue prque.PriorityQueue
-	//len(obj.RootList)
-	for i := 0; i < len(obj.RootList); i++{
-		
-		
-		ix := int(obj.RootList[i].XKm/unit_km)
-		iy := int(obj.RootList[i].YKm/unit_km)
-		if ix >= len(checked[0]) {
-			ix = len(checked[0])-1
-		}
-		if iy >= len(checked) {
-			iy = len(checked)-1
-		}
-		score := get_score(obj.RootList[i].XKm, obj.RootList[i].YKm,
-						   obj.RootList[i].XKm, obj.RootList[i].YKm,
-						   obj.RootList[i].XKm, obj.RootList[i].YKm,
-							0)
-		queue.Push(prque.MakeObject(obj.RootList[i], score))
-		ocl.Table[iy][ix].Root = &obj.RootList[i]
-		
-	}
-
-	for ;queue.GetSize() != 0;{
-		
-		pq_obj := queue.GetFront()
-		point := pq_obj.Value.(KmPoint)
-		ix := int(point.XKm/unit_km)
-		iy := int(point.YKm/unit_km)
-		
-		if ix >= len(checked[0]) {
-			ix = len(checked[0])-1
-		}
-		if iy >= len(checked) {
-			iy = len(checked)-1
-		}
-		if checked[iy][ix] == true {
-			queue.Pop()
-			continue
-		}
-
-		set_liver := func(dx, dy, direction int){
-			if ix+dx <= 0 || iy+dy <= 0 || ix+dx >= len(checked[0])-1 || iy+dy >= len(checked)-1 {
-				return
-			}
-			
-			if checked[iy+dy][ix+dx] == true ||
-				(ocl.Table[iy+dy][ix+dx].Direction != DIRECTION_NONE &&
-					ocl.Table[iy+dy][ix+dx].Root == ocl.Table[iy][ix].Root){
-				return
-			}
-			dxKm := point.XKm+float64(dx)*unit_km
-			dyKm := point.YKm+float64(dy)*unit_km
-
-			root_dist_km := ocl.Table[iy][ix].RootDistKm + unit_km
-			root := ocl.Table[iy][ix].Root
-
-			score := get_score(dxKm, dyKm, point.XKm, point.YKm, root.XKm, root.YKm, root_dist_km)
-			//utility.Debug(score)
-			//elevation := obj.GetElevationByKmPoint(dxKm, dyKm)
-
-			
-			queue.Push(prque.MakeObject(MakeKmPoint(dxKm, dyKm),score))
-			ocl.Table[iy+dy][ix+dx].Direction = direction
-			ocl.Table[iy+dy][ix+dx].Root = ocl.Table[iy][ix].Root
-			ocl.Table[iy+dy][ix+dx].RootDistKm = root_dist_km
-			
-			
-		}
-		
-		set_liver(-1.0, 0.0, DIRECTION_WEST)
-		set_liver( 1.0, 0.0, DIRECTION_EAST)
-		set_liver( 0.0,-1.0, DIRECTION_NORTH)
-		set_liver( 0.0, 1.0, DIRECTION_SOUTH)
-		
-		
-		set_liver(-1.0, 0.0, DIRECTION_EAST)
-		set_liver( 1.0, 0.0, DIRECTION_WEST)
-		set_liver( 0.0,-1.0, DIRECTION_SOUTH)
-		set_liver( 0.0, 1.0, DIRECTION_NORTH)
-		
-		
-		checked[iy][ix] = true
-		queue.Pop()
-	}
-	*/

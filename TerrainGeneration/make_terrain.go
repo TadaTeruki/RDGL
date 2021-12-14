@@ -112,35 +112,7 @@ func (obj *LocalTerrainObject) MakeLocalTerrain(){
 func (obj *LocalTerrainObject) SetRoot(){
 	root_interval_km := obj.WorldTerrain.Config.RootIntervalKm
 	unit_km := obj.WorldTerrain.Config.UnitKm
-	//shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion*obj.WorldTerrain.ElevationAbsM
-	//start_x_km := (obj.WEKm-math.Floor(obj.WEKm/root_interval_km)*root_interval_km)*0.5
-	//start_y_km := (obj.NSKm-math.Floor(obj.NSKm/root_interval_km)*root_interval_km)*0.5
-	/*
-	for syKm := 0.0; syKm < obj.NSKm; syKm += root_interval_km  {
-		for sxKm := 0.0; sxKm < obj.WEKm; sxKm += root_interval_km  {
-			//obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
 
-			if sxKm != 0.0 && syKm != 0.0 && sxKm+root_interval_km <= obj.NSKm && syKm+root_interval_km <= obj.WEKm {
-				continue
-			}
-			
-			min_point := MakeKmPoint(sxKm, syKm);
-			max_elevation := -obj.WorldTerrain.ElevationAbsM
-			for yKm := syKm; yKm < syKm+root_interval_km; yKm += unit_km{
-				for xKm := sxKm; xKm < sxKm+root_interval_km; xKm += unit_km{
-					elevation := obj.GetElevationByKmPoint(xKm,yKm)
-					if elevation > max_elevation {
-						max_elevation = elevation
-						min_point = MakeKmPoint(xKm, yKm);
-					}
-				}
-			}
-			obj.RootList = append(obj.RootList, min_point)
-			
-		}
-	}*/
-
-	
 	for syKm := 0.0; syKm < obj.NSKm; syKm += root_interval_km  {
 		for sxKm := 0.0; sxKm < obj.WEKm; sxKm += root_interval_km  {
 			//obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))

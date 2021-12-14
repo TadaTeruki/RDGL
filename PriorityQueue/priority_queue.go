@@ -98,27 +98,3 @@ func (queue *PriorityQueue) Push(obj Object){
 		}
 	}
 }
-
-
-
-/*
-
-// < Example >
-
-func main(){
-	var queue priority_queue.PriorityQueue
-
-	queue.Push(priority_queue.MakeObject("fad",15))
-	queue.Push(priority_queue.MakeObject("res",33))
-	queue.Push(priority_queue.MakeObject("cue",81))
-	queue.Push(priority_queue.MakeObject("mon",92))
-	queue.Push(priority_queue.MakeObject("kal",64))
-	queue.Push(priority_queue.MakeObject("nur",10))
-
-	for i:=0; queue.GetFront() != nil; i++ {
-		obj := queue.GetFront()
-		fmt.Println(obj.Value, obj.Priority)
-		queue.Pop()
-	}
-}
-*/

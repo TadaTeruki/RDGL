@@ -134,54 +134,6 @@ func DEMToPNG(filename string, ats *rdg.DEM, image_pixel_w, image_pixel_h int, w
 		}
 	}
 
-	// -----
-/*
-	obj := ats.GetLocalTerrain()
-	unit_km := obj.WorldTerrain.Config.UnitKm
-	ocl := &obj.UnitLayerObj
-	for y := 0; y<len(ocl.Table); y++{
-		for x := 0; x<len(ocl.Table[y]); x++{
-			//ocl.Table[y][x].
-			
-			sxKm := ocl.Table[y][x].XKm
-			syKm := ocl.Table[y][x].YKm
-
-			var exKm, eyKm float64
-
-			switch ocl.Table[y][x].Direction {
-			case 0: // DIRECTION_NONE
-				exKm, eyKm = sxKm, syKm
-			case 1: // DIRECTION_NORTH
-				exKm, eyKm = sxKm, syKm-unit_km
-			case 2: // DIRECTION_WEST
-				exKm, eyKm = sxKm-unit_km, syKm
-			case 3: // DIRECTION_SOUTH
-				exKm, eyKm = sxKm, syKm+unit_km
-			case 4: // DIRECTION_EAST
-				exKm, eyKm = sxKm+unit_km, syKm
-			}
-
-			sx := sxKm/ats.HorizontalKm*fw
-			sy := syKm/ats.VerticalKm*fh
-			ex := exKm/ats.HorizontalKm*fw
-			ey := eyKm/ats.VerticalKm*fh
-
-			for dy := sy; dy <= ey; dy++{
-				for dx := sx; dx <= ex; dx++{
-					col := color.RGBA{0, 0, 0, 255}
-					surface.Set(int(dx), int(dy), col)
-				}
-				
-			}
-
-			
-			
-		}
-	}
-	*/
-
-	// ----
-
 	file, _ := os.Create(filename)
     defer file.Close()
 
