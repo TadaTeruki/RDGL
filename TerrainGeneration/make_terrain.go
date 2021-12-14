@@ -138,17 +138,17 @@ func (obj *LocalTerrainObject) SetRoot(){
 			obj.RootList = append(obj.RootList, min_point)
 			
 		}
-	}
-	*/
-	
+	}*/
 
 	
 	for syKm := 0.0; syKm < obj.NSKm; syKm += root_interval_km  {
 		for sxKm := 0.0; sxKm < obj.WEKm; sxKm += root_interval_km  {
 			//obj.RootList = append(obj.RootList, MakeKmPoint(xKm, yKm))
+			
 			if sxKm != 0.0 && syKm != 0.0 && sxKm+root_interval_km <= obj.NSKm && syKm+root_interval_km <= obj.WEKm {
 				continue
 			}
+			
 			
 			min_point := MakeKmPoint(sxKm, syKm);
 			min_elevation := -obj.WorldTerrain.ElevationAbsM
@@ -180,13 +180,18 @@ func (obj *LocalTerrainObject) TransformProcess(leveling bool, liver bool){
 
 	obj.MakeUnitLayer()
 	
+
 	if leveling == true {
 		obj.Leveling()
 	}
 
+
 	if liver == true {
 		obj.MakeLiver()
 	}
+
+	
+
 
 	utility.EchoProcessEnd("DEM generation")
 }

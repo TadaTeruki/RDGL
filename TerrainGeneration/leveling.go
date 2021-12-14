@@ -115,6 +115,9 @@ func (obj *LocalTerrainObject) Leveling(){
 	var open []Point
 
 	shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion * obj.WorldTerrain.ElevationAbsM
+	//plain_elevation_m := obj.WorldTerrain.Config.PlainElevationProportion*obj.WorldTerrain.ElevationAbsM
+
+	/*
 	ocean_exists := false
 	min_root_elevation_m := obj.WorldTerrain.ElevationAbsM
 
@@ -146,6 +149,20 @@ func (obj *LocalTerrainObject) Leveling(){
 			}
 		}
 		if n==true { break }
+	}*/
+
+	for i := 0 ; i< len(obj.RootList); i++{
+		ix := int(math.Floor(obj.RootList[i].XKm/unit_km))
+		iy := int(math.Floor(obj.RootList[i].YKm/unit_km))
+		if ix >= len(ocl.Table[0]) {
+			ix = len(ocl.Table[0])-1
+		}
+		if iy >= len(ocl.Table) {
+			iy = len(ocl.Table)-1
+		}
+
+		open = append(open, MakePoint(ix, iy))
+		ocl.Table[iy][ix].IsLeveling = true
 	}
 
 	utility.EchoProcessPercentage("Leveling", 0)

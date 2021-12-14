@@ -88,7 +88,6 @@ func (obj *LocalTerrainObject) GetElevationByKmPointFromElevationTable(xKm, yKm 
 	return se*obj.ElevationTable[int(ffy)][int(ffx)]+sw*obj.ElevationTable[int(ffy)][int(cfx)]+
 	       ne*obj.ElevationTable[int(cfy)][int(ffx)]+nw*obj.ElevationTable[int(cfy)][int(cfx)]
 	
-	//return obj.ElevationTable[int(ffy)][int(ffx)]
 
 }
 
@@ -124,12 +123,16 @@ func (obj *LocalTerrainObject) GetElevationByKmPoint(xKm, yKm float64) float64{
 	}
 
 	liver_elevation := obj.WorldTerrain.Config.LiverEndPointElevationProportion*obj.WorldTerrain.ElevationAbsM
+	cont_shelf_elevation := obj.WorldTerrain.Config.ContShelfElevationProportion*obj.WorldTerrain.ElevationAbsM
+	plain_elevation := obj.WorldTerrain.Config.PlainElevationProportion*obj.WorldTerrain.ElevationAbsM
 	
 	if obj.LevelingCheckIsAvailable == true {
-		oc := obj.UnitLayerObj.GetLevelingElevationByKmPoint(obj, xKm, yKm)
-		diff := (oc-relv)
-		//if relv < 
-		relv = oc-diff*obj.WorldTerrain.Config.LakeDepthProportion
+		oc := obj.UnitLayerObj.GetUnitPointByKmPoint(obj, xKm, yKm)
+		if oc.IsLeveling == true &&
+		   oc.ElevationLevel > cont_shelf_elevation && oc.ElevationLevel < plain_elevation{
+			diff := (oc.ElevationLevel-relv)
+			relv = oc.ElevationLevel-diff*obj.WorldTerrain.Config.LakeDepthProportion
+		}
 	}
 	
 	if relv >= liver_elevation && obj.LiverCheckIsAvailable == true{

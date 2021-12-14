@@ -91,7 +91,7 @@ func (dem *DEM) config(){
 	dem.w_obj.Config.NoizeOctave = int(math.Ceil(dem.quality_max()*dem.Quality01))
 	dem.w_obj.Config.StandardLandProportion = dem.LandProportion01
 	dem.w_obj.Config.PlateSizeKm = dem.PlateSizeKm
-	dem.w_obj.Config.RootIntervalKm = math.Sqrt(dem.l_obj.NSKm*dem.l_obj.NSKm+dem.l_obj.WEKm*dem.l_obj.WEKm)*0.01
+	dem.w_obj.Config.RootIntervalKm = math.Sqrt(dem.l_obj.NSKm*dem.l_obj.NSKm+dem.l_obj.WEKm*dem.l_obj.WEKm)*0.3
 
 	dem.l_obj.WorldTerrain = &dem.w_obj
 
