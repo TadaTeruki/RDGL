@@ -19,15 +19,15 @@ RDGL generates various procedural-terrains like :
 <br>and so on ...
 
 
-### Procedural DEM generation
+### Random DEM generation
 
-|Seed = 8|Seed=14<br>LandProportion01=0.85|
+|Seed = 8|Seed=14<br>LandProportion01=1.0|
 |---|---|
-|<img src="https://user-images.githubusercontent.com/57752033/144703940-64409bae-8279-4bf1-9b6c-df8f3a44ce2d.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704213-c1d2c452-8970-40fb-a219-f904dbf18d1b.png" width="200px" height="200px">|
+|<img src="https://user-images.githubusercontent.com/69315285/146559610-53b8e21f-3574-4cff-a7ee-0b7c13c32c13.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/69315285/146560007-9976a0e6-a81e-4533-a7aa-e200611d8a06.png" width="200px" height="200px">|
 
-|Seed = 3<br>LandProportion01=0.15|Seed = 25|
+|Seed = 14<br>LandProportion01=0.15|Seed = 2022|
 |---|---|
-|<img src="https://user-images.githubusercontent.com/57752033/144704154-9f09cbc2-91d1-4ee1-91bb-d8e977acddf8.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/57752033/144704341-eaa2d1ca-49d2-4889-8847-26b7fce88692.png" width="200px" height="200px">|
+|<img src="https://user-images.githubusercontent.com/69315285/146560427-846d42d7-1350-4d08-bdcf-3ec0dff7d839.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/69315285/146560806-84541b47-66ef-4229-a95b-e2ce73d6c1b1.png" width="200px" height="200px">|
 ```go
 package main
 import output "github.com/TadaTeruki/RDGL/Output"
@@ -82,12 +82,6 @@ ___
 ```
 $ go get github.com/TadaTeruki/RDGL
 ```
-
-## Dependencies
-
-[![go-cairo](https://github-readme-stats.vercel.app/api/pin/?username=ungerik&repo=go-cairo)](https://github.com/ungerik/go-cairo)<br>
-[![gods](https://github-readme-stats.vercel.app/api/pin/?username=emirpasic&repo=gods)](https://github.com/emirpasic/gods)<br>
-[![gospline](https://github-readme-stats.vercel.app/api/pin/?username=cnkei&repo=gospline)](https://github.com/cnkei/gospline)<br>
 
 ## LICENSE
 
