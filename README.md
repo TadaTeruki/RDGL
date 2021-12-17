@@ -83,12 +83,6 @@ ___
 $ go get github.com/TadaTeruki/RDGL
 ```
 
-## Dependencies
-
-[![go-cairo](https://github-readme-stats.vercel.app/api/pin/?username=ungerik&repo=go-cairo)](https://github.com/ungerik/go-cairo)<br>
-[![gods](https://github-readme-stats.vercel.app/api/pin/?username=emirpasic&repo=gods)](https://github.com/emirpasic/gods)<br>
-[![gospline](https://github-readme-stats.vercel.app/api/pin/?username=cnkei&repo=gospline)](https://github.com/cnkei/gospline)<br>
-
 ## LICENSE
 
 LGPL - v3.0
