@@ -23,38 +23,8 @@ package outline
 import(
 	"image/png"
 	"os"
-	"strconv"
 	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 )
-
-const(
-	PointDataQuality = 10000000
-	ScoreIDQuality = 10000000
-)
-
-
-func Atof(tar string) float64{
-	res, err := strconv.ParseFloat(tar, 64)
-    if err != nil {
-		return 0.0
-    }
-	return res
-}
-
-func Atoi(tar string) int{
-	for i := 0; i<len(tar); i++{
-		c := tar[i]
-		if int(c)<int('0') || int(c)>int('9') {
-			tar = tar[:i]+tar[i+1:]
-			i--
-		}
-	}
-	res, err := strconv.Atoi(tar)
-    if err != nil {
-		return 0
-    }
-	return res
-}
 
 
 func GetImageScale(file_name string) (float64, float64){

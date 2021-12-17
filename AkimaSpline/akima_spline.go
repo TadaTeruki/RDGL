@@ -121,10 +121,10 @@ func (dev *Device) GetValue(x_tar float64) float64{
 
 	var abs = math.Abs
 
-	w1a := (abs(m[1]-m[0])+abs(m[1]+m[0])*0.5)
-	w2a := (abs(m[2]-m[1])+abs(m[2]+m[1])*0.5)
-	w1b := (abs(m[3]-m[2])+abs(m[3]+m[2])*0.5)
-	w2b := (abs(m[4]-m[3])+abs(m[4]+m[3])*0.5)
+	w1a := abs(m[1]-m[0])
+	w2a := abs(m[2]-m[1])
+	w1b := abs(m[3]-m[2])
+	w2b := abs(m[4]-m[3])
 
 	var w1, w2 float64
 

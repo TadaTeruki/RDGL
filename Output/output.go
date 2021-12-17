@@ -20,7 +20,6 @@ package output
 
 import(
 	rdg "github.com/TadaTeruki/RDGL"
-	//terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 	"math"
 	"os"
     "image"

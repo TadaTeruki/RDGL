@@ -21,9 +21,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 package outline
 
 import(
-	"github.com/cnkei/gospline"
 	terrain "github.com/TadaTeruki/RDGL/TerrainGeneration"
 	utility "github.com/TadaTeruki/RDGL/Utility"
+	akima   "github.com/TadaTeruki/RDGL/AkimaSpline"
 	"math"
 )
 
@@ -43,40 +43,33 @@ func GetInterpolatedClass(obj *terrain.LocalTerrainObject, x, y, xp, yp int) flo
 	data_w := len(obj.ElevationTable[0])
 	data_h := len(obj.ElevationTable)
 
-	var bx, by int
-	base := 0.0
-	for{
-		x -= xp
-		y -= yp
-		if x < 0 || y < 0 || x >= data_w || y >= data_h {
-			x = bx
-			y = by
-			break
+
+
+	var dev akima.Device
+
+	for n := -1; n <= 1; n += 2 {
+		fx := x
+		fy := y
+		var bx, by int
+		for i := 0; i < 5;{
+			fx += xp*n
+			fy += yp*n
+			if fx < 0 || fy < 0 || fx >= data_w || fy >= data_h { break }
+			if obj.ElevationTable[fy][fx] != obj.ElevationTable[by][bx]{
+				
+				if i != 0{
+					dev.SetPoint(float64(n)*math.Sqrt(float64(fx-x)*float64(fx-x)+float64(fy-y)*float64(fy-y)), math.Max(float64(obj.ElevationTable[fy][fx]),float64(obj.ElevationTable[by][bx])))
+				}
+				
+				i++
+			}
+
+			bx = fx
+			by = fy
 		}
-		base++
-		bx = x
-		by = y
 	}
 
-
-	var dist []float64
-	var class []float64
-
-	for i := 0; ; i++{
-		x += xp
-		y += yp
-		if x < 0 || y < 0 || x >= data_w || y >= data_h { break }
-		if obj.ElevationTable[y][x] != obj.ElevationTable[by][bx]{
-			dist = append(dist, float64(i))
-			class = append(class, math.Max(obj.ElevationTable[y][x],obj.ElevationTable[by][bx]))
-		}
-		bx = x
-		by = y
-	}
-
-	spline := gospline.NewCubicSpline(dist, class)
-	
-	return spline.At(base)
+	return dev.GetValue(0.0)
 	
 }
 

@@ -73,12 +73,12 @@ func (obj *LocalTerrainObject) GetElevationByKmPointFromElevationTable(xKm, yKm 
 	fy := yKm/obj.NSKm*data_fh
 	ffx := math.Floor(fx)
 	ffy := math.Floor(fy)
+
+	if ffx >= data_fw-1 { ffx = data_fw-2 }
+	if ffy >= data_fh-1 { ffy = data_fh-2 }
 	
 	cfx := ffx+1
 	cfy := ffy+1
-
-	if cfx >= data_fw { cfx = data_fw-1 }
-	if cfy >= data_fh { cfy = data_fh-1 }
 
 	nw := (fx-ffx)*(fy-ffy)
 	ne := (cfx-fx)*(fy-ffy)
