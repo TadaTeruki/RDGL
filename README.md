@@ -6,7 +6,7 @@
 
 **DEM** : Digital Elevation Model
 
-written in **Golang**
+[**Online Trial**](https://go.dev/play/p/g4kX79ADAoY) for Go Playground is now available!
 
 ## Features
 
@@ -18,7 +18,6 @@ RDGL generates various procedural-terrains like :
  - Mountain range
 <br>and so on ...
 
-
 ### Random DEM generation
 
 |Seed = 8|Seed=14<br>LandProportion01=1.0|
@@ -28,6 +27,9 @@ RDGL generates various procedural-terrains like :
 |Seed = 14<br>LandProportion01=0.15|Seed = 2022|
 |---|---|
 |<img src="https://user-images.githubusercontent.com/69315285/146560427-846d42d7-1350-4d08-bdcf-3ec0dff7d839.png" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/69315285/146560806-84541b47-66ef-4229-a95b-e2ce73d6c1b1.png" width="200px" height="200px">|
+
+[*] 1000x1000 (km2) terrain
+
 ```go
 package main
 import output "github.com/TadaTeruki/RDGL/Output"
@@ -42,7 +44,6 @@ func main(){
   // details : examples/hello_dem.go, examples/hello_dem_detailed.go, examples/write_to_png_with_shadow.go
 }
 ```
-
 ___
 
 ### Outline interpolation (Preparing)
@@ -83,8 +84,6 @@ ___
 $ go get github.com/TadaTeruki/RDGL
 ```
 
-## LICENSE
+## Author & Contributors
 
-LGPL - v3.0
-
-Author : TadaTeruki tadateruki.public@gmail.com
+TadaTeruki tadateruki.public@gmail.com
