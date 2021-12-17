@@ -25,7 +25,7 @@ import(
 )
 
 func main(){
-	dem := rdg.NewDEM(25)
+	dem := rdg.NewDEM(14)
 
 	rdg.EnableProcessLog()
 

@@ -24,17 +24,16 @@ import(
 )
 
 func main(){
-	// Use 'NewDEM' to make a new DEM (assigning the seed value).
-	dem := rdg.NewDEM(14)
-	// Start DEM generation.
-	dem.Generate()
-	// DEM generation will be completed automatically. Easy!
-
-	// ---
-
 	// Enabling 'ProcessLog', you can check the stage of process during DEM generation.  
 	// If you think it unnecessary, comment out the below row to disable ProcessLog.
 	rdg.EnableProcessLog()
+
+	// Use 'NewDEM' to make a new DEM (assigning the seed value).
+	dem := rdg.NewDEM(14)
+
+	// Start DEM generation.
+	dem.Generate()
+	// DEM generation will be completed automatically. Easy!
 
 	// Now let's output the DEM data onto your terminal.
 	// 'HorizontalKm' means the horizontal width of the DEM data (unit:Km)
@@ -55,7 +54,7 @@ func main(){
 			} else if elevation >= 0 {
 				str += "__"
 			} else {
-				str += " "
+				str += "  "
 			}
 
 		}

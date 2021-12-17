@@ -24,6 +24,9 @@ import(
 )
 
 func main(){
+
+	rdg.EnableProcessLog()
+	
 	dem := rdg.NewDEM(14)
 
 	// --- Basic configurations ---
@@ -66,12 +69,13 @@ func main(){
 	// default : 1000.0
 	// recommend : == VerticalKm  &  == HorizontalKm
 	dem.PlateSizeKm = 1000.0
+	
 
 	dem.Generate()
 
 	// ---
 
-	rdg.EnableProcessLog()
+	
 
 	for yKm := 0.0; yKm < dem.HorizontalKm; yKm += dem.HorizontalKm/50.0{
 		str := ""
@@ -86,7 +90,7 @@ func main(){
 			} else if elevation >= 0 {
 				str += "__"
 			} else {
-				str += " "
+				str += "  "
 			}
 
 		}
