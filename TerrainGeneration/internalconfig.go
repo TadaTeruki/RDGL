@@ -36,7 +36,7 @@ func GetInternalConfig() InternalConfig {
 	conf.NoizeMinPersistence = 0.4
 
 	// Maximum-complicatedness of terrain (Example : 0.7 -> genelates steep valleys or sawtooth shaped coasts)
-	conf.NoizeMaxPersistence = 0.7
+	conf.NoizeMaxPersistence = 0.8
 
 	conf.MapSideWidthKm = 0.0
 

@@ -48,6 +48,7 @@ func MakeColorElevation(r, g, b, elevation float64) ColorElevation{
 }
 
 var elevationList = []ColorElevation{
+	MakeColorElevation(0.0, 0.0, 0.0, -100000),
 	MakeColorElevation(0.0, 0.3, 0.7, -8000),
 	MakeColorElevation(0.2, 0.7, 0.9, -4000),
 	MakeColorElevation(0.6, 0.8, 0.95, -1000),
