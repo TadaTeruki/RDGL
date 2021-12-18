@@ -106,6 +106,7 @@ func (obj *LocalTerrainObject) Leveling(){
 	var open []Point
 
 	shelf_elevation_m := obj.WorldTerrain.Config.ContShelfElevationProportion * obj.WorldTerrain.ElevationAbsM
+	plain_elevation_m := obj.WorldTerrain.Config.PlainElevationProportion * obj.WorldTerrain.ElevationAbsM
 
 	for i := 0 ; i< len(obj.RootList); i++{
 		ix := int(math.Floor(obj.RootList[i].XKm/unit_km))
@@ -125,7 +126,7 @@ func (obj *LocalTerrainObject) Leveling(){
 	checked_sum := 0.0
 	checked_all := float64(len(ocl.Table[0])*len(ocl.Table))
 
-	for elv := shelf_elevation_m; elv <= obj.WorldTerrain.ElevationAbsM; elv += obj.WorldTerrain.Config.LevelingHeightM {
+	for elv := shelf_elevation_m; elv <= plain_elevation_m; elv += obj.WorldTerrain.Config.LevelingHeightM {
 		
 		nxopen := make(map[Point]struct{})
 		for ;len(open) > 0;{
