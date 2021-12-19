@@ -30,9 +30,9 @@ func main(){
 
 	dem.Generate()
 
-	// (filename, pointer of ArtoDEM object, width of PNG image, height of PNG image )
+	// (filename, pointer of ArtoDEM object)
 	// width|height, when either of them is -1,
 	//  will be applied proper value according to the height|width and the aspect ratio of DEM.
-	output.WriteDEMtoTXT("result.txt", &dem, 1000, -1)
+	output.WriteDEMtoTXT("result.txt", &dem)
 
 }

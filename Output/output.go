@@ -236,7 +236,7 @@ func WriteDEMtoOBJ(filename string, ats *rdg.DEM, image_w float64, image_h float
 }
 
 
-func WriteDEMtoTXT(filename string, ats *rdg.DEM, image_w float64, image_h float64) error {
+func WriteDEMtoTXT(filename string, ats *rdg.DEM) error {
 	var file *os.File
 	var err error
 
@@ -245,9 +245,6 @@ func WriteDEMtoTXT(filename string, ats *rdg.DEM, image_w float64, image_h float
 		return err
 	}
 	defer file.Close()
-	
-	if image_w < 0 { image_w = image_h/ats.VerticalKm*ats.HorizontalKm }
-	if image_h < 0 { image_h = image_w/ats.HorizontalKm*ats.VerticalKm }
 
 	write := func(s string){
 		_, err = file.WriteString(s)
