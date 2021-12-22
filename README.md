@@ -85,6 +85,14 @@ ___
 $ go get github.com/TadaTeruki/RDGL
 ```
 
+## Documentation & Tutorial
+
+**Documentation**(English) : [pkg.go.dev](https://pkg.go.dev/github.com/TadaTeruki/RDGL)
+
+Tutorial(Japanese) : [Qiita](https://qiita.com/TadaTeruki/items/a78a8e463e4edfda1884)
+
+Documentation & Tutorial for other language (English/Japanese) : preparing
+
 ## Author & Contributors
 
 Author : Tada Teruki < tadateruki.public@gmail.com >
